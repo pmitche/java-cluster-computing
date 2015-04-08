@@ -8,7 +8,7 @@ import api.Task;
  */
 public class ComputerImpl implements Computer {
     @Override
-    public T execute(Task task) {
+    public <T> T execute(Task task) {
         return null;
     }
 }
