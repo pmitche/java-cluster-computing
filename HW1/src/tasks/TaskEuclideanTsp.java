@@ -11,13 +11,57 @@ import java.util.List;
 public class TaskEuclideanTsp implements Task<List<Integer>> {
 
     double[][] cities;
-
+    double minDistance = Double.MAX_VALUE;
+    Integer[] minPath;
     public TaskEuclideanTsp(double[][] cities) {
         this.cities = cities;
+        minPath = new Integer[cities.length];
+        for (int i = 0; i < minPath.length; i++){
+            minPath[i] = i;
+        }
     }
 
     @Override
     public List<Integer> execute() {
-        return Arrays.asList(new Integer[]{0, 1, 8, 3, 4, 5, 6, 2, 9, 7});
+        bruteForce(minPath, minPath.length);
+        return Arrays.asList(minPath);
+    }
+
+    /**
+     * Too tiered to be fancy :P
+     */
+    private void bruteForce(Integer[] a, int n) {
+        if (n == 1) {
+            totalDistance(a);
+            return;
+        }
+        for (int i = 0; i < n; i++) {
+            swap(a, i, n-1);
+            bruteForce(a, n - 1);
+            swap(a, i, n-1);
+        }
+    }
+    private static void swap(Integer[] a, int i, int i1) {
+        Integer tmp = a[i];
+        a[i] = a[i1];
+        a[i1] = tmp;
+    }
+    private void totalDistance(Integer[] a) {
+        double distance = 0;
+        for (int i = 0; i < a.length; i++){
+            if (i < a.length-1){
+                distance += euclideanDistance(cities[a[i]], cities[a[i+1]]);
+            }
+        }
+        if (distance < minDistance){
+            minDistance = distance;
+            minPath = a.clone();
+        }
+    }
+
+    private double euclideanDistance(double[] d0, double[] d1){
+        double xDistance = Math.abs(d0[0]-d1[0]);
+        double yDistance = Math.abs(d0[1] - d1[1]);
+        return Math.sqrt( (xDistance*xDistance) + (yDistance*yDistance) );
     }
 }
