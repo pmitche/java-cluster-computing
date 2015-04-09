@@ -30,11 +30,11 @@ public class TaskMandelbrotSet implements Task<Integer[][]> {
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                double c_real = (i - n/2)*4.0/n;
+                double c_real = (j - n/2)*4.0/n;
                 double c_imaginary = (i - n/2)*4.0/n;
                 double x = 0, y = 0;
                 int iterations = 0;
-                while (x*x+y*y <= 4 && iterations <= iterationLimit) {
+                while (x*x+y*y <= 4 && iterations < iterationLimit) {
                     double x_new = x*x-y*y+c_real;
                     y = 2*x*y+c_imaginary;
                     x = x_new;
@@ -42,6 +42,12 @@ public class TaskMandelbrotSet implements Task<Integer[][]> {
                 }
                 result[i][j] = iterations;
             }
+        }
+        for (Integer[] array: result){
+            for (Integer i: array){
+                System.out.print(i + " ");
+            }
+            System.out.println();
         }
         return result;
     }
