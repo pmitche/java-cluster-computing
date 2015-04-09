@@ -3,8 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/CS290B.iml" filepath="$PROJECT_DIR$/CS290B.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HW1/HW1.iml" filepath="$PROJECT_DIR$/HW1/HW1.iml" />
       <module fileurl="file://$PROJECT_DIR$/HelloWorldRMI/HelloWorldRMI.iml" filepath="$PROJECT_DIR$/HelloWorldRMI/HelloWorldRMI.iml" />
     </modules>
   </component>
 </project>
-
