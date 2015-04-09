@@ -2,10 +2,11 @@ package tasks;
 
 import api.Task;
 
+
 /**
  * Created by Kyrre on 07.04.2015.
  */
-public class TaskMandelbrotSet implements Task {
+public class TaskMandelbrotSet implements Task<Integer[][]> {
 
     private final double xCorner;
     private final double yCorner;
@@ -21,25 +22,27 @@ public class TaskMandelbrotSet implements Task {
         this.iterationLimit = iterationLimit;
     }
 
+
     @Override
     public Integer[][] execute() {
-        int width = 1920, height = 1080, max = 1000;
-        for (int row = 0; row < height; row++) {
-            for (int col = 0; col < width; col++) {
-                double c_re = (col - width/2)*4.0/width;
-                double c_im = (row - height/2)*4.0/width;
+
+        Integer[][] result = new Integer[n][n];
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                double c_real = (i - n/2)*4.0/n;
+                double c_imaginary = (i - n/2)*4.0/n;
                 double x = 0, y = 0;
                 int iterations = 0;
-                while (x*x+y*y < 4 && iterations < max) {
-                    double x_new = x*x-y*y+c_re;
-                    y = 2*x*y+c_im;
+                while (x*x+y*y <= 4 && iterations <= iterationLimit) {
+                    double x_new = x*x-y*y+c_real;
+                    y = 2*x*y+c_imaginary;
                     x = x_new;
                     iterations++;
                 }
-                //if (iterations < max) image.setRGB(col, row, white);
-                //else image.setRGB(col, row, black);
+                result[i][j] = iterations;
             }
         }
-        return null;
+        return result;
     }
 }
