@@ -40,6 +40,12 @@ public class TaskMandelbrotSet implements Task {
                 else image.setRGB(col, row, black);
             }
         }
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                double c_real = 
+            }
+        }
         return null;
     }
 }
