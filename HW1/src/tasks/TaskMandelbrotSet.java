@@ -36,8 +36,8 @@ public class TaskMandelbrotSet implements Task {
                     x = x_new;
                     iterations++;
                 }
-                if (iterations < max) image.setRGB(col, row, white);
-                else image.setRGB(col, row, black);
+                //if (iterations < max) image.setRGB(col, row, white);
+                //else image.setRGB(col, row, black);
             }
         }
         return null;
