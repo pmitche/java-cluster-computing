@@ -43,12 +43,6 @@ public class TaskMandelbrotSet implements Task<Integer[][]> {
                 result[i][j] = iterations;
             }
         }
-        for (Integer[] array: result){
-            for (Integer i: array){
-                System.out.print(i + " ");
-            }
-            System.out.println();
-        }
         return result;
     }
 }
