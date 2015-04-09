@@ -7,6 +7,9 @@ import java.util.List;
 
 /**
  * Created by Kyrre on 08.04.2015.
+ * minPath holds what is currently considered the best solution,
+ * e.i. the shortest path found thus far.
+ * minDistance holds the distance of minPath
  */
 public class TaskEuclideanTsp implements Task<List<Integer>> {
 
@@ -28,7 +31,8 @@ public class TaskEuclideanTsp implements Task<List<Integer>> {
     }
 
     /**
-     * Too tiered to be fancy :P
+     * Too tiered to be fancy.
+     * This is just a recursive method that calls totalDistance for every permutation of a, where a is a array referring to the ordering of cities.
      */
     private void bruteForce(Integer[] a, int n) {
         if (n == 1) {
@@ -46,6 +50,11 @@ public class TaskEuclideanTsp implements Task<List<Integer>> {
         a[i] = a[i1];
         a[i1] = tmp;
     }
+
+    /**
+     * Calculates the total distance of a given permutation. If the distance is shorter than the current best solution, minDistance and minPath are updated.
+     * @param a
+     */
     private void totalDistance(Integer[] a) {
         double distance = 0;
         for (int i = 0; i < a.length; i++){
@@ -59,6 +68,12 @@ public class TaskEuclideanTsp implements Task<List<Integer>> {
         }
     }
 
+    /**
+     *
+     * @param d0 is an double[] of length 2, where d0[0] is the x coordinate, and d0[1] is the y coordinates.
+     * @param d1 is an double[] of length 2, where d1[0] is the x coordinate, and d2[1] is the y coordinates.
+     * @return the euclidean distance between do and d1
+     */
     private double euclideanDistance(double[] d0, double[] d1){
         double xDistance = Math.abs(d0[0]-d1[0]);
         double yDistance = Math.abs(d0[1] - d1[1]);

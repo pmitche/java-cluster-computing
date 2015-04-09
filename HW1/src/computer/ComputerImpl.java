@@ -11,11 +11,19 @@ import java.rmi.server.UnicastRemoteObject;
 
 /**
  * Created by Kyrre on 07.04.2015.
+ * This serves as the server for the HW1
  */
 public class ComputerImpl extends UnicastRemoteObject implements Computer {
 
     public ComputerImpl() throws RemoteException {}
 
+    /**
+     * Simply executes the task and returns the result.
+     * @param task
+     * @param <T>
+     * @return
+     * @throws RemoteException
+     */
     @Override
     public <T> T execute(Task<T> task) throws RemoteException {
         return task.execute();
