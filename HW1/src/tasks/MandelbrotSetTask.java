@@ -1,4 +1,4 @@
-package clients;
+package tasks;
 
 import api.Task;
 
