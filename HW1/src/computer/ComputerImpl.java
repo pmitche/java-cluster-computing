@@ -30,7 +30,7 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
         ComputerImpl server = new ComputerImpl(); // can throw RemoteException
 
         // construct an rmiregistry within this JVM using the default port
-        Registry registry = LocateRegistry.createRegistry(1099);
+        Registry registry = LocateRegistry.createRegistry(Integer.parseInt(Computer.PORT));
 
         // bind server in rmiregistry. Can throw exceptions. See api.
         registry.rebind( Computer.SERVICE_NAME, server );
