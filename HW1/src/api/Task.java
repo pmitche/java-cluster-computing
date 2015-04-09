@@ -1,5 +1,7 @@
 package api;
 
+import java.io.Serializable;
+
 /**
  * Created by Kyrre on 07.04.2015.
  */
