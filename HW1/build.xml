@@ -26,7 +26,7 @@
     <!-- Create the distribution directory -->
     <mkdir dir="${dist}"/>
     <!-- Make computer jar file -->
-    <jar jarfile="${dist}/computer.jar" basedir="${build}" includes="computer/** api/** tasks/**">
+    <jar jarfile="${dist}/computer.jar" basedir="${build}" includes="computer/** api/**">
       <manifest>
         <attribute name="Main-Class" value="computer.ComputerImpl"/>
       </manifest>
@@ -71,7 +71,7 @@
   	  <jvmarg value="-Djava.security.policy=policy"/>
   	  <arg value="localhost"/>
   	  <classpath>
-  	    <pathelement location="dist/client.jar"/>
+  	    <pathelement location="dist/clientEuclideanTsp.jar"/>
   	  </classpath>
   	</java>
     <java classname="clients.ClientMandelbrotSet" fork="true">
@@ -79,7 +79,7 @@
       <jvmarg value="-Djava.security.policy=policy"/>
       <arg value="localhost"/>
       <classpath>
-        <pathelement location="dist/client.jar"/>
+        <pathelement location="dist/clientMandelbrotSet.jar"/>
       </classpath>
     </java>
   </target>
