@@ -1,0 +1,17 @@
+<?xml version = "1.0" ?>
+<!--    Copyright (c) 2000 BEA Systems, Inc.
+      All Rights Reserved
+-->
+
+<!DOCTYPE M3-SERVER SYSTEM "m3.dtd">
+
+<M3-SERVER server-descriptor-name = "server.ser"
+           server-implementation  = "ServerImpl" >
+
+    <ARCHIVE name = "server.jar">
+        <CLASS name="computer.ComputerImpl"/>
+        <CLASS name="api.Computer"/>
+        <CLASS name="api.Task"/>
+    </ARCHIVE>
+
+</M3-SERVER>

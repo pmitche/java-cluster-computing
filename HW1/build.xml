@@ -26,7 +26,7 @@
     <!-- Create the distribution directory -->
     <mkdir dir="${dist}"/>
     <!-- Make computer jar file -->
-    <jar jarfile="${dist}/computer.jar" basedir="${build}" includes="computer/** api/**">
+    <jar jarfile="${dist}/computer.jar" basedir="${build}" includes="computer/** api/** tasks/**">
       <manifest>
         <attribute name="Main-Class" value="computer.ComputerImpl"/>
       </manifest>

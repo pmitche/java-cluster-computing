@@ -10,6 +10,6 @@ public interface Computer extends Remote {
 
     public static final String SERVICE_NAME = "ComputerService";
     public static final String PORT = "8000";
-    public <T> T execute(Task task) throws RemoteException;
+    public <T> T execute(Task<T> task) throws RemoteException;
 
 }
