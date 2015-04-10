@@ -4,7 +4,7 @@ Kyrre Laugerud Moe, Ingeborg Ødegård Oftedal, Hallvard Jore Christensen and Pa
 University of California, Santa Barbara
 Spring 2015
 
-**Build:**
+**Build:**\n
 cd HW1
 ant clean
 ant
@@ -15,4 +15,4 @@ ant runClient (on client)
 
 **Change IP:**
 By default, the client will connect to localhost. To connect to a different domain, modify "build.xml" on line 8:
-<property name="ip"  value="ip-goes-here"/>
+```<property name="ip"  value="ip-goes-here"/>```
