@@ -4,7 +4,7 @@ Kyrre Laugerud Moe, Ingeborg Ødegård Oftedal, Hallvard Jore Christensen and Pa
 University of California, Santa Barbara
 Spring 2015
 
-**Build:**\n
+**Build:**
 cd HW1
 ant clean
 ant
