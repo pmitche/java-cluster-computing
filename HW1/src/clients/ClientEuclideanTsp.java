@@ -41,10 +41,12 @@ public class ClientEuclideanTsp extends Client<List<Integer>>
 
     public static void main( String[] args ) throws Exception
     {
-        System.setSecurityManager( new SecurityManager() );
+        System.setSecurityManager(new SecurityManager());
         final ClientEuclideanTsp client = new ClientEuclideanTsp(args[0]);
         client.begin();
+        long elaps = System.nanoTime();
         final List<Integer> value = client.runTask();
+        System.out.println((System.nanoTime()-elaps)/1000000);
         client.add( client.getLabel( value.toArray( new Integer[0] ) ) );
         client.end();
     }

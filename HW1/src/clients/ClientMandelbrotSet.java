@@ -36,7 +36,7 @@ public class ClientMandelbrotSet extends Client<Integer[][]>
      */
     public static void main( String[] args ) throws Exception
     {
-        System.setSecurityManager( new SecurityManager() );
+        System.setSecurityManager(new SecurityManager());
         final ClientMandelbrotSet client = new ClientMandelbrotSet(args[0]);
         client.begin();
         Integer[][] value = client.runTask();
