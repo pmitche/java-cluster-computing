@@ -21,17 +21,17 @@ By default, the client will connect to localhost. To connect to a different doma
 
 Euclidean TSP (same machine different JVM):
 
-91
-97
-85
-90
+91,
+97,
+85,
+90,
 93
 
 Mandelbrot set (same machine different JVM):
 
-418
-540
-538
-415
+418,
+540,
+538,
+415,
 521
 
