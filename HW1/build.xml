@@ -71,7 +71,7 @@
   	  <jvmarg value="-Djava.security.policy=policy"/>
   	  <arg value="localhost"/>
   	  <classpath>
-  	    <pathelement location="dist/client.jar"/>
+  	    <pathelement location="dist/clientEuclideanTsp.jar"/>
   	  </classpath>
   	</java>
     <java classname="clients.ClientMandelbrotSet" fork="true">
@@ -79,7 +79,7 @@
       <jvmarg value="-Djava.security.policy=policy"/>
       <arg value="localhost"/>
       <classpath>
-        <pathelement location="dist/client.jar"/>
+        <pathelement location="dist/clientMandelbrotSet.jar"/>
       </classpath>
     </java>
   </target>
