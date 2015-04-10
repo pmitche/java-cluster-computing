@@ -9,3 +9,4 @@ public interface Hello extends Remote
 
     String hello() throws RemoteException;
 }
+

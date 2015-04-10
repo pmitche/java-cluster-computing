@@ -8,8 +8,8 @@ import java.rmi.RemoteException;
  */
 public interface Computer extends Remote {
 
-    public static String SERVICE_NAME = "ComputerService";
-    public static String PORT = "8000";
+    public static final String SERVICE_NAME = "ComputerService";
+    public static final String PORT = "8000";
     public <T> T execute(Task<T> task) throws RemoteException;
 
 }
