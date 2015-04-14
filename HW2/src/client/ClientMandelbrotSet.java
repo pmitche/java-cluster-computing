@@ -1,7 +1,6 @@
 package client;
 
 import api.Task;
-import tasks.TaskMandelbrotSet;
 
 import javax.swing.*;
 import java.awt.*;
@@ -42,10 +41,10 @@ public class ClientMandelbrotSet extends Client<Integer[][]>
      */
     public static void main( String[] args ) throws Exception
     {
-        final ClientMandelbrotSet client = new ClientMandelbrotSet(args[0]);
+        final ClientMandelbrotSet client = new ClientMandelbrotSet(args[0], null);
         client.begin();
         //Integer[][] value = client.runTask();
-        client.add( client.getLabel( value ) );
+        //client.add( client.getLabel( value ) );
         client.end();
     }
 
