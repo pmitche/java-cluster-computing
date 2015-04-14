@@ -26,6 +26,8 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
         //TODO: get domain name from command line
         String serverDomainName = "localhost";
         String url = "//" + serverDomainName + "/" + Space.SERVICE_NAME;
+        ComputerImpl computer = new ComputerImpl();
         Space space = (Space) Naming.lookup(url);
+        space.register(computer);
     }
 }
