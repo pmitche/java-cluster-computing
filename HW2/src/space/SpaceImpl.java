@@ -6,6 +6,8 @@ import api.Task;
 import system.Computer;
 
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -41,5 +43,9 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     @Override
     public void register(Computer computer) throws RemoteException {
 
+    }
+
+    public static void main(String[] args) throws RemoteException {
+        LocateRegistry.createRegistry( Space.PORT ).rebind(Space.SERVICE_NAME, new SpaceImpl());
     }
 }
