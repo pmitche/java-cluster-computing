@@ -15,23 +15,25 @@ import java.util.List;
  */
 public class MandelbrotSetJob implements Job {
 
-    private final int temp; //how many tasks will this job be divided into??
+    private int numberOfTasks; //TODO how many tasks will this job be divided into??
 
     // blæ
-    double xCorner;
-    double yCorner;
-    double edgeLength;
-    int n;
-    int iterationLimit;
+    private final double xCorner, yCorner, edgeLength;
+    private final int n, iterationLimit;
 
-    public MandelbrotSetJob(int temp){
-        this.temp = temp;
+    public MandelbrotSetJob(int temp, double xCorner, double yCorner, double edgeLength, int n, int iterationLimit){
+        this.xCorner = xCorner;
+        this.yCorner = yCorner;
+        this.edgeLength = edgeLength;
+        this.n = n;
+        this.iterationLimit = iterationLimit;
     }
 
     @Override
     public void generateTasks(Space space) throws RemoteException {
+        // Define what chunks
         List<Task> taskList = new ArrayList<Task>();
-        for(int i=1; i< temp; i++) {
+        for(int i=1; i< numberOfTasks; i++) {
             taskList.add(i-1, new TaskMandelbrotSet(xCorner, yCorner, edgeLength, n,iterationLimit));
         }
         space.putAll(taskList);
@@ -40,8 +42,8 @@ public class MandelbrotSetJob implements Job {
     @Override
     public Object collectResults(Space space) throws RemoteException {
         List<Result> resultList = new ArrayList<Result>();
-        for (int i = 1; i < temp; i++) {
-            resultList.add(i - 1, space.take());
+        for (int i = 1; i < numberOfTasks; i++) {
+            //resultList.add(i - 1, space.take());
         }
         return resultList;
     }
