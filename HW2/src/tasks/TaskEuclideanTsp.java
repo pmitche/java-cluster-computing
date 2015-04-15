@@ -15,11 +15,12 @@ public class TaskEuclideanTsp implements Serializable, Task{
     private int lockedCity;
 
     private double minDistance = Double.MAX_VALUE;
-    private Integer[] minPath = new Integer[taskCities.length];
+    private Integer[] minPath;
 
     public TaskEuclideanTsp(double[][] taskCities, int lockedCity){
         this.taskCities = taskCities;
         this.lockedCity = lockedCity;
+        this.minPath  = new Integer[taskCities.length];
     }
 
     @Override
@@ -29,8 +30,9 @@ public class TaskEuclideanTsp implements Serializable, Task{
         return new Result<ResultWrapper>(wrap, -1);
     }
 
-
+    int count = 0;
     private void bruteForce() {
+        System.out.println(++count);
         //setup the startorder. city 0 and 1 should not be moved after this.
         for(int i=0; i<minPath.length; i++)
             minPath[i] = i;

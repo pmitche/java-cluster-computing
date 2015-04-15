@@ -43,15 +43,14 @@ public class MandelbrotSetJob implements Job {
     @Override
     public Integer [][] collectResults(Space space) throws RemoteException {
         Integer[][] resultArray = new Integer[n][n];
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < n; i++)
             try {
                 Result result = space.take();
                 ResultWrapper wrapper = (ResultWrapper) result.getTaskReturnValue();
-                resultArray [wrapper.getN()] = (Integer[]) wrapper.getTaskReturnValue();
+                //resultArray[((int) wrapper.getN())] = (Integer[]) wrapper.getTaskReturnValue();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
         return resultArray;
     }
 }

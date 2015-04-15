@@ -5,6 +5,7 @@ import api.Space;
 import api.Task;
 import client.DummyTask;
 import system.Computer;
+import tasks.TaskEuclideanTsp;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -23,11 +24,22 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     public SpaceImpl() throws RemoteException {
         this.taskQueue = new LinkedBlockingQueue<Task>();
         this.resultQueue = new LinkedBlockingQueue<Result>();
-        taskQueue.add(new DummyTask());
-        taskQueue.add(new DummyTask());
-        taskQueue.add(new DummyTask());
-        taskQueue.add(new DummyTask());
-        taskQueue.add(new DummyTask());
+        double[][] cities =
+                {
+                        { 1, 1 },
+                        { 8, 1 },
+                        { 8, 8 },
+                        { 1, 8 },
+                        { 2, 2 },
+                        { 7, 2 },
+                        { 7, 7 },
+                        { 2, 7 },
+                        { 3, 3 },
+                        { 6, 3 },
+                        { 6, 6 },
+                        { 3, 6 }
+                };
+        taskQueue.add(new TaskEuclideanTsp(cities,1));
     }
 
     @Override

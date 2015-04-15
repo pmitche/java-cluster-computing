@@ -45,11 +45,11 @@ public class EuclideanTspJob implements Job {
         //Process task results to final result
         ResultWrapper rw0 = (ResultWrapper)resultList.remove(0).getTaskReturnValue();
         List<Integer> minPath = (List<Integer>)rw0.getTaskReturnValue();
-        double minDistance = (double)rw0.getN();
+        double minDistance = (Double)rw0.getN();
         for (Result r : resultList) {
             ResultWrapper rw = (ResultWrapper)r.getTaskReturnValue();
             List<Integer> tmp = (List<Integer>)rw.getTaskReturnValue();
-            double dist = (double)rw.getN();
+            double dist = (Double)rw.getN();
             if(dist < minDistance){
                 minDistance = dist;
                 minPath = tmp;

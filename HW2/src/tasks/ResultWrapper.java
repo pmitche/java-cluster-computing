@@ -1,9 +1,11 @@
 package tasks;
 
+import java.io.Serializable;
+
 /**
  * Created by Kyrre on 15.04.2015.
  */
-public class ResultWrapper<T,N> {
+public class ResultWrapper<T,N> implements Serializable {
     private N n;
     private final T taskReturnValue;
 
