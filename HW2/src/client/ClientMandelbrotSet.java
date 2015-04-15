@@ -35,14 +35,12 @@ public class ClientMandelbrotSet extends Client<Integer[][]>
                         ITERATION_LIMIT) );
     }*/
 
-    /**
+    /** TODO endre
      * Run the MandelbrotSet visualizer client.
      * @param args unused
      * @throws java.rmi.RemoteException
-     */
-
-    //TODO
-    /*public static void main( String[] args ) throws Exception
+     *
+    public static void main( String[] args ) throws Exception
     {
         System.setSecurityManager(new SecurityManager());
         final ClientMandelbrotSet client = new ClientMandelbrotSet(args[0], null);
