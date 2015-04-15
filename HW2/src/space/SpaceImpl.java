@@ -7,10 +7,8 @@ import system.Computer;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -24,6 +22,12 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     protected SpaceImpl() throws RemoteException {
         this.taskQueue = new LinkedBlockingQueue<Task>();
         this.resultQueue = new LinkedBlockingQueue<Result>();
+        taskQueue.add(new Task() {
+            @Override
+            public Object call() {
+                return null;
+            }
+        });
     }
 
     @Override
@@ -46,9 +50,26 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         System.out.println("Computer registered");
     }
 
+    @Override
+    public Task getTaskFromQueue() throws RemoteException, InterruptedException {
+        return new Task() {
+            @Override
+            public Object call() {
+                return null;
+            }
+        };
+    }
+
+    @Override
+    public String test() throws RemoteException {
+        return "derp";
+    }
+
     public static void main(String[] args) throws RemoteException {
-        System.setSecurityManager( new SecurityManager() );
+        System.setSecurityManager(new SecurityManager());
         LocateRegistry.createRegistry(Space.PORT).rebind(Space.SERVICE_NAME, new SpaceImpl());
+
         System.out.println("Space running...");
+
     }
 }

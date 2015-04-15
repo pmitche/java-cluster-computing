@@ -3,6 +3,8 @@ package api;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
+import java.util.concurrent.LinkedBlockingQueue;
+
 import system.Computer;
 
 public interface Space extends Remote
@@ -17,4 +19,9 @@ public interface Space extends Remote
     void exit() throws RemoteException;
 
     void register( Computer computer ) throws RemoteException;
+
+    Task getTaskFromQueue() throws RemoteException, InterruptedException;
+
+    String test() throws RemoteException;
+
 }
