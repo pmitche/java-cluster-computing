@@ -3,6 +3,7 @@ package space;
 import api.Result;
 import api.Space;
 import api.Task;
+import client.DummyTask;
 import system.Computer;
 
 import java.rmi.RemoteException;
@@ -22,12 +23,8 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     protected SpaceImpl() throws RemoteException {
         this.taskQueue = new LinkedBlockingQueue<Task>();
         this.resultQueue = new LinkedBlockingQueue<Result>();
-        taskQueue.add(new Task() {
-            @Override
-            public Object call() {
-                return null;
-            }
-        });
+        taskQueue.add(new DummyTask());
+        taskQueue.add(new DummyTask());
     }
 
     @Override
@@ -52,17 +49,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
 
     @Override
     public Task getTaskFromQueue() throws RemoteException, InterruptedException {
-        return new Task() {
-            @Override
-            public Object call() {
-                return null;
-            }
-        };
-    }
-
-    @Override
-    public String test() throws RemoteException {
-        return "derp";
+        return taskQueue.take();
     }
 
     public static void main(String[] args) throws RemoteException {

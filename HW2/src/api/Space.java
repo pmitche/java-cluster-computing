@@ -22,6 +22,4 @@ public interface Space extends Remote
 
     Task getTaskFromQueue() throws RemoteException, InterruptedException;
 
-    String test() throws RemoteException;
-
 }
