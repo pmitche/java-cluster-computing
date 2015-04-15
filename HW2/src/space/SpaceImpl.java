@@ -42,7 +42,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
 
     @Override
     public void register(Computer computer) throws RemoteException {
-
+        System.out.println("Computer registered");
     }
 
     public static void main(String[] args) throws RemoteException {

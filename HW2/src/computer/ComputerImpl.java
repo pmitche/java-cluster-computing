@@ -13,7 +13,7 @@ import java.rmi.server.UnicastRemoteObject;
 /**
  * Created by Kyrre on 13.04.2015.
  */
-public class ComputerImpl implements Computer {
+public class ComputerImpl extends UnicastRemoteObject implements Computer {
     protected ComputerImpl() throws RemoteException {
     }
 
@@ -29,6 +29,7 @@ public class ComputerImpl implements Computer {
         String url = "//" + serverDomainName + "/" + Space.SERVICE_NAME;
         ComputerImpl computer = new ComputerImpl();
         Space space = (Space) Naming.lookup(url);
-        //space.register(computer);
+        space.register(computer);
+        System.out.println("Registered to Space");
     }
 }
