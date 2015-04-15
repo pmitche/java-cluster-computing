@@ -1,15 +1,17 @@
 package tasks;
 
+import api.Result;
 import api.Task;
 
 
 /**
  * @author Paul Mitchell
  */
-public class TaskMandelbrotSet implements Task<Integer[][]> {
+public class TaskMandelbrotSet implements Task<Result<ResultWrapper>> {
 
     private final double xCorner, yCorner, edgeLength;
     private final int n, iterationLimit;
+    private final int row;
 
 
     /**
@@ -21,7 +23,8 @@ public class TaskMandelbrotSet implements Task<Integer[][]> {
      * @param n The number of subregions of the square in the complex plane, such that it is subdivided into n X n squares
      * @param iterationLimit Defines when the representative point of a region is considered to be in the Mandelbrot set.
      */
-    public TaskMandelbrotSet(double xCorner, double yCorner, double edgeLength, int n, int iterationLimit) {
+    public TaskMandelbrotSet(double xCorner, double yCorner, double edgeLength, int n, int iterationLimit, int row) {
+        this.row = row;
         this.xCorner = xCorner;
         this.yCorner = yCorner;
         this.edgeLength = edgeLength;
@@ -31,25 +34,19 @@ public class TaskMandelbrotSet implements Task<Integer[][]> {
 
 
     @Override
-    public Integer[][] call() {
+    public Result<ResultWrapper> call() {
 
         // Initialize 2D Integer result-array of length n, n.
         Integer[][] result = new Integer[n][n];
         double delta = edgeLength / n;
 
         // Iterate over 2D array
-        for (int row = 0; row < n; row++) {
-            for (int col = 0; col < n; col++) {
-
-                // Compute the complex number c. We can represent a complex number z = x + iy as the pair of real numbers (x, y)
-                // The complex number c belongs to the Mandelbrot set if the sequence stays within  a radius of 2 from the origin.
-
-                // Accumulate iterations for current coordinates and save it in the result-array.
-
-                result[row][col] = getIterationCount(row, col, delta);
-            }
+        for (int col = 0; col < n; col++) {
+            result[row][col] = getIterationCount(row, col, delta);
         }
-        return result;
+        ResultWrapper wrap = new ResultWrapper(result,row);
+        //TODO: Change ast argument
+        return new Result<ResultWrapper>(wrap,-1);
     }
 
     // Modifisert kode fra forrige oppgave + Capello sin implementasjon
