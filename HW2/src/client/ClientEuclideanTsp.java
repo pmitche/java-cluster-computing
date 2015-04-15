@@ -21,16 +21,18 @@ public class ClientEuclideanTsp extends Client<List<Integer>>
     private static final int NUM_PIXALS = 600;
     private static final double[][] CITIES =
             {
-                    { 6, 3 },
+                    { 1, 1 },
+                    { 8, 1 },
+                    { 8, 8 },
+                    { 1, 8 },
                     { 2, 2 },
-                    { 5, 8 },
-                    { 1, 5 },
-                    { 1, 6 },
+                    { 7, 2 },
+                    { 7, 7 },
                     { 2, 7 },
-                    { 2, 8 },
-                    { 6, 5 },
-                    { 1, 3 },
-                    { 6, 6 }
+                    { 3, 3 },
+                    { 6, 3 },
+                    { 6, 6 },
+                    { 3, 6 }
             };
 
     public ClientEuclideanTsp(String ip) throws RemoteException, NotBoundException, MalformedURLException
