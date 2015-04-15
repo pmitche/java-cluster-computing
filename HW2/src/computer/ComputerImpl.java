@@ -30,7 +30,7 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
         Space space = (Space) Naming.lookup(url);
         ComputerImpl computer = new ComputerImpl(space);
         space.register(computer);
-        System.out.println("Registered to Space");
+        System.out.println("Registered to Space, running...");
         computer.run();
     }
 
@@ -45,8 +45,9 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
             if (task != null){
                 System.out.println("task retrieved");
                 space.putResult((Result) execute(task));
+                System.out.println("task completed, and returned");
             }
-            Thread.sleep(2000);
+            //Thread.sleep(2000);
         }
     }
 }
