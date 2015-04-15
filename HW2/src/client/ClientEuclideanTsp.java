@@ -1,7 +1,5 @@
 package client;
 
-import tasks.TaskEuclideanTsp;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -21,30 +19,32 @@ public class ClientEuclideanTsp extends Client<List<Integer>>
     private static final int NUM_PIXALS = 600;
     private static final double[][] CITIES =
             {
-                    { 6, 3 },
+                    { 1, 1 },
+                    { 8, 1 },
+                    { 8, 8 },
+                    { 1, 8 },
                     { 2, 2 },
-                    { 5, 8 },
-                    { 1, 5 },
-                    { 1, 6 },
+                    { 7, 2 },
+                    { 7, 7 },
                     { 2, 7 },
-                    { 2, 8 },
-                    { 6, 5 },
-                    { 1, 3 },
-                    { 6, 6 }
+                    { 3, 3 },
+                    { 6, 3 },
+                    { 6, 6 },
+                    { 3, 6 }
             };
 
     public ClientEuclideanTsp(String ip) throws RemoteException, NotBoundException, MalformedURLException
     {
-        super("Euclidean TSP", ip, new TaskEuclideanTsp(CITIES,1));
+        super("Euclidean TSP", ip, new EuclideanTspJob(CITIES));
     }
 
     public static void main( String[] args ) throws Exception
     {
         System.setSecurityManager(new SecurityManager());
-        final ClientEuclideanTsp client = new ClientEuclideanTsp(args[0]);
+        final ClientEuclideanTsp client = new ClientEuclideanTsp("localhost");
         client.begin();
         long elaps = System.nanoTime();
-        final List<Integer> value = client.runTask();
+        final List<Integer> value = client.runJob();
         System.out.println((System.nanoTime()-elaps)/1000000);
         client.add( client.getLabel( value.toArray( new Integer[0] ) ) );
         client.end();

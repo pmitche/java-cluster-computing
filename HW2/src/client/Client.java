@@ -1,5 +1,6 @@
 package client;
 
+import api.Job;
 import api.Space;
 import api.Task;
 import space.SpaceImpl;
@@ -24,15 +25,15 @@ import javax.swing.JScrollPane;
  */
 public class Client<T> extends JFrame
 {
-    final protected Task<T> task;
+    final protected Job job;
     final private Space space;
     protected T taskReturnValue;
     private long clientStartTime;
 
-    public Client( final String title, final String domainName, final Task<T> task )
+    public Client( final String title, final String domainName, final Job job )
             throws RemoteException, NotBoundException, MalformedURLException
     {
-        this.task = task;
+        this.job = job;
         setTitle( title );
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -57,15 +58,9 @@ public class Client<T> extends JFrame
         setVisible( true );
     }
 
-    public T runTask() throws RemoteException
+    public T runJob() throws RemoteException
     {
-        ArrayList<Task> list = new ArrayList<Task>();
-        list.add(new DummyTask());
-        list.add(new DummyTask());
-        list.add(new DummyTask());
-        list.add(new DummyTask());
-        list.add(new DummyTask());
-        space.putAll(list);
-        return null;
+        job.generateTasks(space);
+        return (T) job.collectResults(space);
     }
 }

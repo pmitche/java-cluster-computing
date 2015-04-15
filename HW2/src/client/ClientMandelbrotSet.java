@@ -1,7 +1,6 @@
 package client;
 
 import api.Task;
-import tasks.TaskMandelbrotSet;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,7 +24,7 @@ public class ClientMandelbrotSet extends Client<Integer[][]>
 
     // Midlertidig
     public ClientMandelbrotSet(String title, Task<Integer[][]> task) throws RemoteException, NotBoundException, MalformedURLException {
-        super(title,"localhost", task);
+        super(title,"localhost", null);
     }
 
     /*public ClientMandelbrotSet(String ip) throws RemoteException, NotBoundException, MalformedURLException
@@ -45,7 +44,7 @@ public class ClientMandelbrotSet extends Client<Integer[][]>
         //final ClientMandelbrotSet client = new ClientMandelbrotSet(args[0], null);
         final ClientMandelbrotSet client = new ClientMandelbrotSet("Derp", null);
         client.begin();
-        client.runTask();
+        client.runJob();
         //client.add(client.getLabel(value));
         client.end();
     }

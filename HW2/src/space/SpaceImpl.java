@@ -24,22 +24,6 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     public SpaceImpl() throws RemoteException {
         this.taskQueue = new LinkedBlockingQueue<Task>();
         this.resultQueue = new LinkedBlockingQueue<Result>();
-        double[][] cities =
-                {
-                        { 1, 1 },
-                        { 8, 1 },
-                        { 8, 8 },
-                        { 1, 8 },
-                        { 2, 2 },
-                        { 7, 2 },
-                        { 7, 7 },
-                        { 2, 7 },
-                        { 3, 3 },
-                        { 6, 3 },
-                        { 6, 6 },
-                        { 3, 6 }
-                };
-        taskQueue.add(new TaskEuclideanTsp(cities,1));
     }
 
     @Override

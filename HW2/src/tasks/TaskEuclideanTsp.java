@@ -26,13 +26,11 @@ public class TaskEuclideanTsp implements Serializable, Task{
     @Override
     public Object call() {
         bruteForce();
-        ResultWrapper wrap = new ResultWrapper(minPath, minDistance);
+        ResultWrapper wrap = new ResultWrapper(Arrays.asList(minPath), minDistance);
         return new Result<ResultWrapper>(wrap, -1);
     }
 
-    int count = 0;
     private void bruteForce() {
-        System.out.println(++count);
         //setup the startorder. city 0 and 1 should not be moved after this.
         for(int i=0; i<minPath.length; i++)
             minPath[i] = i;
