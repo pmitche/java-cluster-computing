@@ -4,6 +4,7 @@ import api.Job;
 import api.Result;
 import api.Space;
 import api.Task;
+import tasks.ResultWrapper;
 import tasks.TaskEuclideanTsp;
 
 import java.rmi.RemoteException;
@@ -16,13 +17,9 @@ import java.util.List;
 public class EuclideanTspJob implements Job {
 
     private double[][] cities;
-    private Integer[] minPath;
 
     public EuclideanTspJob(double[][] cities) {
         this.cities = cities;
-        minPath = new Integer[cities.length];
-        for(int i=0; i<minPath.length; i++)
-            minPath[i] = i;
     }
 
     @Override
@@ -37,36 +34,27 @@ public class EuclideanTspJob implements Job {
     @Override
     public Object collectResults(Space space) throws RemoteException {
         //Collect task results
+
         List<Result> resultList = new ArrayList<Result>();
         for(int i=1; i<cities.length-1; i++) {
-            resultList.add(i-1, space.take());
+            try {
+                resultList.add(i - 1, space.take());
+            } catch (InterruptedException e) {e.printStackTrace();}
         }
 
         //Process task results to final result
-        List<Integer> minPath = (List<Integer>)resultList.remove(0).getTaskReturnValue();
-        double minDistance = totalDistance(minPath);
+        ResultWrapper rw0 = (ResultWrapper)resultList.remove(0).getTaskReturnValue();
+        List<Integer> minPath = (List<Integer>)rw0.getTaskReturnValue();
+        double minDistance = (double)rw0.getN();
         for (Result r : resultList) {
-            List<Integer> tmp = (List<Integer>)r.getTaskReturnValue();
-            double dist = totalDistance(tmp);
+            ResultWrapper rw = (ResultWrapper)r.getTaskReturnValue();
+            List<Integer> tmp = (List<Integer>)rw.getTaskReturnValue();
+            double dist = (double)rw.getN();
             if(dist < minDistance){
                 minDistance = dist;
                 minPath = tmp;
             }
         }
         return minPath;
-    }
-
-    private double totalDistance(List<Integer> list) {
-        double distance = 0;
-        for (int i = 0; i < list.size(); i++)
-            if (i < list.size()-1)
-                distance += euclideanDistance(cities[list.get(i)], cities[list.get(i+1)]);
-        return distance;
-    }
-
-    private double euclideanDistance(double[] d0, double[] d1) {
-        double xDistance = Math.abs(d0[0]-d1[0]);
-        double yDistance = Math.abs(d0[1] - d1[1]);
-        return Math.sqrt( (xDistance*xDistance) + (yDistance*yDistance) );
     }
 }

@@ -1,5 +1,6 @@
 package tasks;
 
+import api.Result;
 import api.Task;
 
 import java.io.Serializable;
@@ -23,18 +24,19 @@ public class TaskEuclideanTsp implements Serializable, Task{
 
     @Override
     public Object call() {
-        return Arrays.asList(bruteForce());
+        bruteForce();
+        ResultWrapper wrap = new ResultWrapper(minPath, minDistance);
+        return new Result<ResultWrapper>(wrap, -1);
     }
 
 
-    private Integer[] bruteForce() {
+    private void bruteForce() {
         //setup the startorder. city 0 and 1 should not be moved after this.
         for(int i=0; i<minPath.length; i++)
             minPath[i] = i;
         swap(minPath, 1, lockedCity);
 
         tspRecusion(minPath, minPath.length);
-        return minPath;
     }
 
     private void tspRecusion(Integer[] a, int n) {
