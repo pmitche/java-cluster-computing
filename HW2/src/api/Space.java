@@ -7,7 +7,7 @@ import system.Computer;
 
 public interface Space extends Remote
 {
-    public static int PORT = 8001;
+    public static int PORT = 1099;
     public static String SERVICE_NAME = "Space";
 
     void putAll ( List<Task> taskList ) throws RemoteException;

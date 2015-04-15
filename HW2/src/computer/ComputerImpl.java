@@ -13,7 +13,7 @@ import java.rmi.server.UnicastRemoteObject;
 /**
  * Created by Kyrre on 13.04.2015.
  */
-public class ComputerImpl extends UnicastRemoteObject implements Computer {
+public class ComputerImpl implements Computer {
     protected ComputerImpl() throws RemoteException {
     }
 
