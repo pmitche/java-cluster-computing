@@ -1,6 +1,7 @@
 package client;
 
 import api.Task;
+import tasks.TaskMandelbrotSet;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,6 +13,7 @@ import java.rmi.RemoteException;
 /**
  *
  * @author Peter Cappello
+ * @author Paul Mitchell
  */
 public class ClientMandelbrotSet extends Client<Integer[][]>
 {
@@ -21,8 +23,7 @@ public class ClientMandelbrotSet extends Client<Integer[][]>
     private static final int N_PIXELS = 1024;
     private static final int ITERATION_LIMIT = 512;
 
-
-    // Kun midlertidig
+    // Midlertidig
     public ClientMandelbrotSet(String title, Task<Integer[][]> task) throws RemoteException, NotBoundException, MalformedURLException {
         super(title, task);
     }
@@ -34,19 +35,20 @@ public class ClientMandelbrotSet extends Client<Integer[][]>
                         ITERATION_LIMIT) );
     }*/
 
-    /**
+    /** TODO endre
      * Run the MandelbrotSet visualizer client.
-     * @param args unused 
+     * @param args unused
      * @throws java.rmi.RemoteException
-     */
+     *
     public static void main( String[] args ) throws Exception
     {
+        System.setSecurityManager(new SecurityManager());
         final ClientMandelbrotSet client = new ClientMandelbrotSet(args[0], null);
         client.begin();
-        //Integer[][] value = client.runTask();
-        //client.add( client.getLabel( value ) );
+        Integer[][] value = client.runTask();
+        client.add( client.getLabel( value ) );
         client.end();
-    }
+    }*/
 
     public JLabel getLabel( Integer[][] counts )
     {
