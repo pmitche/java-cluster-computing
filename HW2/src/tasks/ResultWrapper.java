@@ -3,16 +3,16 @@ package tasks;
 /**
  * Created by Kyrre on 15.04.2015.
  */
-public class ResultWrapper<T> {
-    private int n;
+public class ResultWrapper<T,N> {
+    private N n;
     private final T taskReturnValue;
 
-    public ResultWrapper(T taskReturnValue, int n) {
+    public ResultWrapper(T taskReturnValue, N n) {
         this.taskReturnValue = taskReturnValue;
         this.n = n;
     }
 
-    public int getN() {
+    public N getN() {
         return n;
     }
 

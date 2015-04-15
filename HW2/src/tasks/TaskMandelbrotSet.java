@@ -37,12 +37,12 @@ public class TaskMandelbrotSet implements Task<Result<ResultWrapper>> {
     public Result<ResultWrapper> call() {
 
         // Initialize 2D Integer result-array of length n, n.
-        Integer[][] result = new Integer[n][n];
+        Integer[] result = new Integer[n];
         double delta = edgeLength / n;
 
         // Iterate over 2D array
         for (int col = 0; col < n; col++) {
-            result[row][col] = getIterationCount(row, col, delta);
+            result[col] = getIterationCount(row, col, delta);
         }
         ResultWrapper wrap = new ResultWrapper(result,row);
         //TODO: Change ast argument
