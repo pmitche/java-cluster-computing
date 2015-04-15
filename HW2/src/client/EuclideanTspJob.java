@@ -1,9 +1,10 @@
 package client;
 
+import api.Job;
 import api.Result;
 import api.Space;
 import api.Task;
-import task.TaskEuclideanTsp;
+import tasks.TaskEuclideanTsp;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;

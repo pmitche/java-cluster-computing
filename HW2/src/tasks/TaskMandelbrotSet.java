@@ -44,7 +44,6 @@ public class TaskMandelbrotSet implements Task<Integer[][]> {
                 // Compute the complex number c. We can represent a complex number z = x + iy as the pair of real numbers (x, y)
                 // The complex number c belongs to the Mandelbrot set if the sequence stays within  a radius of 2 from the origin.
 
-
                 // Accumulate iterations for current coordinates and save it in the result-array.
 
                 result[row][col] = getIterationCount(row, col, delta);
