@@ -30,7 +30,8 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     @Override
     public void putAll(List<Task> taskList) throws RemoteException {
         System.out.println("putAll list size: " + taskList.size());
-        taskList.addAll(taskList);
+        taskQueue.addAll(taskList);
+        System.out.println("taskQueue: " + taskQueue.size());
     }
 
     @Override

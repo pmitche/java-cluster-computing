@@ -42,6 +42,7 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
         while (true){
             space.getTaskFromQueue();
             System.out.println("task retrieved");
+            Thread.sleep(2000);
         }
     }
 }
