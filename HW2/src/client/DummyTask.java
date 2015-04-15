@@ -1,5 +1,6 @@
 package client;
 
+import api.Result;
 import api.Task;
 
 /**
@@ -8,6 +9,6 @@ import api.Task;
 public class DummyTask implements Task {
     @Override
     public Object call() {
-        return null;
+        return new Result<String>("Derp, im a result :P", 0);
     }
 }

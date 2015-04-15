@@ -1,5 +1,6 @@
 package computer;
 
+import api.Result;
 import api.Space;
 import api.Task;
 import space.SpaceImpl;
@@ -35,13 +36,16 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
 
     @Override
     public <T> T execute(Task<T> task) throws RemoteException {
-        return null;
+        return task.call();
     }
 
     private void run() throws InterruptedException, RemoteException {
         while (true){
-            space.getTaskFromQueue();
-            System.out.println("task retrieved");
+            Task task = space.getTaskFromQueue();
+            if (task != null){
+                System.out.println("task retrieved");
+                space.putResult((Result) execute(task));
+            }
             Thread.sleep(2000);
         }
     }

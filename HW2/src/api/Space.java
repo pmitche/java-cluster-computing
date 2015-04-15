@@ -22,4 +22,6 @@ public interface Space extends Remote
 
     Task getTaskFromQueue() throws RemoteException, InterruptedException;
 
+    void putResult(Result r) throws RemoteException;
+
 }

@@ -25,13 +25,14 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         this.resultQueue = new LinkedBlockingQueue<Result>();
         taskQueue.add(new DummyTask());
         taskQueue.add(new DummyTask());
+        taskQueue.add(new DummyTask());
+        taskQueue.add(new DummyTask());
+        taskQueue.add(new DummyTask());
     }
 
     @Override
     public void putAll(List<Task> taskList) throws RemoteException {
-        System.out.println("putAll list size: " + taskList.size());
         taskQueue.addAll(taskList);
-        System.out.println("taskQueue: " + taskQueue.size());
     }
 
     @Override
@@ -52,6 +53,12 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     @Override
     public Task getTaskFromQueue() throws RemoteException, InterruptedException {
         return taskQueue.take();
+    }
+
+    @Override
+    public void putResult(Result r) throws RemoteException {
+        resultQueue.add(r);
+        System.out.println("Result size: "+resultQueue.size());
     }
 
     public static void main(String[] args) throws RemoteException {
