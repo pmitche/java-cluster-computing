@@ -1,46 +1,35 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<title>CS290B Homework 1</title>
-	</head>
-	<body>
-		<header>
-			<h1>CS290B Java-centric Cluster & Concurrent Computing</h1>
-		</br>
-			<h2>Homework 2 - A Basic Compute Farm</h2>
-		</br>
-		<br><br>
-			<b>By Kyrre Moe, Ingeborg Oftedal, Hallvard Christensen and Paul Mitchell</b><br>
-			<b>University of California, Santa Barbara</b><br>
-			<b>Spring 2015</b><br><br>
-		</header>
-        <hr>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="index-styles.css">
+    <title>README - CS290D Java-Centric Cluster & Concurrent Computing</title>
+</head>
+<body>
+<div class="container">
+    <div class="wrapper">
+        <header>
+            <h1>CS290D Java-Centric Cluster & Concurrent Computing</h1>
+            <hr>
+        </header>
+        <h2 class="subheading">Homework 2 - README</h2>
+        <b class="subheading sub">&raquo; Kyrre Moe, Ingeborg Oftedal, Hallvard Christensen and Paul Mitchell</b>
+        <hr style="margin-top: 10px; margin-bottom: 10px;">
+
+        <section class="main">
+            <b>Build:</b><br>
+            cd HW1<br>
+            ant clean<br>
+            ant<br>
+        </section>
+        <nav class="vertical">
+            <ul>
+                <li><a href="./index.html" class="backbtn" style="text-align: center">Back</a></li>
+            </ul>
+        </nav>
+    </div>
+</div>
 
 
-
-		<section id="main">
-            <h3>README</h3>
-			<b>Build:</b><br>
-			cd HW1<br>
-			ant clean<br>
-			ant<br><br>
-
-			<b>Run:</b><br>
-			ant runComputer (on server)<br>
-			ant runClient (on client)<br><br>
-
-			<b>Change IP:</b><br>
-			By default, the client will connect to localhost. To connect to a different domain, modify "build.xml" on line 8:<br>
-			<i>< property name="ip"  value="ip-goes-here"/></i><br><br>
-
-			<b>Experimental results elapsed time in ms:</b><br>
-			Euclidean TSP (same machine, different JVM):<br>
-			<i>91, 97, 85, 90, 93</i><br><br>
-
-			Mandelbrot set (same machine, different JVM):<br>
-			<i>418, 540, 538, 415, 521</i>
-		</section>
-
-	</body>
+</body>
 </html>
