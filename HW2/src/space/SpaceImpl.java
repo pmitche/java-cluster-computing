@@ -11,18 +11,19 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Created by Kyrre on 13.04.2015.
  */
 public class SpaceImpl extends UnicastRemoteObject implements Space {
 
-    private ConcurrentLinkedQueue<Task> taskQueue;
-    private ConcurrentLinkedQueue<Result> resultQueue;
+    private LinkedBlockingQueue<Task> taskQueue;
+    private LinkedBlockingQueue<Result> resultQueue;
 
     protected SpaceImpl() throws RemoteException {
-        this.taskQueue = new ConcurrentLinkedQueue<Task>();
-        this.resultQueue = new ConcurrentLinkedQueue<Result>();
+        this.taskQueue = new LinkedBlockingQueue<Task>();
+        this.resultQueue = new LinkedBlockingQueue<Result>();
     }
 
     @Override
