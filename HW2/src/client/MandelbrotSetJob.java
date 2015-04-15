@@ -4,6 +4,7 @@ import api.Job;
 import api.Result;
 import api.Space;
 import api.Task;
+import tasks.ResultWrapper;
 import tasks.TaskMandelbrotSet;
 
 import java.rmi.RemoteException;
@@ -21,7 +22,7 @@ public class MandelbrotSetJob implements Job {
     private final double xCorner, yCorner, edgeLength;
     private final int n, iterationLimit;
 
-    public MandelbrotSetJob(int temp, double xCorner, double yCorner, double edgeLength, int n, int iterationLimit){
+    public MandelbrotSetJob(double xCorner, double yCorner, double edgeLength, int n, int iterationLimit){
         this.xCorner = xCorner;
         this.yCorner = yCorner;
         this.edgeLength = edgeLength;
@@ -33,19 +34,25 @@ public class MandelbrotSetJob implements Job {
     public void generateTasks(Space space) throws RemoteException {
         // Define what chunks
         List<Task> taskList = new ArrayList<Task>();
-        for(int i=1; i< numberOfTasks; i++) {
-            taskList.add(i-1, new TaskMandelbrotSet(xCorner, yCorner, edgeLength, n,iterationLimit));
+        for(int i=0; i< n; i++) {
+            taskList.add(new TaskMandelbrotSet(xCorner, yCorner, edgeLength, n,iterationLimit, i));
         }
         space.putAll(taskList);
     }
 
     @Override
-    public Object collectResults(Space space) throws RemoteException {
-        List<Result> resultList = new ArrayList<Result>();
-        for (int i = 1; i < numberOfTasks; i++) {
-            //resultList.add(i - 1, space.take());
+    public Integer [][] collectResults(Space space) throws RemoteException {
+        Integer[][] resultArray = new Integer[n][n];
+        for (int i = 0; i < n; i++) {
+            try {
+                Result result = space.take();
+                ResultWrapper wrapper = (ResultWrapper) result.getTaskReturnValue();
+                resultArray [wrapper.getN()] = (Integer[]) wrapper.getTaskReturnValue();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
-        return resultList;
+        return resultArray;
     }
 }
 
