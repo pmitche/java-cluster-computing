@@ -25,7 +25,7 @@ public class ClientMandelbrotSet extends Client<Integer[][]>
 
     // Midlertidig
     public ClientMandelbrotSet(String title, Task<Integer[][]> task) throws RemoteException, NotBoundException, MalformedURLException {
-        super(title, task);
+        super(title,"localhost", task);
     }
 
     /*public ClientMandelbrotSet(String ip) throws RemoteException, NotBoundException, MalformedURLException
@@ -40,15 +40,16 @@ public class ClientMandelbrotSet extends Client<Integer[][]>
      * @param args unused
      * @throws java.rmi.RemoteException
      *
-    public static void main( String[] args ) throws Exception
-    {
+    */public static void main( String[] args ) throws Exception {
         System.setSecurityManager(new SecurityManager());
-        final ClientMandelbrotSet client = new ClientMandelbrotSet(args[0], null);
+        //final ClientMandelbrotSet client = new ClientMandelbrotSet(args[0], null);
+        final ClientMandelbrotSet client = new ClientMandelbrotSet("Derp", null);
         client.begin();
-        Integer[][] value = client.runTask();
-        client.add( client.getLabel( value ) );
+        client.runTask();
+        //client.add(client.getLabel(value));
         client.end();
-    }*/
+    }
+
 
     public JLabel getLabel( Integer[][] counts )
     {
