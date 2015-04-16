@@ -33,35 +33,35 @@
         <mkdir dir="${dist}"/>
 
         <!-- Make computer jar file -->
-        <jar jarfile="${dist}/computer.jar" basedir="${build}" includes="system/** api/**">
+        <jar jarfile="${dist}/computer.jar" basedir="${build}" includes="computer/** api/** job/** task/** system/**">
             <manifest>
                 <attribute name="Main-Class" value="computer.ComputerImpl"/>
             </manifest>
         </jar>
 
         <!-- Make clientEuclideanTsp jar file -->
-        <jar jarfile="${dist}/clientEuclideanTsp.jar" basedir="${build}" includes="client/** api/** tasks/**">
+        <jar jarfile="${dist}/clientEuclideanTsp.jar" basedir="${build}" includes="computer/** job/** api/** task/** client/** system/** space/**">
             <manifest>
                 <attribute name="Main-Class" value="client.ClientEuclideanTsp"/>
             </manifest>
         </jar>
 
         <!-- Make clientMandelbrotSet jar file -->
-        <jar jarfile="${dist}/clientMandelbrotSet.jar" basedir="${build}" includes="client/** api/** tasks/**">
+        <jar jarfile="${dist}/clientMandelbrotSet.jar" basedir="${build}" includes="space/** client/** api/** task/** job/** system/** computer/**">
             <manifest>
                 <attribute name="Main-Class" value="client.ClientMandelbrotSet"/>
             </manifest>
         </jar>
 
         <!-- Make space jar file -->
-        <jar jarfile="${dist}/space.jar" basedir="${build}" includes="system/** api/**">
+        <jar jarfile="${dist}/space.jar" basedir="${build}" includes="space/** api/** system/**">
             <manifest>
                 <attribute name="Main-Class" value="space.SpaceImpl"/>
             </manifest>
         </jar>
 
         <!-- Make tasks-dl jar file -->
-        <jar jarfile="${dist}/tasks-dl.jar" basedir="${build}" includes="tasks/** api**"/>
+        <jar jarfile="${dist}/tasks-dl.jar" basedir="${build}" includes="job/** task/** api**"/>
 
     </target>
 
