@@ -1,7 +1,8 @@
-package tasks;
+package task;
 
 import api.Result;
 import api.Task;
+import system.ResultValueWrapper;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -26,8 +27,8 @@ public class TaskEuclideanTsp implements Serializable, Task{
     @Override
     public Object call() {
         bruteForce();
-        ResultWrapper wrap = new ResultWrapper(Arrays.asList(minPath), minDistance);
-        return new Result<ResultWrapper>(wrap, -1);
+        ResultValueWrapper wrap = new ResultValueWrapper(Arrays.asList(minPath), minDistance);
+        return new Result<ResultValueWrapper>(wrap, -1);
     }
 
     private void bruteForce() {
