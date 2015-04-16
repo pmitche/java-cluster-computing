@@ -68,6 +68,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     public static void main(String[] args) throws RemoteException {
         System.setSecurityManager(new SecurityManager());
         LocateRegistry.createRegistry(Space.PORT).rebind(Space.SERVICE_NAME, new SpaceImpl());
+        System.setProperty("java.rmi.server.hostname", "192.168.1.17");
         System.out.println("Space running...");
     }
 }
