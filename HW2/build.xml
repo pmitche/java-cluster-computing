@@ -33,7 +33,7 @@
         <mkdir dir="${dist}"/>
 
         <!-- Make computer jar file -->
-        <jar jarfile="${dist}/computer.jar" basedir="${build}" includes="system/** api/** tasks/**">
+        <jar jarfile="${dist}/computer.jar" basedir="${build}" includes="system/** api/**">
             <manifest>
                 <attribute name="Main-Class" value="computer.ComputerImpl"/>
             </manifest>
@@ -89,7 +89,7 @@
     </target>
 
     <target name="runClientTsp" description="run TSP client" >
-        <java classname="client.ClientTSP" fork="true">
+        <java classname="client.ClientEuclideanTsp" fork="true">
             <jvmarg value="-Djava.security.policy=policy"/>
             <arg value="${ip}"/>
             <classpath>
@@ -99,7 +99,7 @@
     </target>
 
     <target name="runClientMandelbrotset" description="run MandelbrotSet client" >
-        <java classname="client.ClientMandelbrot" fork="true">
+        <java classname="client.ClientMandelbrotSet" fork="true">
             <jvmarg value="-Djava.security.policy=policy"/>
             <arg value="${ip}"/>
             <classpath>
