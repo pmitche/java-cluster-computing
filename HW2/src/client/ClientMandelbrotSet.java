@@ -1,6 +1,7 @@
 package client;
 
 import api.Task;
+import job.MandelbrotSetJob;
 
 import javax.swing.*;
 import java.awt.*;

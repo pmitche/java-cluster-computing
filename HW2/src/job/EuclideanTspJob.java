@@ -1,11 +1,11 @@
-package client;
+package job;
 
 import api.Job;
 import api.Result;
 import api.Space;
 import api.Task;
-import tasks.ResultWrapper;
-import tasks.TaskEuclideanTsp;
+import system.ResultValueWrapper;
+import task.TaskEuclideanTsp;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -43,11 +43,11 @@ public class EuclideanTspJob implements Job {
         }
 
         //Process task results to final result
-        ResultWrapper rw0 = (ResultWrapper)resultList.remove(0).getTaskReturnValue();
+        ResultValueWrapper rw0 = (ResultValueWrapper)resultList.remove(0).getTaskReturnValue();
         List<Integer> minPath = (List<Integer>)rw0.getTaskReturnValue();
         double minDistance = (Double)rw0.getN();
         for (Result r : resultList) {
-            ResultWrapper rw = (ResultWrapper)r.getTaskReturnValue();
+            ResultValueWrapper rw = (ResultValueWrapper)r.getTaskReturnValue();
             List<Integer> tmp = (List<Integer>)rw.getTaskReturnValue();
             double dist = (Double)rw.getN();
             if(dist < minDistance){

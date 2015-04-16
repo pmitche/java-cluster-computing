@@ -3,9 +3,7 @@ package space;
 import api.Result;
 import api.Space;
 import api.Task;
-import client.DummyTask;
 import system.Computer;
-import tasks.TaskEuclideanTsp;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;

@@ -1,11 +1,11 @@
-package client;
+package job;
 
 import api.Job;
 import api.Result;
 import api.Space;
 import api.Task;
-import tasks.ResultWrapper;
-import tasks.TaskMandelbrotSet;
+import system.ResultValueWrapper;
+import task.TaskMandelbrotSet;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -46,12 +46,11 @@ public class MandelbrotSetJob implements Job {
         for (int i = 0; i < n; i++)
             try {
                 Result result = space.take();
-                ResultWrapper wrapper = (ResultWrapper) result.getTaskReturnValue();
+                ResultValueWrapper wrapper = (ResultValueWrapper) result.getTaskReturnValue();
                 resultArray[((Integer) wrapper.getN())] = (Integer[]) wrapper.getTaskReturnValue();
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            }
-        return resultArray;
+            }        return resultArray;
     }
 }
 

@@ -1,5 +1,7 @@
 package client;
 
+import job.EuclideanTspJob;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;

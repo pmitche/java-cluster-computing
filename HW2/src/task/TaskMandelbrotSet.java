@@ -1,13 +1,14 @@
-package tasks;
+package task;
 
 import api.Result;
 import api.Task;
+import system.ResultValueWrapper;
 
 
 /**
  * @author Paul Mitchell
  */
-public class TaskMandelbrotSet implements Task<Result<ResultWrapper>> {
+public class TaskMandelbrotSet implements Task<Result<ResultValueWrapper>> {
 
     private final double xCorner, yCorner, edgeLength;
     private final int n, iterationLimit;
@@ -34,7 +35,7 @@ public class TaskMandelbrotSet implements Task<Result<ResultWrapper>> {
 
 
     @Override
-    public Result<ResultWrapper> call() {
+    public Result<ResultValueWrapper> call() {
 
         // Initialize 2D Integer result-array of length n, n.
         Integer[] result = new Integer[n];
@@ -44,9 +45,9 @@ public class TaskMandelbrotSet implements Task<Result<ResultWrapper>> {
         for (int col = 0; col < n; col++) {
             result[col] = getIterationCount(row, col, delta);
         }
-        ResultWrapper wrap = new ResultWrapper(result,row);
+        ResultValueWrapper wrap = new ResultValueWrapper(result,row);
         //TODO: Change ast argument
-        return new Result<ResultWrapper>(wrap,-1);
+        return new Result<ResultValueWrapper>(wrap,-1);
     }
 
     // Modifisert kode fra forrige oppgave + Capello sin implementasjon
