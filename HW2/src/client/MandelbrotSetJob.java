@@ -47,7 +47,7 @@ public class MandelbrotSetJob implements Job {
             try {
                 Result result = space.take();
                 ResultWrapper wrapper = (ResultWrapper) result.getTaskReturnValue();
-                //resultArray[((int) wrapper.getN())] = (Integer[]) wrapper.getTaskReturnValue();
+                resultArray[((Integer) wrapper.getN())] = (Integer[]) wrapper.getTaskReturnValue();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

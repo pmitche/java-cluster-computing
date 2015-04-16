@@ -24,7 +24,7 @@ public class ClientMandelbrotSet extends Client<Integer[][]>
 
     // Midlertidig
     public ClientMandelbrotSet(String title, Task<Integer[][]> task) throws RemoteException, NotBoundException, MalformedURLException {
-        super(title,"localhost", null);
+        super(title,"localhost", new MandelbrotSetJob(LOWER_LEFT_X,LOWER_LEFT_Y,EDGE_LENGTH,N_PIXELS,ITERATION_LIMIT));
     }
 
     /*public ClientMandelbrotSet(String ip) throws RemoteException, NotBoundException, MalformedURLException
@@ -44,8 +44,8 @@ public class ClientMandelbrotSet extends Client<Integer[][]>
         //final ClientMandelbrotSet client = new ClientMandelbrotSet(args[0], null);
         final ClientMandelbrotSet client = new ClientMandelbrotSet("Derp", null);
         client.begin();
-        client.runJob();
-        //client.add(client.getLabel(value));
+        Integer[][] value = client.runJob();
+        client.add(client.getLabel(value));
         client.end();
     }
 
