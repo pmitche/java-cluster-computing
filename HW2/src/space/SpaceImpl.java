@@ -3,11 +3,13 @@ package space;
 import api.Result;
 import api.Space;
 import api.Task;
+import computer.ComputerProxy;
 import system.Computer;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -18,6 +20,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
 
     private LinkedBlockingQueue<Task> taskQueue;
     private LinkedBlockingQueue<Result> resultQueue;
+    private HashMap<Integer,Computer> computerSet;
 
     public SpaceImpl() throws RemoteException {
         this.taskQueue = new LinkedBlockingQueue<Task>();
@@ -27,6 +30,11 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     @Override
     public void putAll(List<Task> taskList) throws RemoteException {
         taskQueue.addAll(taskList);
+    }
+
+    @Override
+    public void put(Task task) throws RemoteException, InterruptedException {
+        taskQueue.put(task);
     }
 
     @Override
@@ -41,7 +49,9 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
 
     @Override
     public void register(Computer computer) throws RemoteException {
-        System.out.println("Computer registered");
+        ComputerProxy cp = new ComputerProxy(computer, this);
+        Thread t = new Thread(cp);
+        t.start();
     }
 
     @Override
@@ -52,7 +62,6 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     @Override
     public void putResult(Result r) throws RemoteException {
         resultQueue.add(r);
-        System.out.println("Result size: "+resultQueue.size());
     }
 
     public static void main(String[] args) throws RemoteException {
