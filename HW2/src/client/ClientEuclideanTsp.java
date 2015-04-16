@@ -40,7 +40,7 @@ public class ClientEuclideanTsp extends Client<List<Integer>>
         super("Euclidean TSP", ip, new EuclideanTspJob(CITIES));
     }
 
-    public static void main( String[] args ) throws Exception
+    public static void main( String[] args ) throws RemoteException, MalformedURLException, NotBoundException
     {
         System.setSecurityManager(new SecurityManager());
         final ClientEuclideanTsp client = new ClientEuclideanTsp("localhost");

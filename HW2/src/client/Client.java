@@ -18,7 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
-/**
+/*
  *
  * @author Peter Cappello
  * @param <T> return type the Task that this Client executes.
