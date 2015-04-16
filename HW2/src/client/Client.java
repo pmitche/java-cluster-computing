@@ -60,7 +60,10 @@ public class Client<T> extends JFrame
 
     public T runJob() throws RemoteException
     {
+        long elaps = System.nanoTime();
         job.generateTasks(space);
-        return (T) job.collectResults(space);
+        T t = (T) job.collectResults(space);
+        System.out.println((System.nanoTime()-elaps)/1000000);
+        return t;
     }
 }
