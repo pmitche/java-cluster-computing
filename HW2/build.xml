@@ -93,7 +93,7 @@
             <jvmarg value="-Djava.security.policy=policy"/>
             <arg value="${ip}"/>
             <classpath>
-                <pathelement location="dist/client.jar"/>
+                <pathelement location="dist/clientEuclideanTsp.jar"/>
             </classpath>
         </java>
     </target>
@@ -103,7 +103,7 @@
             <jvmarg value="-Djava.security.policy=policy"/>
             <arg value="${ip}"/>
             <classpath>
-                <pathelement location="dist/client.jar"/>
+                <pathelement location="dist/clientMandelbrotSet.jar"/>
             </classpath>
         </java>
     </target>
