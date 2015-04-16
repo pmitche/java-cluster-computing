@@ -29,6 +29,7 @@ public class ComputerProxy implements Runnable {
            } catch (RemoteException e) {
                try {
                    space.put(t);
+                   System.out.println("Computer failed, task reentered in queue...");
                    return;
                } catch (RemoteException e1) {
                    e1.printStackTrace();

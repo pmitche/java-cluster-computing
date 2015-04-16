@@ -52,6 +52,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         ComputerProxy cp = new ComputerProxy(computer, this);
         Thread t = new Thread(cp);
         t.start();
+        System.out.println("Computer registered and working...");
     }
 
     @Override
