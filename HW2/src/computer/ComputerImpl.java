@@ -33,7 +33,10 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
 
     @Override
     public <T> T execute(Task<T> task) throws RemoteException {
-        return task.call();
+        long elaps = System.nanoTime();
+        T t= task.call();
+        System.out.println((System.nanoTime()-elaps)/1000000);
+        return t;
     }
 
     private static String inputIp(){
