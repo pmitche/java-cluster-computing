@@ -12,6 +12,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Scanner;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -81,8 +82,19 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     public static void main(String[] args) throws RemoteException {
         System.setSecurityManager(new SecurityManager());
         LocateRegistry.createRegistry(Space.PORT).rebind(Space.SERVICE_NAME, new SpaceImpl());
-        System.setProperty("java.rmi.server.hostname", "192.168.1.17");
+        System.setProperty("java.rmi.server.hostname", inputIp());
         System.out.println("Space running...");
+    }
+
+    /**
+     * Prompts the user for the ip of space. This is done because java rmi is not always able to retrieve the system ip correctly.
+     * This is a know problem in java rmi, and this is one of the suggested workarounds.
+     * @return
+     */
+    private static String inputIp(){
+        System.out.println("input space ip:");
+        Scanner sc = new Scanner(System.in);
+        return sc.next();
     }
 
     /**
