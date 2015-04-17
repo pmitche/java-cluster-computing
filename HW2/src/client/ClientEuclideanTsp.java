@@ -36,6 +36,15 @@ public class ClientEuclideanTsp extends Client<List<Integer>> implements Seriali
                     { 3, 6 }
             };
 
+    /**
+     * Constructor
+     * <p>Extends the Client super class</p>
+     * @param ip    IP address
+     * @param singleJVM if the client should run local space and computers for a single JVM
+     * @throws RemoteException
+     * @throws NotBoundException
+     * @throws MalformedURLException
+     */
     public ClientEuclideanTsp(String ip, boolean singleJVM) throws RemoteException, NotBoundException, MalformedURLException
     {
         super("Euclidean TSP", ip, new EuclideanTspJob(CITIES), singleJVM);
@@ -59,6 +68,11 @@ public class ClientEuclideanTsp extends Client<List<Integer>> implements Seriali
         client.end();
     }
 
+    /**
+     * Creates label to be passed tp superclass Client
+     * @param tour  path to be illustrated
+     * @return  generated label
+     */
     public JLabel getLabel( final Integer[] tour )
     {
         Logger.getLogger( ClientEuclideanTsp.class.getCanonicalName() ).log(Level.INFO, tourToString( tour ) );
@@ -128,6 +142,11 @@ public class ClientEuclideanTsp extends Client<List<Integer>> implements Seriali
         return new JLabel( imageIcon );
     }
 
+    /**
+     * Creates a more human readable string showing the path
+     * @param cities
+     * @return
+     */
     private String tourToString( Integer[] cities )
     {
         StringBuilder stringBuilder = new StringBuilder();

@@ -31,6 +31,17 @@ public class Client<T> extends JFrame
     protected T taskReturnValue;
     private long clientStartTime;
 
+    /**
+     * Client constructor
+     *
+     * @param title Window title
+     * @param domainName    Name of the domain
+     * @param job   job to be scheduled
+     * @param singleJVM boolean value determining if the system should be ran on a single JVM
+     * @throws RemoteException
+     * @throws NotBoundException
+     * @throws MalformedURLException
+     */
     public Client( final String title, final String domainName, final Job job , boolean singleJVM)
             throws RemoteException, NotBoundException, MalformedURLException
     {
@@ -45,14 +56,24 @@ public class Client<T> extends JFrame
             space = ( domainName == null ) ? new SpaceImpl() : (Space) Naming.lookup( url );
     }
 
+    /**
+     * Starts the timer
+     */
     public void begin() { clientStartTime = System.nanoTime(); }
 
+    /**
+     * Stops and logs the runtime
+     */
     public void end()
     {
         Logger.getLogger( Client.class.getCanonicalName() )
                 .log(Level.INFO, "Client time: {0} ms.", ( System.nanoTime() - clientStartTime) / 1000000 );
     }
 
+    /**
+     * adds the JLabel to th GUI
+     * @param jLabel   to be added
+     */
     public void add( final JLabel jLabel )
     {
         final Container container = getContentPane();
@@ -83,6 +104,11 @@ public class Client<T> extends JFrame
         }
     }
 
+    /**
+     * Runs the job
+     * @return  Result object
+     * @throws RemoteException
+     */
     public T runJob() throws RemoteException
     {
         long elaps = System.nanoTime();
