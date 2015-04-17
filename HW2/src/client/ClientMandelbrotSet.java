@@ -23,7 +23,15 @@ public class ClientMandelbrotSet extends Client<Integer[][]>
     private static final int N_PIXELS = 1024;
     private static final int ITERATION_LIMIT = 512;
 
-    // Midlertidig
+    /**
+     * Constructor
+     * @param title the title
+     * @param task  task definition
+     * @param singleJVM if the client should run local space and computers for a single JVM
+     * @throws RemoteException
+     * @throws NotBoundException
+     * @throws MalformedURLException
+     */
     public ClientMandelbrotSet(String title, Task<Integer[][]> task, boolean singleJVM) throws RemoteException, NotBoundException, MalformedURLException {
         super(title,"localhost", new MandelbrotSetJob(LOWER_LEFT_X,LOWER_LEFT_Y,EDGE_LENGTH,N_PIXELS,ITERATION_LIMIT), singleJVM);
     }
@@ -35,7 +43,7 @@ public class ClientMandelbrotSet extends Client<Integer[][]>
                         ITERATION_LIMIT) );
     }*/
 
-    /** TODO endre
+    /**
      * Run the MandelbrotSet visualizer client.
      * @param args unused
      * @throws java.rmi.RemoteException
@@ -57,6 +65,11 @@ public class ClientMandelbrotSet extends Client<Integer[][]>
     }
 
 
+    /**
+     * Generates the illustration of the solution
+     * @param counts
+     * @return  generated JLabel
+     */
     public JLabel getLabel( Integer[][] counts )
     {
         final Image image = new BufferedImage( N_PIXELS, N_PIXELS, BufferedImage.TYPE_INT_ARGB );
@@ -71,6 +84,11 @@ public class ClientMandelbrotSet extends Client<Integer[][]>
         return new JLabel( imageIcon );
     }
 
+    /**
+     * Defines the color for the specific pixels
+     * @param iterationCount    iteration count
+     * @return  color of the pixel
+     */
     private Color getColor( int iterationCount )
     {
         return iterationCount == ITERATION_LIMIT ? Color.BLACK : Color.WHITE;
