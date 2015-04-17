@@ -3,6 +3,7 @@ package client;
 import api.Job;
 import api.Space;
 import api.Task;
+import computer.ComputerImpl;
 import space.SpaceImpl;
 
 import java.awt.BorderLayout;
@@ -26,11 +27,11 @@ import javax.swing.JScrollPane;
 public class Client<T> extends JFrame
 {
     final protected Job job;
-    final private Space space;
+    private Space space;
     protected T taskReturnValue;
     private long clientStartTime;
 
-    public Client( final String title, final String domainName, final Job job )
+    public Client( final String title, final String domainName, final Job job , boolean singleJVM)
             throws RemoteException, NotBoundException, MalformedURLException
     {
         this.job = job;
@@ -38,7 +39,10 @@ public class Client<T> extends JFrame
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         String url = "rmi://" + domainName + ":" + Space.PORT + "/" + Space.SERVICE_NAME;
-        space = ( domainName == null ) ? new SpaceImpl() : (Space) Naming.lookup( url );
+        if(singleJVM)
+            runSingleJVM();
+        else
+            space = ( domainName == null ) ? new SpaceImpl() : (Space) Naming.lookup( url );
     }
 
     public void begin() { clientStartTime = System.nanoTime(); }
@@ -56,6 +60,24 @@ public class Client<T> extends JFrame
         container.add( new JScrollPane( jLabel ), BorderLayout.CENTER );
         pack();
         setVisible( true );
+    }
+
+    protected void runSingleJVM() {
+        SpaceImpl localSpace;
+        ComputerImpl localComputer;
+
+        try {
+            localSpace = new SpaceImpl();
+            localSpace.initLocal(localSpace);
+            localComputer = new ComputerImpl(localSpace);
+            localComputer.initLocal(localComputer);
+
+            localSpace.register(localComputer);
+            space = localSpace;
+        } catch (RemoteException re) {
+            System.out.println("FAILLL!!!");
+            re.printStackTrace();
+        }
     }
 
     public T runJob() throws RemoteException

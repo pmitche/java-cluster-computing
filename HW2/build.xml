@@ -108,6 +108,26 @@
         </java>
     </target>
 
+    <target name="runSingleJvmTsp" description="runs everything in the same JVM">
+        <java jar="${dist}/clientEuclideanTsp.jar" fork="true">
+            <jvmarg value="-Djava.security.policy=policy"/>
+            <arg value="singleJVM"/>
+            <classpath>
+                <pathelement location="dist/clientEuclideanTsp.jar"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="runSingleJvmMandelbrotset" description="runs everything in the same JVM">
+        <java jar="${dist}/clientMandelbrotSet.jar" fork="true">
+            <jvmarg value="-Djava.security.policy=policy"/>
+            <arg value="singleJVM"/>
+            <classpath>
+                <pathelement location="dist/clientMandelbrotSet.jar"/>
+            </classpath>
+        </java>
+    </target>
+
     <target name="clean" description="clean up" >
         <!-- Delete the ${build} and ${dist} directory trees -->
         <!-- <delete dir="${client_file_codebase}/tasks"/> -->

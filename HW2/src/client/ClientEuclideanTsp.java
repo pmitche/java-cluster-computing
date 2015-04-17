@@ -5,6 +5,7 @@ import job.EuclideanTspJob;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -16,7 +17,7 @@ import java.util.logging.Logger;
  *
  * @author Peter Cappello
  */
-public class ClientEuclideanTsp extends Client<List<Integer>>
+public class ClientEuclideanTsp extends Client<List<Integer>> implements Serializable
 {
     private static final int NUM_PIXALS = 600;
     private static final double[][] CITIES =
@@ -35,15 +36,21 @@ public class ClientEuclideanTsp extends Client<List<Integer>>
                     { 3, 6 }
             };
 
-    public ClientEuclideanTsp(String ip) throws RemoteException, NotBoundException, MalformedURLException
+    public ClientEuclideanTsp(String ip, boolean singleJVM) throws RemoteException, NotBoundException, MalformedURLException
     {
-        super("Euclidean TSP", ip, new EuclideanTspJob(CITIES));
+        super("Euclidean TSP", ip, new EuclideanTspJob(CITIES), singleJVM);
     }
 
     public static void main( String[] args ) throws RemoteException, MalformedURLException, NotBoundException
     {
+        boolean singleJVM = false;
+        if(args.length > 0)
+            if(args[0].equals("singleJVM"))
+                singleJVM = true;
+
         System.setSecurityManager(new SecurityManager());
-        final ClientEuclideanTsp client = new ClientEuclideanTsp("localhost");
+        final ClientEuclideanTsp client = new ClientEuclideanTsp("localhost", singleJVM);
+
         client.begin();
         long elaps = System.nanoTime();
         final List<Integer> value = client.runJob();

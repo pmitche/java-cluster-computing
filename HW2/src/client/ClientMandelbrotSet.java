@@ -24,8 +24,8 @@ public class ClientMandelbrotSet extends Client<Integer[][]>
     private static final int ITERATION_LIMIT = 512;
 
     // Midlertidig
-    public ClientMandelbrotSet(String title, Task<Integer[][]> task) throws RemoteException, NotBoundException, MalformedURLException {
-        super(title,"localhost", new MandelbrotSetJob(LOWER_LEFT_X,LOWER_LEFT_Y,EDGE_LENGTH,N_PIXELS,ITERATION_LIMIT));
+    public ClientMandelbrotSet(String title, Task<Integer[][]> task, boolean singleJVM) throws RemoteException, NotBoundException, MalformedURLException {
+        super(title,"localhost", new MandelbrotSetJob(LOWER_LEFT_X,LOWER_LEFT_Y,EDGE_LENGTH,N_PIXELS,ITERATION_LIMIT), singleJVM);
     }
 
     /*public ClientMandelbrotSet(String ip) throws RemoteException, NotBoundException, MalformedURLException
@@ -41,9 +41,15 @@ public class ClientMandelbrotSet extends Client<Integer[][]>
      * @throws java.rmi.RemoteException
      *
     */public static void main( String[] args ) throws Exception {
+
+        boolean singleJVM = false;
+        if(args.length > 0)
+            if(args[0].equals("singleJVM"))
+                singleJVM = true;
+
         System.setSecurityManager(new SecurityManager());
         //final ClientMandelbrotSet client = new ClientMandelbrotSet(args[0], null);
-        final ClientMandelbrotSet client = new ClientMandelbrotSet("Derp", null);
+        final ClientMandelbrotSet client = new ClientMandelbrotSet("Derp", null, singleJVM);
         client.begin();
         Integer[][] value = client.runJob();
         client.add(client.getLabel(value));

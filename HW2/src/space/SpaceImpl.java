@@ -8,6 +8,7 @@ import system.Computer;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 import java.util.List;
@@ -70,5 +71,17 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         LocateRegistry.createRegistry(Space.PORT).rebind(Space.SERVICE_NAME, new SpaceImpl());
         System.setProperty("java.rmi.server.hostname", "192.168.1.17");
         System.out.println("Space running...");
+    }
+
+    public void initLocal(Space localSpace){
+        if(System.getSecurityManager()== null)
+            System.setSecurityManager(new SecurityManager());
+
+        try {
+            LocateRegistry.createRegistry(Space.PORT).rebind(Space.SERVICE_NAME, localSpace);
+            System.out.println("Local Space up and running...");
+        } catch (RemoteException re) {
+            re.printStackTrace();
+        }
     }
 }

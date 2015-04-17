@@ -18,7 +18,7 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
     private final Space space;
     private int id = -1;
 
-    protected ComputerImpl(Space space) throws RemoteException {
+    public ComputerImpl(Space space) throws RemoteException {
         this.space = space;
     }
 
@@ -29,6 +29,23 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
         ComputerImpl computer = new ComputerImpl(space);
         space.register(computer);
         System.out.println("Registered to Space, running...");
+    }
+
+    public void initLocal(Computer localComputer) {
+        if(System.getSecurityManager()==null)
+            System.setSecurityManager(new SecurityManager());
+
+        try{
+            String url = "//" + "localhost" + "/" + Space.SERVICE_NAME;
+            Space space = (Space) Naming.lookup(url);
+            System.out.println("Local computer up and running...");
+        } catch (RemoteException re) {
+            re.printStackTrace();
+        } catch (MalformedURLException me) {
+            me.printStackTrace();
+        } catch (NotBoundException ne) {
+            ne.printStackTrace();
+        }
     }
 
     @Override
