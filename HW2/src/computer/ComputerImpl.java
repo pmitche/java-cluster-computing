@@ -32,24 +32,12 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
     }
 
     /**
-     * Initializes the space locally
-     * @param localComputer     Computer instance
+     * Sets the SecurityManager.
+     * @param localComputer Computer instance
      */
     public void initLocal(Computer localComputer) {
         if(System.getSecurityManager()==null)
             System.setSecurityManager(new SecurityManager());
-
-        try {
-            String url = "//" + "localhost" + "/" + Space.SERVICE_NAME;
-            Space space = (Space) Naming.lookup(url);
-            System.out.println("Local computer up and running...");
-        } catch (RemoteException re) {
-            re.printStackTrace();
-        } catch (MalformedURLException me) {
-            me.printStackTrace();
-        } catch (NotBoundException ne) {
-            ne.printStackTrace();
-        }
     }
 
     @Override
@@ -60,6 +48,10 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
         return t;
     }
 
+    /**
+     * Takes the ip of the Space that the Computer connects to.
+     * @return
+     */
     private static String inputIp(){
         System.out.println("input space ip:");
         Scanner sc = new Scanner(System.in);
