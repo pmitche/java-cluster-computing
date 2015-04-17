@@ -2,6 +2,7 @@
 /*
 Overall document style
 */
+<<<<<<< HEAD
 
 @import url('resources/fonts/dejavu.css');
 
@@ -10,11 +11,22 @@ body {
     color:#353833;
     font-family:'DejaVu Sans', Arial, Helvetica, sans-serif;
     font-size:14px;
+=======
+body {
+    background-color:#ffffff;
+    color:#353833;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:76%;
+>>>>>>> 23cf03ca1ccf3df0686b06dbe417734a8b7db2cd
     margin:0;
 }
 a:link, a:visited {
     text-decoration:none;
+<<<<<<< HEAD
     color:#4A6782;
+=======
+    color:#4c6b87;
+>>>>>>> 23cf03ca1ccf3df0686b06dbe417734a8b7db2cd
 }
 a:hover, a:focus {
     text-decoration:none;
@@ -22,7 +34,11 @@ a:hover, a:focus {
 }
 a:active {
     text-decoration:none;
+<<<<<<< HEAD
     color:#4A6782;
+=======
+    color:#4c6b87;
+>>>>>>> 23cf03ca1ccf3df0686b06dbe417734a8b7db2cd
 }
 a[name] {
     color:#353833;
@@ -32,6 +48,7 @@ a[name]:hover {
     color:#353833;
 }
 pre {
+<<<<<<< HEAD
     font-family:'DejaVu Sans Mono', monospace;
     font-size:14px;
 }
@@ -53,11 +70,33 @@ h5 {
 }
 h6 {
     font-size:11px;
+=======
+    font-size:1.3em;
+}
+h1 {
+    font-size:1.8em;
+}
+h2 {
+    font-size:1.5em;
+}
+h3 {
+    font-size:1.4em;
+}
+h4 {
+    font-size:1.3em;
+}
+h5 {
+    font-size:1.2em;
+}
+h6 {
+    font-size:1.1em;
+>>>>>>> 23cf03ca1ccf3df0686b06dbe417734a8b7db2cd
 }
 ul {
     list-style-type:disc;
 }
 code, tt {
+<<<<<<< HEAD
     font-family:'DejaVu Sans Mono', monospace;
     font-size:14px;
     padding-top:4px;
@@ -77,6 +116,19 @@ table tr td dt code {
 }
 sup {
     font-size:8px;
+=======
+    font-size:1.2em;
+}
+dt code {
+    font-size:1.2em;
+}
+table tr td dt code {
+    font-size:1.2em;
+    vertical-align:top;
+}
+sup {
+    font-size:.6em;
+>>>>>>> 23cf03ca1ccf3df0686b06dbe417734a8b7db2cd
 }
 /*
 Document title and Copyright styles
@@ -89,9 +141,15 @@ Document title and Copyright styles
 .aboutLanguage {
     float:right;
     padding:0px 21px;
+<<<<<<< HEAD
     font-size:11px;
     z-index:200;
     margin-top:-9px;
+=======
+    font-size:.8em;
+    z-index:200;
+    margin-top:-7px;
+>>>>>>> 23cf03ca1ccf3df0686b06dbe417734a8b7db2cd
 }
 .legalCopy {
     margin-left:.5em;
@@ -105,6 +163,12 @@ Document title and Copyright styles
 }
 .tab {
     background-color:#0066FF;
+<<<<<<< HEAD
+=======
+    background-image:url(resources/titlebar.gif);
+    background-position:left top;
+    background-repeat:no-repeat;
+>>>>>>> 23cf03ca1ccf3df0686b06dbe417734a8b7db2cd
     color:#ffffff;
     padding:8px;
     width:5em;
@@ -114,6 +178,7 @@ Document title and Copyright styles
 Navigation bar styles
 */
 .bar {
+<<<<<<< HEAD
     background-color:#4D7A97;
     color:#FFFFFF;
     padding:.8em .5em .4em .8em;
@@ -123,6 +188,19 @@ Navigation bar styles
 }
 .topNav {
     background-color:#4D7A97;
+=======
+    background-image:url(resources/background.gif);
+    background-repeat:repeat-x;
+    color:#FFFFFF;
+    padding:.8em .5em .4em .8em;
+    height:auto;/*height:1.8em;*/
+    font-size:1em;
+    margin:0;
+}
+.topNav {
+    background-image:url(resources/background.gif);
+    background-repeat:repeat-x;
+>>>>>>> 23cf03ca1ccf3df0686b06dbe417734a8b7db2cd
     color:#FFFFFF;
     float:left;
     padding:0;
@@ -131,11 +209,19 @@ Navigation bar styles
     height:2.8em;
     padding-top:10px;
     overflow:hidden;
+<<<<<<< HEAD
     font-size:12px; 
 }
 .bottomNav {
     margin-top:10px;
     background-color:#4D7A97;
+=======
+}
+.bottomNav {
+    margin-top:10px;
+    background-image:url(resources/background.gif);
+    background-repeat:repeat-x;
+>>>>>>> 23cf03ca1ccf3df0686b06dbe417734a8b7db2cd
     color:#FFFFFF;
     float:left;
     padding:0;
@@ -144,6 +230,7 @@ Navigation bar styles
     height:2.8em;
     padding-top:10px;
     overflow:hidden;
+<<<<<<< HEAD
     font-size:12px;
 }
 .subNav {
@@ -152,12 +239,24 @@ Navigation bar styles
     width:100%;
     overflow:hidden;
     font-size:12px;
+=======
+}
+.subNav {
+    background-color:#dee3e9;
+    border-bottom:1px solid #9eadc0;
+    float:left;
+    width:100%;
+    overflow:hidden;
+>>>>>>> 23cf03ca1ccf3df0686b06dbe417734a8b7db2cd
 }
 .subNav div {
     clear:left;
     float:left;
     padding:0 0 5px 6px;
+<<<<<<< HEAD
     text-transform:uppercase;
+=======
+>>>>>>> 23cf03ca1ccf3df0686b06dbe417734a8b7db2cd
 }
 ul.navList, ul.subNavList {
     float:left;
@@ -167,21 +266,33 @@ ul.navList, ul.subNavList {
 ul.navList li{
     list-style:none;
     float:left;
+<<<<<<< HEAD
     padding: 5px 6px;
     text-transform:uppercase;
+=======
+    padding:3px 6px;
+>>>>>>> 23cf03ca1ccf3df0686b06dbe417734a8b7db2cd
 }
 ul.subNavList li{
     list-style:none;
     float:left;
+<<<<<<< HEAD
+=======
+    font-size:90%;
+>>>>>>> 23cf03ca1ccf3df0686b06dbe417734a8b7db2cd
 }
 .topNav a:link, .topNav a:active, .topNav a:visited, .bottomNav a:link, .bottomNav a:active, .bottomNav a:visited {
     color:#FFFFFF;
     text-decoration:none;
+<<<<<<< HEAD
     text-transform:uppercase;
+=======
+>>>>>>> 23cf03ca1ccf3df0686b06dbe417734a8b7db2cd
 }
 .topNav a:hover, .bottomNav a:hover {
     text-decoration:none;
     color:#bb7a2a;
+<<<<<<< HEAD
     text-transform:uppercase;
 }
 .navBarCell1Rev {
@@ -194,6 +305,15 @@ ul.subNavList li{
     top:auto;
     left:-9999px;
     overflow:hidden;
+=======
+}
+.navBarCell1Rev {
+    background-image:url(resources/tab.gif);
+    background-color:#a88834;
+    color:#FFFFFF;
+    margin: auto 5px;
+    border:1px solid #c9aa44;
+>>>>>>> 23cf03ca1ccf3df0686b06dbe417734a8b7db2cd
 }
 /*
 Page header and footer styles
@@ -207,11 +327,16 @@ Page header and footer styles
     margin:10px;
     position:relative;
 }
+<<<<<<< HEAD
 .indexHeader span{
     margin-right:15px;
 }
 .indexHeader h1 {
     font-size:13px;
+=======
+.indexHeader h1 {
+    font-size:1.3em;
+>>>>>>> 23cf03ca1ccf3df0686b06dbe417734a8b7db2cd
 }
 .title {
     color:#2c4557;
@@ -221,7 +346,11 @@ Page header and footer styles
     margin:5px 0 0 0;
 }
 .header ul {
+<<<<<<< HEAD
     margin:0 0 15px 0;
+=======
+    margin:0 0 25px 0;
+>>>>>>> 23cf03ca1ccf3df0686b06dbe417734a8b7db2cd
     padding:0;
 }
 .footer ul {
@@ -229,13 +358,18 @@ Page header and footer styles
 }
 .header ul li, .footer ul li {
     list-style:none;
+<<<<<<< HEAD
     font-size:13px;
+=======
+    font-size:1.2em;
+>>>>>>> 23cf03ca1ccf3df0686b06dbe417734a8b7db2cd
 }
 /*
 Heading styles
 */
 div.details ul.blockList ul.blockList ul.blockList li.blockList h4, div.details ul.blockList ul.blockList ul.blockListLast li.blockList h4 {
     background-color:#dee3e9;
+<<<<<<< HEAD
     border:1px solid #d0d9e0;
     margin:0 0 6px -8px;
     padding:7px 5px;
@@ -245,6 +379,19 @@ ul.blockList ul.blockList ul.blockList li.blockList h3 {
     border:1px solid #d0d9e0;
     margin:0 0 6px -8px;
     padding:7px 5px;
+=======
+    border-top:1px solid #9eadc0;
+    border-bottom:1px solid #9eadc0;
+    margin:0 0 6px -8px;
+    padding:2px 5px;
+}
+ul.blockList ul.blockList ul.blockList li.blockList h3 {
+    background-color:#dee3e9;
+    border-top:1px solid #9eadc0;
+    border-bottom:1px solid #9eadc0;
+    margin:0 0 6px -8px;
+    padding:2px 5px;
+>>>>>>> 23cf03ca1ccf3df0686b06dbe417734a8b7db2cd
 }
 ul.blockList ul.blockList li.blockList h3 {
     padding:0;
@@ -264,10 +411,17 @@ Page layout container styles
 .indexContainer {
     margin:10px;
     position:relative;
+<<<<<<< HEAD
     font-size:12px;
 }
 .indexContainer h2 {
     font-size:13px;
+=======
+    font-size:1.0em;
+}
+.indexContainer h2 {
+    font-size:1.1em;
+>>>>>>> 23cf03ca1ccf3df0686b06dbe417734a8b7db2cd
     padding:0 0 3px 0;
 }
 .indexContainer ul {
@@ -276,18 +430,28 @@ Page layout container styles
 }
 .indexContainer ul li {
     list-style:none;
+<<<<<<< HEAD
     padding-top:2px;
 }
 .contentContainer .description dl dt, .contentContainer .details dl dt, .serializedFormContainer dl dt {
     font-size:12px;
+=======
+}
+.contentContainer .description dl dt, .contentContainer .details dl dt, .serializedFormContainer dl dt {
+    font-size:1.1em;
+>>>>>>> 23cf03ca1ccf3df0686b06dbe417734a8b7db2cd
     font-weight:bold;
     margin:10px 0 0 0;
     color:#4E4E4E;
 }
 .contentContainer .description dl dd, .contentContainer .details dl dd, .serializedFormContainer dl dd {
+<<<<<<< HEAD
     margin:5px 0 10px 0px;
     font-size:14px;
     font-family:'DejaVu Sans Mono',monospace;
+=======
+    margin:10px 0 10px 20px;
+>>>>>>> 23cf03ca1ccf3df0686b06dbe417734a8b7db2cd
 }
 .serializedFormContainer dl.nameValue dt {
     margin-left:1px;
@@ -326,6 +490,7 @@ ul.blockList, ul.blockListLast {
 }
 ul.blockList li.blockList, ul.blockListLast li.blockList {
     list-style:none;
+<<<<<<< HEAD
     margin-bottom:15px;
     line-height:1.4;
 }
@@ -333,17 +498,34 @@ ul.blockList ul.blockList li.blockList, ul.blockList ul.blockListLast li.blockLi
     padding:0px 20px 5px 10px;
     border:1px solid #ededed; 
     background-color:#f8f8f8;
+=======
+    margin-bottom:25px;
+}
+ul.blockList ul.blockList li.blockList, ul.blockList ul.blockListLast li.blockList {
+    padding:0px 20px 5px 10px;
+    border:1px solid #9eadc0;
+    background-color:#f9f9f9;
+>>>>>>> 23cf03ca1ccf3df0686b06dbe417734a8b7db2cd
 }
 ul.blockList ul.blockList ul.blockList li.blockList, ul.blockList ul.blockList ul.blockListLast li.blockList {
     padding:0 0 5px 8px;
     background-color:#ffffff;
+<<<<<<< HEAD
     border:none;
+=======
+    border:1px solid #9eadc0;
+    border-top:none;
+>>>>>>> 23cf03ca1ccf3df0686b06dbe417734a8b7db2cd
 }
 ul.blockList ul.blockList ul.blockList ul.blockList li.blockList {
     margin-left:0;
     padding-left:0;
     padding-bottom:15px;
     border:none;
+<<<<<<< HEAD
+=======
+    border-bottom:1px solid #9eadc0;
+>>>>>>> 23cf03ca1ccf3df0686b06dbe417734a8b7db2cd
 }
 ul.blockList ul.blockList ul.blockList ul.blockList li.blockListLast {
     list-style:none;
@@ -357,6 +539,7 @@ table tr td dl, table tr td dl dt, table tr td dl dd {
 /*
 Table styles
 */
+<<<<<<< HEAD
 .overviewSummary, .memberSummary, .typeSummary, .useSummary, .constantsSummary, .deprecatedSummary {
     width:100%;
     border-left:1px solid #EEE; 
@@ -372,10 +555,38 @@ Table styles
     text-align:left;
     background-repeat:no-repeat;
     color:#253441;
+=======
+.contentContainer table, .classUseContainer table, .constantValuesContainer table {
+    border-bottom:1px solid #9eadc0;
+    width:100%;
+}
+.contentContainer ul li table, .classUseContainer ul li table, .constantValuesContainer ul li table {
+    width:100%;
+}
+.contentContainer .description table, .contentContainer .details table {
+    border-bottom:none;
+}
+.contentContainer ul li table th.colOne, .contentContainer ul li table th.colFirst, .contentContainer ul li table th.colLast, .classUseContainer ul li table th, .constantValuesContainer ul li table th, .contentContainer ul li table td.colOne, .contentContainer ul li table td.colFirst, .contentContainer ul li table td.colLast, .classUseContainer ul li table td, .constantValuesContainer ul li table td{
+    vertical-align:top;
+    padding-right:20px;
+}
+.contentContainer ul li table th.colLast, .classUseContainer ul li table th.colLast,.constantValuesContainer ul li table th.colLast,
+.contentContainer ul li table td.colLast, .classUseContainer ul li table td.colLast,.constantValuesContainer ul li table td.colLast,
+.contentContainer ul li table th.colOne, .classUseContainer ul li table th.colOne,
+.contentContainer ul li table td.colOne, .classUseContainer ul li table td.colOne {
+    padding-right:3px;
+}
+.overviewSummary caption, .packageSummary caption, .contentContainer ul.blockList li.blockList caption, .summary caption, .classUseContainer caption, .constantValuesContainer caption {
+    position:relative;
+    text-align:left;
+    background-repeat:no-repeat;
+    color:#FFFFFF;
+>>>>>>> 23cf03ca1ccf3df0686b06dbe417734a8b7db2cd
     font-weight:bold;
     clear:none;
     overflow:hidden;
     padding:0px;
+<<<<<<< HEAD
     padding-top:10px;
     padding-left:1px;
     margin:0px;
@@ -506,6 +717,80 @@ td.colOne a:link, td.colOne a:active, td.colOne a:visited, td.colOne a:hover, td
 }
 .rowColor {
     background-color:#EEEEEF;
+=======
+    margin:0px;
+}
+caption a:link, caption a:hover, caption a:active, caption a:visited {
+    color:#FFFFFF;
+}
+.overviewSummary caption span, .packageSummary caption span, .contentContainer ul.blockList li.blockList caption span, .summary caption span, .classUseContainer caption span, .constantValuesContainer caption span {
+    white-space:nowrap;
+    padding-top:8px;
+    padding-left:8px;
+    display:block;
+    float:left;
+    background-image:url(resources/titlebar.gif);
+    height:18px;
+}
+.overviewSummary .tabEnd, .packageSummary .tabEnd, .contentContainer ul.blockList li.blockList .tabEnd, .summary .tabEnd, .classUseContainer .tabEnd, .constantValuesContainer .tabEnd {
+    width:10px;
+    background-image:url(resources/titlebar_end.gif);
+    background-repeat:no-repeat;
+    background-position:top right;
+    position:relative;
+    float:left;
+}
+ul.blockList ul.blockList li.blockList table {
+    margin:0 0 12px 0px;
+    width:100%;
+}
+.tableSubHeadingColor {
+    background-color: #EEEEFF;
+}
+.altColor {
+    background-color:#eeeeef;
+}
+.rowColor {
+    background-color:#ffffff;
+}
+.overviewSummary td, .packageSummary td, .contentContainer ul.blockList li.blockList td, .summary td, .classUseContainer td, .constantValuesContainer td {
+    text-align:left;
+    padding:3px 3px 3px 7px;
+}
+th.colFirst, th.colLast, th.colOne, .constantValuesContainer th {
+    background:#dee3e9;
+    border-top:1px solid #9eadc0;
+    border-bottom:1px solid #9eadc0;
+    text-align:left;
+    padding:3px 3px 3px 7px;
+}
+td.colOne a:link, td.colOne a:active, td.colOne a:visited, td.colOne a:hover, td.colFirst a:link, td.colFirst a:active, td.colFirst a:visited, td.colFirst a:hover, td.colLast a:link, td.colLast a:active, td.colLast a:visited, td.colLast a:hover, .constantValuesContainer td a:link, .constantValuesContainer td a:active, .constantValuesContainer td a:visited, .constantValuesContainer td a:hover {
+    font-weight:bold;
+}
+td.colFirst, th.colFirst {
+    border-left:1px solid #9eadc0;
+    white-space:nowrap;
+}
+td.colLast, th.colLast {
+    border-right:1px solid #9eadc0;
+}
+td.colOne, th.colOne {
+    border-right:1px solid #9eadc0;
+    border-left:1px solid #9eadc0;
+}
+table.overviewSummary  {
+    padding:0px;
+    margin-left:0px;
+}
+table.overviewSummary td.colFirst, table.overviewSummary th.colFirst,
+table.overviewSummary td.colOne, table.overviewSummary th.colOne {
+    width:25%;
+    vertical-align:middle;
+}
+table.packageSummary td.colFirst, table.overviewSummary th.colFirst {
+    width:25%;
+    vertical-align:middle;
+>>>>>>> 23cf03ca1ccf3df0686b06dbe417734a8b7db2cd
 }
 /*
 Content styles
@@ -520,6 +805,7 @@ Content styles
 .docSummary {
     padding:0;
 }
+<<<<<<< HEAD
 
 ul.blockList ul.blockList ul.blockList li.blockList h3 {
     font-style:normal;
@@ -538,6 +824,8 @@ td.colLast div {
 td.colLast a {
     padding-bottom:3px;
 }
+=======
+>>>>>>> 23cf03ca1ccf3df0686b06dbe417734a8b7db2cd
 /*
 Formatting effect styles
 */
@@ -548,6 +836,7 @@ Formatting effect styles
 h1.hidden {
     visibility:hidden;
     overflow:hidden;
+<<<<<<< HEAD
     font-size:10px;
 }
 .block {
@@ -572,3 +861,14 @@ div.block div.block span.interfaceName {
 div.contentContainer ul.blockList li.blockList h2{
     padding-bottom:0px;
 }
+=======
+    font-size:.9em;
+}
+.block {
+    display:block;
+    margin:3px 0 0 0;
+}
+.strong {
+    font-weight:bold;
+}
+>>>>>>> 23cf03ca1ccf3df0686b06dbe417734a8b7db2cd
