@@ -27,20 +27,42 @@
         <hr style="margin-top: 10px; margin-bottom: 10px;">
 
         <section class="main">
+            <ul>
+                <li><a href="task_times/tsp-1c-sm-sj.html">TSP - 1 Computer - same machine - same JVM</a></li>
+                <li><a href="task_times/tsp-1c-sm-dj.html">TSP - 1 Computer - same machine - different JVMs</a></li>
+                <li><a href="task_times/tsp-1c-dm-dj.html">TSP - 1 Computer - different machines - different JVMs</a></li>
+                <li><a href="task_times/tsp-2c-dm-dj.html">TSP - 2 Computers - different machines - different JVMs</a></li>
+                <br>
+                <li><a href="task_times/mbs-1c-sm-sj.html">MandelbrotSet - 1 Computer - same machine - same JVM</a></li>
+                <li><a href="task_times/mbs-1c-sm-dj.html">MandelbrotSet - 1 Computer - same machine - different JVMs</a></li>
+                <li><a href="task_times/mbs-1c-dm-dj.html">MandelbrotSet - 1 Computer - different machines - different JVMs</a></li>
+                <li><a href="task_times/mbs-2c-dm-dj.html">MandelbrotSet - 2 Computers - different machines - different JVMs</a></li>
+                <br><br><hr><br>
+            </ul>
             <table>
                 <tbody>
-                <th>Same JVM, same machine</th>
+                <th>Deployment scenario</th>
+                <th>Euclidean TSP</th>
+                <th>MandelbrotSet</th>
                 <tr>
-                    <td>case 1</td>
-                    <td>tall</td>
+                    <td>c = 1, same machine, same JVM</td>
+                    <td>2795 ms</td>
+                    <td>1256 ms</td>
                 </tr>
                 <tr>
-                    <td>case 2</td>
-                    <td>tall</td>
+                    <td>c = 1, same machine, different JVMs</td>
+                    <td>3270 ms</td>
+                    <td>2922 ms</td>
                 </tr>
                 <tr>
-                    <td>case 3</td>
-                    <td>tall</td>
+                    <td>c = 1, different machines, different JVMs</td>
+                    <td>10522 ms</td>
+                    <td>47960 ms</td>
+                </tr>
+                <tr>
+                    <td>c = 2, different machines, different JVMs</td>
+                    <td>11742 ms</td>
+                    <td>30089 ms</td>
                 </tr>
                 </tbody>
             </table>
