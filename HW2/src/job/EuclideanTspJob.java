@@ -15,13 +15,26 @@ import java.util.List;
  * Created by Hallvard on 14.04.2015.
  */
 public class EuclideanTspJob implements Job {
-
+    //problem
     private double[][] cities;
 
+    /**
+     * Constructor for the Traveling salesman job.
+     * <p>The class, splits the problem of TSP into several
+     * subtasks that it collects and puts together later</p>
+     * @param cities
+     */
     public EuclideanTspJob(double[][] cities) {
         this.cities = cities;
     }
 
+    /**
+     * Generate rsults
+     *
+     * <p>The task is divided into smaller more handable subtasks
+     * @param space Space where the tasks should be sent</p>
+     * @throws RemoteException
+     */
     @Override
     public void generateTasks(Space space) throws RemoteException {
         List<Task> taskList = new ArrayList<Task>();
@@ -31,6 +44,15 @@ public class EuclideanTspJob implements Job {
         space.putAll(taskList);
     }
 
+    /**
+     * Collect Results
+     *
+     * <p>This method collects the completed tasks from Space
+     * then puts the partial solutions together to the final solution</p>
+     * @param space
+     * @return
+     * @throws RemoteException
+     */
     @Override
     public Object collectResults(Space space) throws RemoteException {
         //Collect task results
