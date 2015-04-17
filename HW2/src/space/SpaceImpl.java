@@ -12,6 +12,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Scanner;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -33,10 +34,17 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         taskQueue.addAll(taskList);
     }
 
+    /**
+     * Takes one task and adds it to the task queue. This is used by the ComputerProxy if its corresponding Computer fails.
+     * @param task
+     * @throws RemoteException
+     * @throws InterruptedException
+     */
     @Override
     public void put(Task task) throws RemoteException, InterruptedException {
         taskQueue.put(task);
     }
+
 
     @Override
     public Result take() throws RemoteException, InterruptedException {
@@ -48,6 +56,11 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         System.exit(0);
     }
 
+    /**
+     * Creates a ComputerProxy for the computer, and runs the ComputerProxy in its own thread.
+     * @param computer
+     * @throws RemoteException
+     */
     @Override
     public void register(Computer computer) throws RemoteException {
         ComputerProxy cp = new ComputerProxy(computer, this);
@@ -69,10 +82,25 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     public static void main(String[] args) throws RemoteException {
         System.setSecurityManager(new SecurityManager());
         LocateRegistry.createRegistry(Space.PORT).rebind(Space.SERVICE_NAME, new SpaceImpl());
-        System.setProperty("java.rmi.server.hostname", "192.168.1.17");
+        System.setProperty("java.rmi.server.hostname", inputIp());
         System.out.println("Space running...");
     }
 
+    /**
+     * Prompts the user for the ip of space. This is done because java rmi is not always able to retrieve the system ip correctly.
+     * This is a know problem in java rmi, and this is one of the suggested workarounds.
+     * @return
+     */
+    private static String inputIp(){
+        System.out.println("input space ip:");
+        Scanner sc = new Scanner(System.in);
+        return sc.next();
+    }
+
+    /**
+     * Initializes the space locally
+     * @param localSpace    Space instance
+     */
     public void initLocal(Space localSpace){
         if(System.getSecurityManager()== null)
             System.setSecurityManager(new SecurityManager());
