@@ -33,10 +33,17 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         taskQueue.addAll(taskList);
     }
 
+    /**
+     * Takes one task and adds it to the task queue. This is used by the ComputerProxy if its corresponding Computer fails.
+     * @param task
+     * @throws RemoteException
+     * @throws InterruptedException
+     */
     @Override
     public void put(Task task) throws RemoteException, InterruptedException {
         taskQueue.put(task);
     }
+
 
     @Override
     public Result take() throws RemoteException, InterruptedException {
@@ -48,6 +55,11 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         System.exit(0);
     }
 
+    /**
+     * Creates a ComputerProxy for the computer, and runs the ComputerProxy in its own thread.
+     * @param computer
+     * @throws RemoteException
+     */
     @Override
     public void register(Computer computer) throws RemoteException {
         ComputerProxy cp = new ComputerProxy(computer, this);
