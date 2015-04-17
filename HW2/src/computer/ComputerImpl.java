@@ -31,11 +31,15 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
         System.out.println("Registered to Space, running...");
     }
 
+    /**
+     * Initializes the space locally
+     * @param localComputer     Computer instance
+     */
     public void initLocal(Computer localComputer) {
         if(System.getSecurityManager()==null)
             System.setSecurityManager(new SecurityManager());
 
-        try{
+        try {
             String url = "//" + "localhost" + "/" + Space.SERVICE_NAME;
             Space space = (Space) Naming.lookup(url);
             System.out.println("Local computer up and running...");

@@ -62,6 +62,9 @@ public class Client<T> extends JFrame
         setVisible( true );
     }
 
+    /**
+     * sets up the loacl space
+     */
     protected void runSingleJVM() {
         SpaceImpl localSpace;
         ComputerImpl localComputer;
