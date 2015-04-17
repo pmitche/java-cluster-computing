@@ -73,6 +73,10 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         System.out.println("Space running...");
     }
 
+    /**
+     * Initializes the space locally
+     * @param localSpace    Space instance
+     */
     public void initLocal(Space localSpace){
         if(System.getSecurityManager()== null)
             System.setSecurityManager(new SecurityManager());
