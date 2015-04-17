@@ -41,9 +41,9 @@ public class MandelbrotSetJob implements Job {
     @Override
     public void generateTasks(Space space) throws RemoteException {
         List<Task> taskList = new ArrayList<Task>();
-        /**
-         * adding each task to a list, then putting the list in space
-         */
+
+        // adding each task to a list, then putting the list in space
+
         for(int i=0; i< n; i++) {
             taskList.add(new TaskMandelbrotSet(xCorner, yCorner, edgeLength, n,iterationLimit, i));
         }
@@ -52,9 +52,8 @@ public class MandelbrotSetJob implements Job {
 
     @Override
     public Integer [][] collectResults(Space space) throws RemoteException {
-        /**
-         * collecting result from space and putting it togheter
-         */
+        
+        // collecting result from space and putting it togheter
         Integer[][] resultArray = new Integer[n][n];
         for (int i = 0; i < n; i++)
             try {
