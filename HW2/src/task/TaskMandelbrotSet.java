@@ -45,12 +45,19 @@ public class TaskMandelbrotSet implements Task<Result<ResultValueWrapper>> {
         for (int col = 0; col < n; col++) {
             result[col] = getIterationCount(row, col, delta);
         }
+        // creating a wrapper for composing the results
         ResultValueWrapper wrap = new ResultValueWrapper(result,row);
         //TODO: Change ast argument
         return new Result<ResultValueWrapper>(wrap,-1);
     }
 
-    // Modifisert kode fra forrige oppgave + Capello sin implementasjon
+    /**
+     *
+     * @param row row in image array
+     * @param col column in image array
+     * @param delta
+     * @return iterations
+     */
     private int getIterationCount(int row, int col, double delta) {
         double cReal = xCorner + row * delta;
         double cImaginary = yCorner + col * delta;
