@@ -5,8 +5,8 @@
       <module fileurl="file://$PROJECT_DIR$/CS290B.iml" filepath="$PROJECT_DIR$/CS290B.iml" />
       <module fileurl="file://$PROJECT_DIR$/HW1/HW1.iml" filepath="$PROJECT_DIR$/HW1/HW1.iml" />
       <module fileurl="file://$PROJECT_DIR$/HW2/HW2.iml" filepath="$PROJECT_DIR$/HW2/HW2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HW3/HW3.iml" filepath="$PROJECT_DIR$/HW3/HW3.iml" />
       <module fileurl="file://$PROJECT_DIR$/HelloWorldRMI/HelloWorldRMI.iml" filepath="$PROJECT_DIR$/HelloWorldRMI/HelloWorldRMI.iml" />
     </modules>
   </component>
 </project>
-
