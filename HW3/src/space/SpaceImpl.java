@@ -4,6 +4,7 @@ import api.Result;
 import api.Space;
 import api.Task;
 import computer.ComputerProxy;
+import system.Closure;
 import system.Computer;
 
 import java.rmi.RemoteException;
@@ -21,11 +22,14 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
 
     private LinkedBlockingQueue<Task> taskQueue;
     private LinkedBlockingQueue<Result> resultQueue;
-    private HashMap<Integer,Computer> computerSet;
+    private LinkedBlockingQueue<Closure> waitingClosureQueue;
+    private LinkedBlockingQueue<Closure> readyClosureQueue;
 
     public SpaceImpl() throws RemoteException {
         this.taskQueue = new LinkedBlockingQueue<Task>();
         this.resultQueue = new LinkedBlockingQueue<Result>();
+        this.readyClosureQueue = new LinkedBlockingQueue<Closure>();
+        this.waitingClosureQueue = new LinkedBlockingQueue<Closure>();
     }
 
     @Override
