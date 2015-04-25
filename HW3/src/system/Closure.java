@@ -12,9 +12,10 @@ public class Closure {
     public long id;
     private Task task;
     private int missingArgsCount;
-    private ArrayList<Argument> arguments;
+    private Argument[] arguments;
 
-    public Closure(ArrayList<Argument> arguments, int missingArgsCount) {
+    //TODO: null tilsvarer manglene argumenter.
+    public Closure(int missingArgsCount, Argument... arguments) {
         this.arguments = arguments;
         this.missingArgsCount = missingArgsCount;
         this.id = this.hashCode();
