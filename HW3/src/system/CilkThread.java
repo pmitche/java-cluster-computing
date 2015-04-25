@@ -5,14 +5,9 @@ import space.SpaceImpl;
 /**
  * Created by Kyrre on 25.04.2015.
  */
-public class CilkThread implements Runnable{
+public abstract class CilkThread implements Runnable{
 
-    @Override
-    public void run() {
-
-    }
-
-    public CilkThread(Continuation cont){
+    public CilkThread(Closure cont){
 
     }
 
