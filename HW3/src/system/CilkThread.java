@@ -12,7 +12,8 @@ public class CilkThread implements Runnable{
 
     }
     private void spawn(Argument... arguments){
-        //TODO: Lager en closure
+
+        Closure childe = new Closure(arguments, 0);
     }
     private void spawnNext(Argument... arguments){
         //TODO: Lager en closure
