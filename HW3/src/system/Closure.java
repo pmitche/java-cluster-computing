@@ -9,8 +9,8 @@ import java.util.ArrayList;
  */
 public class Closure {
 
-    public long id;
-    private Task task;
+    private long id;
+    private CilkThread cilkThread;
     private int missingArgsCount;
     private Argument[] arguments;
 
@@ -19,5 +19,13 @@ public class Closure {
         this.arguments = arguments;
         this.missingArgsCount = missingArgsCount;
         this.id = this.hashCode();
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setArgument(Continuation k) {
+        arguments[k.offset] = k.argument;
     }
 }
