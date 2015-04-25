@@ -1,23 +1,35 @@
 package system;
 
-import api.Task;
+import space.SpaceImpl;
 
 /**
  * Created by Kyrre on 25.04.2015.
  */
-public class CilkThread implements Runnable {
+public abstract class CilkThread implements Runnable{
 
-    @Override
-    public void run() {
+    public CilkThread(Closure cont){
 
     }
+
     private void spawn(Argument... arguments){
-        //TODO: Lager en closure
+        int count = 0;
+        for (Argument a: arguments){
+            if (a == null) {
+                count++;
+            }
+        }
+        Closure child = new Closure(count,arguments);
     }
     private void spawnNext(Argument... arguments){
-        //TODO: Lager en closure
+        int count = 0;
+        for (Argument a: arguments){
+            if (a == null) {
+                count++;
+            }
+        }
+        SpaceImpl.getInstance().putClosure(new Closure(count,arguments));
     }
     private void sendArgument(Continuation k){
-        //TODO: Sendes til closure spesifisert i k.
+        SpaceImpl.getInstance().receiveArgument(k);
     }
 }

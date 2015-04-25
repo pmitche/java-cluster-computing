@@ -6,6 +6,7 @@ import api.Task;
 import computer.ComputerProxy;
 import system.Closure;
 import system.Computer;
+import system.Continuation;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -20,22 +21,31 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class SpaceImpl extends UnicastRemoteObject implements Space {
 
+    private static SpaceImpl instance;
     private LinkedBlockingQueue<Task> taskQueue;
     private LinkedBlockingQueue<Result> resultQueue;
     private LinkedBlockingQueue<Closure> waitingClosureQueue;
     private LinkedBlockingQueue<Closure> readyClosureQueue;
+    private HashMap<Long,Closure> closures;
 
-    public SpaceImpl() throws RemoteException {
+    private SpaceImpl() throws RemoteException {
         this.taskQueue = new LinkedBlockingQueue<Task>();
         this.resultQueue = new LinkedBlockingQueue<Result>();
         this.readyClosureQueue = new LinkedBlockingQueue<Closure>();
         this.waitingClosureQueue = new LinkedBlockingQueue<Closure>();
+        this.closures = new HashMap<>();
+
+    }
+
+    public synchronized void putClosure(Closure closure){
+        closures.put(closure.getId(), closure);
     }
 
     @Override
     public void putAll(List<Task> taskList) throws RemoteException {
         taskQueue.addAll(taskList);
     }
+
 
     /**
      * Takes one task and adds it to the task queue. This is used by the ComputerProxy if its corresponding Computer fails.
@@ -48,11 +58,11 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         taskQueue.put(task);
     }
 
-
     @Override
     public Result take() throws RemoteException, InterruptedException {
         return resultQueue.take();
     }
+
 
     @Override
     public void exit() throws RemoteException {
@@ -114,5 +124,24 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         } catch (RemoteException re) {
             re.printStackTrace();
         }
+    }
+
+    public static SpaceImpl getInstance(){
+        if (instance == null ) {
+            synchronized (SpaceImpl.class) {
+                if (instance == null) {
+                    try {
+                        instance = new SpaceImpl();
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        return instance;
+    }
+
+    public void receiveArgument(Continuation k) {
+        closures.get(k.closureId).setArgument(k);
     }
 }
