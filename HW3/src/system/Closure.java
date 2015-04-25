@@ -1,5 +1,7 @@
 package system;
 
+import api.Task;
+
 import java.util.ArrayList;
 
 /**
@@ -7,10 +9,14 @@ import java.util.ArrayList;
  */
 public class Closure {
 
-    private Thread t;
-    private ArrayList<Argument> arguments;
+    public long id;
+    private Task task;
     private int missingArgsCount;
+    private ArrayList<Argument> arguments;
 
-
-
+    public Closure(ArrayList<Argument> arguments, int missingArgsCount) {
+        this.arguments = arguments;
+        this.missingArgsCount = missingArgsCount;
+        this.id = this.hashCode();
+    }
 }
