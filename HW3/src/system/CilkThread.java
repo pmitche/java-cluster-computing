@@ -5,7 +5,7 @@ import api.Task;
 /**
  * Created by Kyrre on 25.04.2015.
  */
-public class CilkThread implements Runnable{
+public class CilkThread implements Runnable {
 
     @Override
     public void run() {
