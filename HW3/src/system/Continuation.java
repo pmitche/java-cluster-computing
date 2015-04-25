@@ -5,6 +5,7 @@ package system;
  */
 public class Continuation {
 
-    private Closure closure;
+    private int closureId;
     private int offset;
+    private Argument argument;
 }
