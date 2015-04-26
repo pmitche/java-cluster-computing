@@ -3,6 +3,9 @@ package task;
 import api.Result;
 import api.Task;
 import system.CilkThread;
+import system.Closure;
+import system.Continuation;
+import system.ResultValueWrapper;
 
 import java.util.List;
 
@@ -22,21 +25,30 @@ class TaskFibonacci extends CilkThread implements Task
 
     @Override
     protected Object call() throws Exception {
-        return null;
+        return 2;
     }
 
-    @Override
-    public Result decompose() {
+    public void decompose(Continuation k, int n) {
         if(n<2) {
-            return new Result(n, System.currentTimeMillis()-startTime);
+            sendArgument(k); //TODO send n
+        } else {
+            Continuation c1 = new Continuation(k.closureId, n-1, null)
+                        ,c2 = new Continuation(k.closureId, n-1, null);
+            spawnNext(k, c1, c2);
+            spawn(c1);
+            spawn(c2);
+        }
+    }
+
+    public Result compose(List<Continuation> list) {
+        Integer sum = 0;
+        for(Continuation c : list) {
+            sum += (int)c.argument;
         }
 
-        return null;
-    }
+        ResultValueWrapper<Integer, Object> rvw = new ResultValueWrapper<Integer, Object>(sum, list.get(0).closureId);
+        return new Result(rvw, System.currentTimeMillis()-startTime);
 
-    @Override
-    public Result compose(List list) {
-        return null;
     }
 
     @Override

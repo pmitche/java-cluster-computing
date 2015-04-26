@@ -7,8 +7,4 @@ public interface Task<V> extends Serializable, Callable<V>, Runnable
 {
     @Override
     V call();
-
-    Result<V> compose(List<?> list);
-
-    Result<V> decompose();
 }
