@@ -25,7 +25,7 @@ public class Closure {
 
     private void ready() {
         if (missingArgsCount == 0){
-            SpaceImpl.getInstance().
+            SpaceImpl.getInstance().putClosureInReady(this);
         }
     }
 
