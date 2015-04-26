@@ -2,6 +2,9 @@ package system;
 
 import space.SpaceImpl;
 
+import java.util.Objects;
+import java.util.Optional;
+
 /**
  * Created by Kyrre on 25.04.2015.
  */
@@ -11,23 +14,27 @@ public abstract class CilkThread implements Runnable{
 
     }
 
-    protected void spawn(Argument... arguments){
+    protected long spawn(Object... arguments){
         int count = 0;
-        for (Argument a: arguments){
-            if (a == null) {
+        for (Object a: arguments){
+            if (!Optional.ofNullable(a).isPresent()) {
                 count++;
             }
         }
-        SpaceImpl.getInstance().putClosure(new Closure(count,arguments));
+        Closure c = new Closure(count,arguments);
+        SpaceImpl.getInstance().putClosure(c);
+        return c.getId();
     }
-    protected void spawnNext(Argument... arguments){
+    protected long spawnNext(Object... arguments){
         int count = 0;
-        for (Argument a: arguments){
+        for (Object a: arguments){
             if (a == null) {
                 count++;
             }
         }
-        SpaceImpl.getInstance().putClosure(new Closure(count,arguments));
+        Closure c = new Closure(count,arguments);
+        SpaceImpl.getInstance().putClosure(c);
+        return c.getId();
     }
     protected void sendArgument(Continuation k){
         SpaceImpl.getInstance().receiveArgument(k);
