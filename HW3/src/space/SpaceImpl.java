@@ -24,7 +24,6 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     private static SpaceImpl instance;
     private LinkedBlockingQueue<Task> taskQueue;
     private LinkedBlockingQueue<Result> resultQueue;
-    private LinkedBlockingQueue<Closure> waitingClosureQueue;
     private LinkedBlockingQueue<Closure> readyClosureQueue;
     private HashMap<Long,Closure> closures;
 
@@ -32,13 +31,19 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         this.taskQueue = new LinkedBlockingQueue<Task>();
         this.resultQueue = new LinkedBlockingQueue<Result>();
         this.readyClosureQueue = new LinkedBlockingQueue<Closure>();
-        this.waitingClosureQueue = new LinkedBlockingQueue<Closure>();
         this.closures = new HashMap<>();
 
     }
 
     public synchronized void putClosure(Closure closure){
         closures.put(closure.getId(), closure);
+    }
+    public synchronized void putClosureInReady(Closure closure){
+        try {
+            readyClosureQueue.put(closure);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
