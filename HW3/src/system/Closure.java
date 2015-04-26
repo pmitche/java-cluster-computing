@@ -33,7 +33,7 @@ public class Closure {
         return id;
     }
 
-    public void setArgument(Continuation k) {
+    public synchronized void setArgument(Continuation k) {
         arguments[k.offset] = k.argument;
         missingArgsCount--;
         ready();
