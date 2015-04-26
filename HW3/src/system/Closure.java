@@ -15,7 +15,6 @@ public class Closure {
     private int missingArgsCount;
     private Object[] arguments;
 
-    //TODO: null tilsvarer manglene argumenter.
     public Closure(int missingArgsCount, Object... arguments) {
         this.arguments = arguments;
         this.missingArgsCount = missingArgsCount;
