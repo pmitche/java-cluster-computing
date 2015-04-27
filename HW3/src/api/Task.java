@@ -10,7 +10,7 @@ public interface Task<V> extends Serializable, Callable<V>, Runnable
     @Override
     V call();
 
-    public void decompose(Continuation c, int n);
+    public void decompose(Continuation c);
 
     public Result compose(List<Continuation> list);
 }

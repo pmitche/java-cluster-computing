@@ -23,7 +23,7 @@ public class TaskTsp extends CilkThread implements Task {
     }
 
     @Override
-    public void decompose(Continuation c, int n, Integer[]) {
+    public void decompose(Continuation c) {
 
     }
 

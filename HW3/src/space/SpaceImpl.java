@@ -21,7 +21,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class SpaceImpl extends UnicastRemoteObject implements Space {
 
-    private static SpaceImpl instance;
+    private static volatile SpaceImpl instance;
     private LinkedBlockingQueue<Task> taskQueue;
     private LinkedBlockingQueue<Result> resultQueue;
     private LinkedBlockingQueue<Closure> readyClosureQueue;

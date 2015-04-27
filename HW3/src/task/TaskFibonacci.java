@@ -14,47 +14,47 @@ import java.util.List;
  */
 public class TaskFibonacci extends CilkThread implements Task {
 
-    private int n;
-    private long startTime;
+    private final long startTime = System.currentTimeMillis();
 
-    public TaskFibonacci(Closure closure, int n) {
+    public TaskFibonacci(Closure closure) {
         super(closure);
-        this.n = n;
-        this.startTime = System.currentTimeMillis();
     }
 
     @Override
     public Object call() {
+        Thread t = new Thread(this);
+        t.start();
         return null;
     }
 
     @Override
-    public void decompose(Continuation k, int n) {
+    public void decompose(Continuation k) {
+        int n = (int) k.argument;
         if(n<2) {
             sendArgument(k); //TODO send n
         } else {
-            Continuation c1 = new Continuation(k.closureId, n-1, null)
-                        ,c2 = new Continuation(k.closureId, n-1, null);
-            spawnNext(k, c1, c2);
+            long id = spawnNext(k, null, null);
+            Continuation c1 = new Continuation(id, n-1, null)
+                        ,c2 = new Continuation(id, n-2, null);
             spawn(c1);
             spawn(c2);
         }
     }
 
     @Override
-    public Result compose(List<Continuation> list) {
+    public Result compose(List list) {
         Integer sum = 0;
-        for(Continuation c : list) {
-            sum += (int)c.argument;
+        for(Object c : list) {
+            ResultValueWrapper rvw = (ResultValueWrapper)((Continuation)c).argument; //Castception
+            sum += (int)rvw.getTaskReturnValue();
         }
 
-        ResultValueWrapper<Integer, Object> rvw = new ResultValueWrapper(sum, list.get(0).closureId);
+        ResultValueWrapper<Integer, Object> rvw = new ResultValueWrapper(sum, ((Continuation)list.get(0)).closureId);
         return new Result(rvw, System.currentTimeMillis()-startTime);
-
     }
 
     @Override
     public void run() {
-
+        //TODO eller?
     }
 }
