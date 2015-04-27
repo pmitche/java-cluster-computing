@@ -18,8 +18,8 @@ public class Test {
 
         al.add(4, "derp");
 
-        Closure c = new Closure(null,0);
-        System.out.println(c.id);
+       // Closure c = new Closure(null,0);
+        //System.out.println(c.id);
 
     }
 }
