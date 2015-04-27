@@ -19,17 +19,22 @@ public class Closure {
         this.arguments = arguments;
         this.missingArgsCount = missingArgsCount;
         this.id = this.hashCode();
-        ready();
+        this.cilkThread = null;
     }
 
     private void ready() {
-        if (missingArgsCount == 0){
+        if (missingArgsCount == 0 && cilkThread != null){
             SpaceImpl.getInstance().putClosureInReady(this);
         }
     }
 
     public long getId() {
         return id;
+    }
+
+    public synchronized void setCilkThread(CilkThread cilkThread) {
+        this.cilkThread = cilkThread;
+        ready();
     }
 
     public synchronized void setArgument(Continuation k) {

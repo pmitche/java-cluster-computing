@@ -7,6 +7,7 @@ import computer.ComputerProxy;
 import system.Closure;
 import system.Computer;
 import system.Continuation;
+import task.TaskFibonacci;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -36,6 +37,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
+                TaskFibonacci t = new TaskFibonacci(new Closure(0, new Integer(13)));
                 while (true){
                     Closure c;
                     try {
