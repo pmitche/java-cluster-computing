@@ -12,8 +12,7 @@ import java.util.List;
 /**
  * Created by hallvard on 4/25/15.
  */
-class TaskFibonacci extends CilkThread implements Task
-{
+class TaskFibonacci extends CilkThread implements Task {
 
     private int n;
     private long startTime;
@@ -28,6 +27,7 @@ class TaskFibonacci extends CilkThread implements Task
         return 2;
     }
 
+    @Override
     public void decompose(Continuation k, int n) {
         if(n<2) {
             sendArgument(k); //TODO send n
@@ -40,13 +40,14 @@ class TaskFibonacci extends CilkThread implements Task
         }
     }
 
+    @Override
     public Result compose(List<Continuation> list) {
         Integer sum = 0;
         for(Continuation c : list) {
             sum += (int)c.argument;
         }
 
-        ResultValueWrapper<Integer, Object> rvw = new ResultValueWrapper<Integer, Object>(sum, list.get(0).closureId);
+        ResultValueWrapper<Integer, Object> rvw = new ResultValueWrapper(sum, list.get(0).closureId);
         return new Result(rvw, System.currentTimeMillis()-startTime);
 
     }
