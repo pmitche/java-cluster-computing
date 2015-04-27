@@ -2,6 +2,7 @@ package system;
 
 import space.SpaceImpl;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -15,24 +16,12 @@ public abstract class CilkThread implements Runnable{
     }
 
     protected long spawn(Object... arguments){
-        int count = 0;
-        for (Object a: arguments){
-            if (!Optional.ofNullable(a).isPresent()) {
-                count++;
-            }
-        }
-        Closure c = new Closure(count,arguments);
+        Closure c = new Closure((int) Arrays.stream(arguments).filter(e -> !Optional.ofNullable(e).isPresent()).count(),arguments);
         SpaceImpl.getInstance().putClosure(c);
         return c.getId();
     }
     protected long spawnNext(Object... arguments){
-        int count = 0;
-        for (Object a: arguments){
-            if (a == null) {
-                count++;
-            }
-        }
-        Closure c = new Closure(count,arguments);
+        Closure c = new Closure((int) Arrays.stream(arguments).filter(e -> !Optional.ofNullable(e).isPresent()).count(),arguments);
         SpaceImpl.getInstance().putClosure(c);
         return c.getId();
     }
