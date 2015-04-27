@@ -13,17 +13,22 @@ import java.util.List;
  */
 public class TaskTsp extends CilkThread implements Task {
 
-    public TaskTsp(Closure cont) {
-        super(cont);
+    private final long START_TIME = System.currentTimeMillis();
+
+    public TaskTsp(Closure closure) {
+        super(closure);
     }
 
     @Override
     public Object call() {
+        Thread t = new Thread(this);
+        t.start();
         return null;
     }
 
     @Override
     public void decompose(Continuation c) {
+
 
     }
 
