@@ -28,7 +28,6 @@ public class TaskFibonacci extends CilkThread {
 
     @Override
     public void decompose(Continuation k) {
-        System.out.println("decompose");
         int n = (int) k.argument;
         if(n<2) {
             k.setReturnVal(n);
