@@ -42,6 +42,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
                     Closure c;
                     try {
                         c = readyClosureQueue.take();
+                        c.call();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

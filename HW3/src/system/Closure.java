@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 public class Closure {
 
-    private long id;
+    private final long id;
     private CilkThread cilkThread;
     private int missingArgsCount;
     private Object[] arguments;
@@ -30,6 +30,10 @@ public class Closure {
 
     public long getId() {
         return id;
+    }
+
+    public synchronized void call(){
+        cilkThread.call();
     }
 
     public synchronized void setCilkThread(CilkThread cilkThread) {

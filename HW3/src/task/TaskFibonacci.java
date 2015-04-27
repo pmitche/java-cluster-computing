@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by hallvard on 4/25/15.
  */
-public class TaskFibonacci extends CilkThread implements Task {
+public class TaskFibonacci extends CilkThread {
 
     private final long startTime = System.currentTimeMillis();
 
