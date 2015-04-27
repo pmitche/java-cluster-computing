@@ -23,6 +23,7 @@ public class Closure {
     }
 
     private void ready() {
+        //TODO: kopier variabler in i Cilk thread
         if (missingArgsCount == 0 && cilkThread != null){
             SpaceImpl.getInstance().putClosureInReady(this);
         }
@@ -45,5 +46,9 @@ public class Closure {
         arguments[k.offset] = k.argument;
         missingArgsCount--;
         ready();
+    }
+
+    public Object getArgument(int i) {
+        return arguments[i];
     }
 }

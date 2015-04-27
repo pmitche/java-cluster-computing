@@ -55,6 +55,6 @@ public class TaskFibonacci extends CilkThread {
 
     @Override
     public void run() {
-        //TODO eller?
+       decompose(new Continuation(closure.getId(), 0, closure.getArgument(0)));
     }
 }
