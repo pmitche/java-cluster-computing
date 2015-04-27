@@ -12,19 +12,20 @@ import java.util.List;
 /**
  * Created by hallvard on 4/25/15.
  */
-class TaskFibonacci extends CilkThread implements Task {
+public class TaskFibonacci extends CilkThread implements Task {
 
     private int n;
     private long startTime;
 
-    public TaskFibonacci(int n) {
+    public TaskFibonacci(Closure closure, int n) {
+        super(closure);
         this.n = n;
         this.startTime = System.currentTimeMillis();
     }
 
     @Override
-    protected Object call() throws Exception {
-        return 2;
+    public Object call() {
+        return null;
     }
 
     @Override
