@@ -42,13 +42,13 @@ public class TaskFibonacci extends CilkThread implements Task {
     }
 
     @Override
-    public Result compose(List<Continuation> list) {
+    public Result compose(List list) {
         Integer sum = 0;
-        for(Continuation c : list) {
-            sum += (int)c.argument;
+        for(Object c : list) {
+            sum += (int)((Continuation)c).argument;
         }
 
-        ResultValueWrapper<Integer, Object> rvw = new ResultValueWrapper(sum, list.get(0).closureId);
+        ResultValueWrapper<Integer, Object> rvw = new ResultValueWrapper(sum, ((Closure)list.get(0)).getId());
         return new Result(rvw, System.currentTimeMillis()-startTime);
 
     }
