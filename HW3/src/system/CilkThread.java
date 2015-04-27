@@ -12,10 +12,11 @@ import java.util.Optional;
  */
 public abstract class CilkThread implements Runnable, Task {
 
-    private final Closure closure;
+    protected final Closure closure;
 
     public CilkThread(Closure closure){
         this.closure = closure;
+        this.closure.setCilkThread(this);
     }
 
     protected long spawn(Object... arguments){
