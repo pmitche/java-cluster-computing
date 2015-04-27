@@ -47,8 +47,8 @@ public class Client<T> extends JFrame
         String url = "rmi://" + domainName + ":" + Space.PORT + "/" + Space.SERVICE_NAME;
         if(singleJVM)
             runSingleJVM();
-        else
-            space = ( domainName == null ) ? new SpaceImpl() : (Space) Naming.lookup( url );
+        //else
+            //space = ( domainName == null ) ? new SpaceImpl() : (Space) Naming.lookup( url );
     }
 
     /**
@@ -85,18 +85,18 @@ public class Client<T> extends JFrame
         SpaceImpl localSpace;
         ComputerImpl localComputer;
 
-        try {
-            localSpace = new SpaceImpl();
-            localSpace.initLocal(localSpace);
-            localComputer = new ComputerImpl(localSpace);
-            localComputer.initLocal(localComputer);
+        //try {
+//            localSpace = new SpaceImpl();
+//            localSpace.initLocal(localSpace);
+//            localComputer = new ComputerImpl(localSpace);
+//            localComputer.initLocal(localComputer);
 
-            localSpace.register(localComputer);
-            space = localSpace;
-        } catch (RemoteException re) {
-            System.out.println("FAILLL!!!");
-            re.printStackTrace();
-        }
+           // localSpace.register(localComputer);
+            //space = localSpace;
+       // } catch (RemoteException re) {
+         //   System.out.println("FAILLL!!!");
+          //  re.printStackTrace();
+       // }
     }
 
     /**

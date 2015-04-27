@@ -1,5 +1,6 @@
 package system;
 
+import api.Task;
 import space.SpaceImpl;
 
 import java.util.Arrays;
@@ -9,10 +10,12 @@ import java.util.Optional;
 /**
  * Created by Kyrre on 25.04.2015.
  */
-public abstract class CilkThread implements Runnable{
+public abstract class CilkThread implements Runnable, Task {
 
-    public CilkThread(Closure cont){
+    private final Closure closure;
 
+    public CilkThread(Closure closure){
+        this.closure = closure;
     }
 
     protected long spawn(Object... arguments){

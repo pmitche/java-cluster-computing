@@ -7,6 +7,7 @@ import computer.ComputerProxy;
 import system.Closure;
 import system.Computer;
 import system.Continuation;
+import task.TaskFibonacci;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -36,10 +37,12 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
+                TaskFibonacci t = new TaskFibonacci(new Closure(0, new Integer(13)));
                 while (true){
                     Closure c;
                     try {
                         c = readyClosureQueue.take();
+                        c.call();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -47,12 +50,19 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
             }
         });
         t.start();
-
     }
 
+    public static void main(String[] args) throws RemoteException {
+//        System.setSecurityManager(new SecurityManager());
+//        LocateRegistry.createRegistry(Space.PORT).rebind(Space.SERVICE_NAME, new SpaceImpl());
+//        System.setProperty("java.rmi.server.hostname", inputIp());
+        SpaceImpl.getInstance();
+        System.out.println("Space running...");
+    }
     public synchronized void putClosure(Closure closure){
         closures.put(closure.getId(), closure);
     }
+
     public synchronized void putClosureInReady(Closure closure){
         try {
             readyClosureQueue.put(closure);
@@ -61,11 +71,11 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         }
     }
 
+
     @Override
     public void putAll(List<Task> taskList) throws RemoteException {
         taskQueue.addAll(taskList);
     }
-
 
     /**
      * Takes one task and adds it to the task queue. This is used by the ComputerProxy if its corresponding Computer fails.
@@ -78,11 +88,11 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         taskQueue.put(task);
     }
 
+
     @Override
     public Result take() throws RemoteException, InterruptedException {
         return resultQueue.take();
     }
-
 
     @Override
     public void exit() throws RemoteException {
@@ -110,13 +120,6 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     @Override
     public void putResult(Result r) throws RemoteException {
         resultQueue.add(r);
-    }
-
-    public static void main(String[] args) throws RemoteException {
-        System.setSecurityManager(new SecurityManager());
-        LocateRegistry.createRegistry(Space.PORT).rebind(Space.SERVICE_NAME, new SpaceImpl());
-        System.setProperty("java.rmi.server.hostname", inputIp());
-        System.out.println("Space running...");
     }
 
     /**
