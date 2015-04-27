@@ -161,7 +161,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         return instance;
     }
 
-    public void receiveArgument(Continuation k) {
+    public synchronized void receiveArgument(Continuation k) {
         closures.get(k.closureId).setArgument(k);
     }
 }
