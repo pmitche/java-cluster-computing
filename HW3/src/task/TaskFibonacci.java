@@ -1,7 +1,6 @@
 package task;
 
 import api.Result;
-import api.Task;
 import system.CilkThread;
 import system.Closure;
 import system.Continuation;
@@ -29,7 +28,7 @@ public class TaskFibonacci extends CilkThread {
 
     @Override
     public void decompose(Continuation k) {
-        int n = (int) k.argument;
+        int n = (int)k.argument;
         if(n<2) {
             sendArgument(k); //TODO send n
         } else {

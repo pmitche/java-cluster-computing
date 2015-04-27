@@ -28,6 +28,17 @@ public class TaskTsp extends CilkThread implements Task {
 
     @Override
     public void decompose(Continuation c) {
+        int n = c.offset;
+        if(n < 2) {
+            sendArgument(c);
+            return;
+        }
+        Integer[] a = (Integer[])c.argument;
+        for(int i=1; i<n; i++) {
+            long id = spawnNext()
+            swap(a.clone(), i, n-1);
+
+        }
 
 
     }
@@ -40,5 +51,14 @@ public class TaskTsp extends CilkThread implements Task {
     @Override
     public void run() {
 
+    }
+
+    private static Integer[] swap(Integer[] a, int i, int i1) {
+        assert i>2 && i1> 2;
+
+        Integer tmp = a[i];
+        a[i] = a[i1];
+        a[i1] = tmp;
+        return  a;
     }
 }
