@@ -28,13 +28,14 @@ public class TaskFibonacci extends CilkThread {
 
     @Override
     public void decompose(Continuation k) {
-        int n = (int)k.argument;
+        ResultValueWrapper rvw = (ResultValueWrapper)k.argument;
+        int n = (Integer)rvw.getN();
         if(n<2) {
             sendArgument(k); //TODO send n
         } else {
             long id = spawnNext(k, null, null);
-            Continuation c1 = new Continuation(id, n-1, null)
-                        ,c2 = new Continuation(id, n-2, null);
+            Continuation c1 = new Continuation(id, 1, new ResultValueWrapper<>(null, n-1))
+                        ,c2 = new Continuation(id, 2, new ResultValueWrapper<>(null, n-2));
             spawn(c1);
             spawn(c2);
         }
@@ -45,7 +46,7 @@ public class TaskFibonacci extends CilkThread {
         Integer sum = 0;
         for(Object c : list) {
             ResultValueWrapper rvw = (ResultValueWrapper)((Continuation)c).argument; //Castception
-            sum += (int)rvw.getTaskReturnValue();
+            sum += (int)rvw.getN();
         }
         ResultValueWrapper<Integer, Object> rvw = new ResultValueWrapper(sum, ((Continuation)list.get(0)).closureId);
 
