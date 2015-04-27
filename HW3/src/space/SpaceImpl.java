@@ -37,7 +37,8 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                TaskFibonacci t = new TaskFibonacci(new Closure(0, new Integer(13)));
+                Continuation cont = new Continuation(-1,-1, new Integer(8));
+                TaskFibonacci t = new TaskFibonacci(new Closure(0, cont));
                 while (true){
                     Closure c;
                     try {
@@ -165,6 +166,12 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     }
 
     public synchronized void receiveArgument(Continuation k) {
-        closures.get(k.closureId).setArgument(k);
+        //TODO: for testing
+        if (k.closureId == -1){
+            System.out.println("back to root");
+
+        }else {
+            closures.get(k.closureId).setArgument(k);
+        }
     }
 }

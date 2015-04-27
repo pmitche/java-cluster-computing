@@ -1,7 +1,6 @@
 package task;
 
 import api.Result;
-import api.Task;
 import system.CilkThread;
 import system.Closure;
 import system.Continuation;
@@ -29,15 +28,18 @@ public class TaskFibonacci extends CilkThread {
 
     @Override
     public void decompose(Continuation k) {
+        System.out.println("decompose");
         int n = (int) k.argument;
         if(n<2) {
+            k.setReturnVal(n);
             sendArgument(k); //TODO send n
         } else {
-            long id = spawnNext(k, null, null);
-            Continuation c1 = new Continuation(id, n-1, null)
-                        ,c2 = new Continuation(id, n-2, null);
-            spawn(c1);
-            spawn(c2);
+            //TODO: fix pointer hax
+            long id = spawnNext(new TaskFibonacci(null), k, null, null);
+            Continuation c1 = new Continuation(id, 1, n-1)
+                        ,c2 = new Continuation(id, 2, n-2);
+            spawn(new TaskFibonacci(null), c1);
+            spawn(new TaskFibonacci(null), c2);
         }
     }
 
@@ -53,8 +55,19 @@ public class TaskFibonacci extends CilkThread {
         return new Result(rvw, System.currentTimeMillis()-startTime);
     }
 
+    private void sum(Continuation cont, int arg0, int arg1) {
+        cont.setReturnVal(arg0 + arg1);
+        sendArgument(cont);
+    }
+
     @Override
     public void run() {
-       decompose(new Continuation(closure.getId(), 0, closure.getArgument(0)));
+        Continuation c = (Continuation) closure.getArgument(0);
+        System.out.println("Running: continuation ID: " + c.closureId);
+        if (closure.isAncestor()){
+            sum((Continuation) closure.getArgument(0), (int) closure.getArgument(1),(int) closure.getArgument(2));
+        }else {
+            decompose((Continuation) closure.getArgument(0));
+        }
     }
 }
