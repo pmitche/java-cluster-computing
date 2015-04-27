@@ -33,6 +33,21 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         this.readyClosureQueue = new LinkedBlockingQueue<Closure>();
         this.closures = new HashMap<>();
 
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true){
+                    Closure c;
+                    try {
+                        c = readyClosureQueue.take();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        t.start();
+
     }
 
     public synchronized void putClosure(Closure closure){
@@ -146,7 +161,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         return instance;
     }
 
-    public void receiveArgument(Continuation k) {
+    public synchronized void receiveArgument(Continuation k) {
         closures.get(k.closureId).setArgument(k);
     }
 }

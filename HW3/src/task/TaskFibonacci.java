@@ -48,8 +48,8 @@ public class TaskFibonacci extends CilkThread implements Task {
             ResultValueWrapper rvw = (ResultValueWrapper)((Continuation)c).argument; //Castception
             sum += (int)rvw.getTaskReturnValue();
         }
-
         ResultValueWrapper<Integer, Object> rvw = new ResultValueWrapper(sum, ((Continuation)list.get(0)).closureId);
+
         return new Result(rvw, System.currentTimeMillis()-startTime);
     }
 
