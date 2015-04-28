@@ -74,7 +74,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     }
 
     public synchronized void put(Closure closure) {
-        System.out.println("Putting closure"+closure);
+        System.out.println("Putting closure "+closure);
         closures.put(closure.getId(), closure);
     }
 
@@ -174,6 +174,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         //TODO: for testing
         if (k.closureId == -1){
             System.out.println("back to root");
+            System.out.println("\"Result\": "+k.getReturnVal());
 
         }else {
             closures.get(k.closureId).setArgument(k);

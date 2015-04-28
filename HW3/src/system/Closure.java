@@ -3,6 +3,7 @@ package system;
 import api.Task;
 import space.SpaceImpl;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
 /**
  * Created by Kyrre on 23.04.2015.
  */
-public class Closure {
+public class Closure implements Serializable {
 
     private final long id;
     private CilkThread cilkThread;
