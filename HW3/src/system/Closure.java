@@ -14,12 +14,14 @@ public class Closure {
     private CilkThread cilkThread;
     private int missingArgsCount;
     private Object[] arguments;
+    private boolean isAncestor;
 
     public Closure(int missingArgsCount, Object... arguments) {
         this.arguments = arguments;
         this.missingArgsCount = missingArgsCount;
         this.id = this.hashCode();
         this.cilkThread = null;
+        this.isAncestor = false;
     }
 
     private void ready() {
@@ -43,12 +45,20 @@ public class Closure {
     }
 
     public synchronized void setArgument(Continuation k) {
-        arguments[k.offset] = k.argument;
+        arguments[k.offset] = k.getReturnVal();
         missingArgsCount--;
         ready();
     }
 
     public Object getArgument(int i) {
         return arguments[i];
+    }
+
+    public boolean isAncestor() {
+        return isAncestor;
+    }
+
+    public void setIsAncestor(boolean isAncestor) {
+        this.isAncestor = isAncestor;
     }
 }

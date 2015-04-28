@@ -12,5 +12,5 @@ public interface Task<V> extends Serializable, Callable<V>, Runnable
 
     public void decompose(Continuation c);
 
-    public Result compose(List<Continuation> list);
+    public void compose(List<Continuation> list);
 }
