@@ -65,6 +65,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         System.out.println("Space running...");
     }
 
+    @Override
     public synchronized void putClosureInReady(Closure closure){
         try {
             readyClosureQueue.put(closure);
@@ -73,10 +74,6 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         }
     }
 
-    public synchronized void put(Closure closure) {
-        System.out.println("Putting closure "+closure);
-        closures.put(closure.getId(), closure);
-    }
 
     @Override
     public void putAll(List<Task> taskList) throws RemoteException {
@@ -93,6 +90,12 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     @Override
     public void put(Task task) throws RemoteException, InterruptedException {
         taskQueue.put(task);
+    }
+
+    @Override
+    public synchronized void put(Closure closure) {
+        System.out.println("Putting closure "+closure);
+        closures.put(closure.getId(), closure);
     }
 
     @Override
@@ -119,7 +122,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     }
 
     @Override
-    public Task getTaskFromQueue() throws RemoteException, InterruptedException {
+    public Task takeTaskFromQueue() throws RemoteException, InterruptedException {
         return taskQueue.take();
     }
 
