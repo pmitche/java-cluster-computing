@@ -60,7 +60,7 @@ public class TaskFibonacci extends CilkThread {
         if (closure.isAncestor()){
             sum((Continuation) closure.getArgument(0), (int) closure.getArgument(1),(int) closure.getArgument(2));
         } else {
-            decompose((Continuation) closure.getArgument(0));
+            decompose(c);
         }
     }
 }

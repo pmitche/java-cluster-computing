@@ -4,6 +4,8 @@ import api.Task;
 import space.SpaceImpl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by Kyrre on 23.04.2015.
@@ -52,6 +54,10 @@ public class Closure {
 
     public Object getArgument(int i) {
         return arguments[i];
+    }
+
+    public List getArguments() {
+        return Arrays.asList(arguments);
     }
 
     public boolean isAncestor() {

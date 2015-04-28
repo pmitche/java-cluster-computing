@@ -5,8 +5,10 @@ import api.Task;
 import system.CilkThread;
 import system.Closure;
 import system.Continuation;
+import system.ResultValueWrapper;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -15,6 +17,22 @@ import java.util.List;
 public class TaskTsp extends CilkThread implements Task {
 
     private final long START_TIME = System.currentTimeMillis();
+
+    private static final double[][] CITIES =
+            {
+                    { 1, 1 },
+                    { 8, 1 },
+                    { 8, 8 },
+                    { 1, 8 },
+                    { 2, 2 },
+                    { 7, 2 },
+                    { 7, 7 },
+                    { 2, 7 },
+                    { 3, 3 },
+                    { 6, 3 },
+                    { 6, 6 },
+                    { 3, 6 }
+            };
 
     public TaskTsp(Closure closure) {
         super(closure);
@@ -30,12 +48,12 @@ public class TaskTsp extends CilkThread implements Task {
     @Override
     public void decompose(Continuation c) {
 
-        int n = ((Wrapper)c.argument).N;
+        int n = (Integer)((ResultValueWrapper)c.argument).getN();
         if(n < 2) {
             sendArgument(c);
             return;
         }
-        Integer[] a = ((Wrapper)c.argument).PATH;
+        Integer[] a = (Integer[])((ResultValueWrapper) c.argument).getTaskReturnValue();
 
         //Create all successor lists
         List<Integer[]> succLists = new ArrayList<>();
@@ -43,33 +61,40 @@ public class TaskTsp extends CilkThread implements Task {
             succLists.add(swap(a.clone(), i, n-1));
 
         //Spawn next to get ID
-        long id = spawnNext(c, new Object[succLists.size()]);
+        long id = spawnNext(new TaskTsp(null),c, new Object[succLists.size()]);
 
         //Spawn a new Continuation for each successor entry
-        for(int i=0; i<succLists.size(); i++)
-            spawn(new Continuation(id, i+1, new Wrapper(n-1, succLists.get(i))));
-    }
-
-    /**
-     * Private inner class to wrap the two needed values as an single argument
-     */
-    private final static class Wrapper {
-        private final int N;
-        private final Integer[] PATH;
-        private Wrapper(int n, Integer[] path) {
-            this.N = n;
-            this.PATH = path;
+        for(int i=0; i<succLists.size(); i++) {
+            ResultValueWrapper rvw = new ResultValueWrapper(succLists.get(i), n-1);
+            spawn(new TaskTsp(null), new Continuation(id, i + 1, rvw));
         }
     }
 
     @Override
-    public Result compose(List list) {
-        return null;
+    public void compose(List list) {
+        List<Continuation> temp = (List<Continuation>) list;
+        Continuation currCont = temp.remove(0);
+
+        Continuation best = null;
+        double shortest = Double.MAX_VALUE;
+        for(Continuation cont : temp) {
+            double path = totalDistance((Integer[])((ResultValueWrapper)cont.argument).getTaskReturnValue());
+            if(best==null || path < shortest) {
+                best = cont;
+                shortest = path;
+            }
+        }
+
+        currCont.setReturnVal(best.argument);
+        sendArgument(currCont);
     }
+
 
     @Override
     public void run() {
-
+        List<Continuation> conts = (List<Continuation>)closure.getArguments();
+        if(closure.isAncestor()) compose(conts);
+        else decompose(conts.get(0));
     }
 
     /**
@@ -102,17 +127,14 @@ public class TaskTsp extends CilkThread implements Task {
     /**
      * Calculates the total distance of a given permutation. If the distance is shorter than the current best solution, minDistance and minPath are updated.
      * @param a
-     *//*
-    private void totalDistance(Integer[] a) {
+     */
+    public double totalDistance(Integer[] a) {
         double distance = 0;
         for (int i = 0; i < a.length; i++){
             if (i < a.length-1){
                 distance += euclideanDistance(CITIES[a[i]], CITIES[a[i+1]]);
             }
         }
-        if (distance < minDistance){
-            minDistance = distance;
-            minPath = a.clone();
-        }
-    }*/
+        return distance;
+    }
 }
