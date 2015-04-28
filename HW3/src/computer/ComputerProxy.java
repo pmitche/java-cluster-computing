@@ -3,6 +3,7 @@ package computer;
 import api.Result;
 import api.Task;
 import space.SpaceImpl;
+import system.Closure;
 import system.Computer;
 
 import java.rmi.RemoteException;
@@ -14,11 +15,9 @@ import java.rmi.RemoteException;
  */
 public class ComputerProxy implements Runnable {
     private final Computer computer;
-    private final SpaceImpl space;
 
-    public ComputerProxy(Computer computer, SpaceImpl space) {
+    public ComputerProxy(Computer computer) {
         this.computer = computer;
-        this.space = space;
     }
 
     /**
@@ -28,26 +27,22 @@ public class ComputerProxy implements Runnable {
     @Override
     public void run() {
        while (true){
-           Task t = null;
+           Closure closure = null;
            Result r = null;
            try {
-               t = space.getTaskFromQueue();
-               r = (Result) computer.execute(t);
+               closure = SpaceImpl.getInstance().getReadyClosure();
+               r = (Result) computer.execute(closure);
+               System.out.println("closure "+closure);
            } catch (RemoteException e) {
-               try {
-                   space.put(t);
-                   System.out.println("Computer failed, task reentered in queue...");
+                   //space.put(closure);
+                   System.out.println("Computer failed, task re-entered in queue...");
                    return;
-               } catch (RemoteException e1) {
-                   e1.printStackTrace();
-               } catch (InterruptedException e1) {
-                   e1.printStackTrace();
-               }
+
            } catch (InterruptedException e) {
                e.printStackTrace();
            }
            try {
-               space.putResult(r);
+               SpaceImpl.getInstance().putResult(r);
            } catch (RemoteException e) {
                e.printStackTrace();
            }

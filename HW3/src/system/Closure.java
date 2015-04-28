@@ -22,6 +22,8 @@ public class Closure {
         this.id = this.hashCode();
         this.cilkThread = null;
         this.isAncestor = false;
+        //TODO: can this casue error?
+        SpaceImpl.getInstance().put(this);
     }
 
     private void ready() {

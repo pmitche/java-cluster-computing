@@ -43,11 +43,11 @@ public class TaskTsp extends CilkThread implements Task {
             succLists.add(swap(a.clone(), i, n-1));
 
         //Spawn next to get ID
-        long id = spawnNext(c, new Object[succLists.size()]);
+        //long id = spawnNext(c, new Object[succLists.size()]);
 
         //Spawn a new Continuation for each successor entry
-        for(int i=0; i<succLists.size(); i++)
-            spawn(new Continuation(id, i+1, new Wrapper(n-1, succLists.get(i))));
+        //for(int i=0; i<succLists.size(); i++)
+        //    spawn(new Continuation(id, i+1, new Wrapper(n-1, succLists.get(i))));
     }
 
     /**

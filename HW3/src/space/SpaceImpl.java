@@ -34,34 +34,35 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         this.readyClosureQueue = new LinkedBlockingQueue<Closure>();
         this.closures = new HashMap<>();
 
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Continuation cont = new Continuation(-1,-1, new Integer(8));
-                TaskFibonacci t = new TaskFibonacci(new Closure(0, cont));
-                while (true){
-                    Closure c;
-                    try {
-                        c = readyClosureQueue.take();
-                        c.call();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-        t.start();
+//        Thread t = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+                //System.out.println(readyClosureQueue.size());
+//                while (true){
+//                    Closure c;
+//                    try {
+//                        c = readyClosureQueue.take();
+//                        c.call();
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//        });
+//        t.start();
     }
 
     public static void main(String[] args) throws RemoteException {
-//        System.setSecurityManager(new SecurityManager());
-//        LocateRegistry.createRegistry(Space.PORT).rebind(Space.SERVICE_NAME, new SpaceImpl());
-//        System.setProperty("java.rmi.server.hostname", inputIp());
+        System.setSecurityManager(new SecurityManager());
+        LocateRegistry.createRegistry(Space.PORT).rebind(Space.SERVICE_NAME, new SpaceImpl());
+        String ip;
+        ip = args.length > 0 ? args[0] : inputIp();
+        System.setProperty("java.rmi.server.hostname", ip);
         SpaceImpl.getInstance();
+        Continuation cont = new Continuation(-1,-1, new Integer(8));
+        new TaskFibonacci(new Closure(0, cont));
+        System.out.println(SpaceImpl.getInstance().readyClosureQueue.size());
         System.out.println("Space running...");
-    }
-    public synchronized void putClosure(Closure closure){
-        closures.put(closure.getId(), closure);
     }
 
     public synchronized void putClosureInReady(Closure closure){
@@ -72,11 +73,16 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         }
     }
 
+    public synchronized void put(Closure closure) {
+        System.out.println("Putting closure"+closure);
+        closures.put(closure.getId(), closure);
+    }
 
     @Override
     public void putAll(List<Task> taskList) throws RemoteException {
         taskQueue.addAll(taskList);
     }
+
 
     /**
      * Takes one task and adds it to the task queue. This is used by the ComputerProxy if its corresponding Computer fails.
@@ -88,7 +94,6 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     public void put(Task task) throws RemoteException, InterruptedException {
         taskQueue.put(task);
     }
-
 
     @Override
     public Result take() throws RemoteException, InterruptedException {
@@ -107,7 +112,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
      */
     @Override
     public void register(Computer computer) throws RemoteException {
-        ComputerProxy cp = new ComputerProxy(computer, this);
+        ComputerProxy cp = new ComputerProxy(computer);
         Thread t = new Thread(cp);
         t.start();
         System.out.println("Computer registered and working...");
@@ -173,5 +178,10 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         }else {
             closures.get(k.closureId).setArgument(k);
         }
+    }
+
+    public synchronized Closure getReadyClosure() throws InterruptedException {
+        System.out.println("Getting closure " + closures.size());
+        return readyClosureQueue.take();
     }
 }

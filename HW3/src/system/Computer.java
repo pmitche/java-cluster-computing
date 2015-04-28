@@ -10,4 +10,6 @@ import java.rmi.RemoteException;
  */
 public interface Computer extends Remote{
     public <T> T execute(Task<T> task) throws RemoteException;
+
+    public <T> T execute(Closure closure) throws RemoteException;
 }
