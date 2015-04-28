@@ -1,6 +1,5 @@
 package task;
 
-import api.Result;
 import api.Task;
 import system.CilkThread;
 import system.Closure;
@@ -8,7 +7,6 @@ import system.Continuation;
 import system.ResultValueWrapper;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -16,8 +14,9 @@ import java.util.List;
  */
 public class TaskTsp extends CilkThread implements Task {
 
-    private final long START_TIME = System.currentTimeMillis();
+    private final long START_TIME = System.currentTimeMillis(); //TODO
 
+    //TODO
     private static final double[][] CITIES =
             {
                     { 1, 1 },
