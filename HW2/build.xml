@@ -42,7 +42,7 @@
         <!-- Make clientEuclideanTsp jar file -->
         <jar jarfile="${dist}/clientEuclideanTsp.jar" basedir="${build}" includes="system/** computer/** job/** api/** task/** client/** space/**">
             <manifest>
-                <attribute name="Main-Class" value="client.ClientEuclideanTsp"/>
+                <attribute name="Main-Class" value="client.ClientTsp"/>
             </manifest>
         </jar>
 
@@ -89,7 +89,7 @@
     </target>
 
     <target name="runClientTsp" description="run TSP client" >
-        <java classname="client.ClientEuclideanTsp" fork="true">
+        <java classname="client.ClientTsp" fork="true">
             <jvmarg value="-Djava.security.policy=policy"/>
             <arg value="${ip}"/>
             <classpath>
