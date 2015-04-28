@@ -14,27 +14,13 @@ import java.util.List;
  */
 public class TaskTsp extends CilkThread implements Task {
 
-    private final long START_TIME = System.currentTimeMillis(); //TODO
+    private final long START_TIME = System.nanoTime(); //TODO
 
-    //TODO
-    private static final double[][] CITIES =
-            {
-                    { 1, 1 },
-                    { 8, 1 },
-                    { 8, 8 },
-                    { 1, 8 },
-                    { 2, 2 },
-                    { 7, 2 },
-                    { 7, 7 },
-                    { 2, 7 },
-                    { 3, 3 },
-                    { 6, 3 },
-                    { 6, 6 },
-                    { 3, 6 }
-            };
+    private final double[][] CITIES;
 
-    public TaskTsp(Closure closure) {
+    public TaskTsp(Closure closure, double[][] cities) {
         super(closure);
+        this.CITIES = cities;
     }
 
     @Override
@@ -44,6 +30,10 @@ public class TaskTsp extends CilkThread implements Task {
         return null;
     }
 
+    /**
+     * Decomposes the problem to subtasks that are spawned in space
+     * @param c The Continuation of this task
+     */
     @Override
     public void decompose(Continuation c) {
 
@@ -60,15 +50,19 @@ public class TaskTsp extends CilkThread implements Task {
             succLists.add(swap(a.clone(), i, n-1));
 
         //Spawn next to get ID
-        long id = spawnNext(new TaskTsp(null),c, new Object[succLists.size()]);
+        long id = spawnNext(new TaskTsp(null, CITIES),c, new Object[succLists.size()]);
 
         //Spawn a new Continuation for each successor entry
         for(int i=0; i<succLists.size(); i++) {
             ResultValueWrapper rvw = new ResultValueWrapper(succLists.get(i), n-1);
-            spawn(new TaskTsp(null), new Continuation(id, i + 1, rvw));
+            spawn(new TaskTsp(null, CITIES), new Continuation(id, i + 1, rvw));
+        }
     }
-}
 
+    /**
+     * Composes the subsolutions into its own solution when the subtask values are ready
+     * @param list  List containing the Continuation objects of the subtasks
+     */
     @Override
     public void compose(List list) {
         List<Continuation> temp = (List<Continuation>) list;
@@ -89,6 +83,9 @@ public class TaskTsp extends CilkThread implements Task {
     }
 
 
+    /**
+     * Runs the CilkThread task instance and decides weather it should decompose or compose.
+     */
     @Override
     public void run() {
         List<Continuation> conts = (List<Continuation>)closure.getArguments();
