@@ -4,6 +4,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 
+import system.Closure;
 import system.Computer;
 
 public interface Space extends Remote
@@ -15,13 +16,17 @@ public interface Space extends Remote
 
     void put(Task task) throws RemoteException, InterruptedException;
 
+    void put(Closure closure)throws RemoteException;
+
+    void putClosureInReady(Closure closure) throws RemoteException;
+
     Result take() throws RemoteException, InterruptedException;
 
     void exit() throws RemoteException;
 
     void register(Computer computer) throws RemoteException;
 
-    Task getTaskFromQueue() throws RemoteException, InterruptedException;
+    Task takeTaskFromQueue() throws RemoteException, InterruptedException;
 
     void putResult(Result r) throws RemoteException;
 

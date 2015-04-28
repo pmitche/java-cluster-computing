@@ -2,6 +2,7 @@ package computer;
 
 import api.Space;
 import api.Task;
+import system.Closure;
 import system.Computer;
 
 import java.net.MalformedURLException;
@@ -24,7 +25,9 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
 
     public static void main(String[] args) throws RemoteException, NotBoundException, MalformedURLException, InterruptedException {
         System.setSecurityManager(new SecurityManager());
-        String url = "//" + inputIp() + "/" + Space.SERVICE_NAME;
+        String ip;
+        ip = args.length > 0 ? args[0] : inputIp();
+        String url = "//" + ip + "/" + Space.SERVICE_NAME;
         Space space = (Space) Naming.lookup(url);
         ComputerImpl computer = new ComputerImpl(space);
         space.register(computer);
@@ -46,6 +49,12 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
         T t= task.call();
         System.out.println((System.nanoTime()-elaps)/1000000);
         return t;
+    }
+
+    @Override
+    public <T> T execute(Closure closure) throws RemoteException {
+        closure.call();
+        return null;
     }
 
     /**

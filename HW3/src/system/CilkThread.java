@@ -25,7 +25,7 @@ public abstract class CilkThread implements Runnable, Task {
         Closure c = new Closure((int) Arrays.stream(arguments).filter(e -> !Optional.ofNullable(e).isPresent()).count(),arguments);
         c.setCilkThread(t);
         t.setClosure(c);
-        SpaceImpl.getInstance().putClosure(c);
+        SpaceImpl.getInstance().put(c);
         return c.getId();
     }
     protected long spawnNext(CilkThread t, Object... arguments){
@@ -33,7 +33,7 @@ public abstract class CilkThread implements Runnable, Task {
         c.setCilkThread(t);
         c.setIsAncestor(true);
         t.setClosure(c);
-        SpaceImpl.getInstance().putClosure(c);
+        SpaceImpl.getInstance().put(c);
         return c.getId();
     }
     protected void sendArgument(Continuation k){

@@ -1,9 +1,11 @@
 package system;
 
+import java.io.Serializable;
+
 /**
  * Created by Kyrre on 23.04.2015.
  */
-public class Continuation{
+public class Continuation implements Serializable{
 
     public final long closureId;
     public final int offset;
