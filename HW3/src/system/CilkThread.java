@@ -3,6 +3,7 @@ package system;
 import api.Task;
 import space.SpaceImpl;
 
+import java.rmi.RemoteException;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
@@ -25,7 +26,12 @@ public abstract class CilkThread implements Runnable, Task {
         Closure c = new Closure((int) Arrays.stream(arguments).filter(e -> !Optional.ofNullable(e).isPresent()).count(),arguments);
         c.setCilkThread(t);
         t.setClosure(c);
-        SpaceImpl.getInstance().put(c);
+        try {
+            System.out.println("CilkThread; Putting closure in ready");
+            SpaceImpl.getInstance().put(c);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
         return c.getId();
     }
     protected long spawnNext(CilkThread t, Object... arguments){
@@ -33,10 +39,16 @@ public abstract class CilkThread implements Runnable, Task {
         c.setCilkThread(t);
         c.setIsAncestor(true);
         t.setClosure(c);
-        SpaceImpl.getInstance().put(c);
+        try {
+            System.out.println("CilkThread; Putting closure in ready");
+            SpaceImpl.getInstance().put(c);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
         return c.getId();
     }
     protected void sendArgument(Continuation k){
+        System.out.println("CilkThread; Sending Continuation to Space");
         SpaceImpl.getInstance().receiveArgument(k);
     }
 
