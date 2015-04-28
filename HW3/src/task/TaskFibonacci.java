@@ -1,31 +1,38 @@
 package task;
 
-import api.Result;
 import system.CilkThread;
 import system.Closure;
 import system.Continuation;
-import system.ResultValueWrapper;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by hallvard on 4/25/15.
  */
 public class TaskFibonacci extends CilkThread {
 
-    private final long START_TIME = System.currentTimeMillis();
+    private final long START_TIME = System.nanoTime();
 
     public TaskFibonacci(Closure closure) {
         super(closure);
     }
 
+    /**
+     * Starting the Thread
+     * @return nullsafe Optional object.
+     */
     @Override
     public Object call() {
         Thread t = new Thread(this);
         t.start();
-        return null;
+        return Optional.empty();
     }
 
+    /**
+     * Decomposes the problem to subtasks that are spawned in space
+     * @param c The Continuation of this task
+     */
     @Override
     public void decompose(Continuation k) {
 
@@ -43,16 +50,29 @@ public class TaskFibonacci extends CilkThread {
         }
     }
 
+    /**
+     * Replaced by sum in this case for ease.
+     * @deprecated
+     */
     @Override
-    public void compose(List list) {
-        //Redundant: replaced by sum
-    }
+    public void compose(List list) {}
 
+    /**
+     * Problem specific implementation of the compose method.
+     * <p>The sum method simply sums together the two arguments and requests the thread
+     * to send the argument.</p>
+     * @param cont  Current Continuation
+     * @param arg0  Result-value of the first subtask
+     * @param arg1  Result-value of the second (and final) subtask
+     */
     private void sum(Continuation cont, int arg0, int arg1) {
         cont.setReturnVal(arg0 + arg1);
         sendArgument(cont);
     }
 
+    /**
+     * Runs the CilkThread task instance and decides weather it should decompose or compose.
+     */
     @Override
     public void run() {
         Continuation c = (Continuation) closure.getArgument(0);

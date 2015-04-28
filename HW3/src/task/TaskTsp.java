@@ -30,6 +30,10 @@ public class TaskTsp extends CilkThread implements Task {
         return null;
     }
 
+    /**
+     * Decomposes the problem to subtasks that are spawned in space
+     * @param c The Continuation of this task
+     */
     @Override
     public void decompose(Continuation c) {
 
@@ -55,6 +59,10 @@ public class TaskTsp extends CilkThread implements Task {
         }
     }
 
+    /**
+     * Composes the subsolutions into its own solution when the subtask values are ready
+     * @param list  List containing the Continuation objects of the subtasks
+     */
     @Override
     public void compose(List list) {
         List<Continuation> temp = (List<Continuation>) list;
@@ -75,6 +83,9 @@ public class TaskTsp extends CilkThread implements Task {
     }
 
 
+    /**
+     * Runs the CilkThread task instance and decides weather it should decompose or compose.
+     */
     @Override
     public void run() {
         List<Continuation> conts = (List<Continuation>)closure.getArguments();
