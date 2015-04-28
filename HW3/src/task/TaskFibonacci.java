@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class TaskFibonacci extends CilkThread {
 
-    private final long startTime = System.currentTimeMillis();
+    private final long START_TIME = System.currentTimeMillis();
 
     public TaskFibonacci(Closure closure) {
         super(closure);
@@ -28,6 +28,7 @@ public class TaskFibonacci extends CilkThread {
 
     @Override
     public void decompose(Continuation k) {
+
         int n = (int) k.argument;
         if(n<2) {
             k.setReturnVal(n);
@@ -43,15 +44,8 @@ public class TaskFibonacci extends CilkThread {
     }
 
     @Override
-    public Result compose(List list) {
-        Integer sum = 0;
-        for(Object c : list) {
-            ResultValueWrapper rvw = (ResultValueWrapper)((Continuation)c).argument; //Castception
-            sum += (int)rvw.getTaskReturnValue();
-        }
-        ResultValueWrapper<Integer, Object> rvw = new ResultValueWrapper(sum, ((Continuation)list.get(0)).closureId);
-
-        return new Result(rvw, System.currentTimeMillis()-startTime);
+    public void compose(List list) {
+        //Redundant: replaced by sum
     }
 
     private void sum(Continuation cont, int arg0, int arg1) {
@@ -65,8 +59,8 @@ public class TaskFibonacci extends CilkThread {
         System.out.println("Running: continuation ID: " + c.closureId);
         if (closure.isAncestor()){
             sum((Continuation) closure.getArgument(0), (int) closure.getArgument(1),(int) closure.getArgument(2));
-        }else {
-            decompose((Continuation) closure.getArgument(0));
+        } else {
+            decompose(c);
         }
     }
 }

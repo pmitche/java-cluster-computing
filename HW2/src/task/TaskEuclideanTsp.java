@@ -38,6 +38,7 @@ public class TaskEuclideanTsp implements Serializable, Task{
         swap(minPath, 1, lockedCity);
 
         tspRecusion(minPath, minPath.length);
+
     }
 
     private void tspRecusion(Integer[] a, int n) {
