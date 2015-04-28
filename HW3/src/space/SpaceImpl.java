@@ -34,22 +34,24 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         this.readyClosureQueue = new LinkedBlockingQueue<Closure>();
         this.closures = new HashMap<>();
 
-//        Thread t = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-                //System.out.println(readyClosureQueue.size());
-//                while (true){
-//                    Closure c;
-//                    try {
-//                        c = readyClosureQueue.take();
-//                        c.call();
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//        });
-//        t.start();
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println(readyClosureQueue.size());
+                while (true){
+                    Closure c;
+                    try {
+                        System.out.println("a");
+                        c = SpaceImpl.getInstance().takeReadyClosure();
+                        System.out.println("b");
+                        c.call();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        t.start();
     }
 
     public static void main(String[] args) throws RemoteException {
@@ -84,15 +86,15 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
 
     @Override
     public synchronized void put(Closure closure) throws RemoteException{
-        System.out.println("SpaceImpl; Putting closure "+closure+" size: "+closures.size());
         closures.put(closure.getId(), closure);
+        System.out.println("SpaceImpl; Putting closure " + closure + " size: " + closures.size());
     }
 
     @Override
     public void putClosureInReady(Closure closure) throws RemoteException {
         try {
-            System.out.println("SpaceImpl; Putting closure in ready "+closure+" size: "+readyClosureQueue.size());
             readyClosureQueue.put(closure);
+            System.out.println("SpaceImpl; Putting closure in ready " + closure + " size: " + readyClosureQueue.size());
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -118,7 +120,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         ComputerProxy cp = new ComputerProxy(computer);
         Thread t = new Thread(cp);
         t.start();
-        System.out.println("Computer registered and working...");
+        System.out.println("SpaceImpl; Computer registered and working...");
     }
 
     @Override
@@ -137,7 +139,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
      * @return
      */
     private static String inputIp(){
-        System.out.println("input space ip:");
+        System.out.println("SpaceImpl; input space ip:");
         Scanner sc = new Scanner(System.in);
         return sc.next();
     }
@@ -152,7 +154,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
 
         try {
             LocateRegistry.createRegistry(Space.PORT).rebind(Space.SERVICE_NAME, localSpace);
-            System.out.println("Local Space up and running...");
+            System.out.println("SpaceImpl; Local Space up and running...");
         } catch (RemoteException re) {
             re.printStackTrace();
         }
@@ -173,7 +175,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         return instance;
     }
 
-    public synchronized void receiveArgument(Continuation k) {
+    public void receiveArgument(Continuation k) {
         //TODO: for testing
         if (k.closureId == -1){
             System.out.println("SpaceImpl; Back to root");
@@ -184,8 +186,9 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         }
     }
 
-    public synchronized Closure takeReadyClosure() throws InterruptedException {
-        System.out.println("SpaceImpl;  Getting closure " + closures.size());
-        return readyClosureQueue.take();
+    public Closure takeReadyClosure() throws InterruptedException {
+        System.out.println("SpaceImpl;  Getting closure, size before get: " + readyClosureQueue.size());
+        Closure c = readyClosureQueue.take();
+        return c;
     }
 }
