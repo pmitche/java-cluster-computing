@@ -175,7 +175,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         if (k.closureId == -1){
             System.out.println("SpaceImpl; Back to root");
             System.out.println("\"Result\": "+k.getReturnVal());
-
+            putResult(new Result(k.getReturnVal(),-1));
         }else {
             closures.get(k.closureId).setArgument(k);
         }
