@@ -4,12 +4,9 @@ import api.Task;
 import system.CilkThread;
 import system.Closure;
 import system.Continuation;
-import system.ResultValueWrapper;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -91,17 +88,17 @@ public class TaskTsp extends CilkThread implements Task {
         sendArgument(currCont);
     }
 
-    private void bitch(Object[] fuck) {
+    private void testMethod(Object[] args) {
         Integer[] best = null;
         double shortest = Double.MAX_VALUE;
-        for(int i=1; i<fuck.length; i++) {
-            double path = totalDistance((Integer[])fuck[i]);//(Integer[])((ResultValueWrapper)cont.argument).getTaskReturnValue());
+        for(int i=1; i<args.length; i++) {
+            double path = totalDistance((Integer[])args[i]);//(Integer[])((ResultValueWrapper)cont.argument).getTaskReturnValue());
             if(best==null || path < shortest) {
-                best = (Integer[])fuck[i];
+                best = (Integer[])args[i];
                 shortest = path;
             }
         }
-        Continuation currCon = (Continuation)fuck[0];
+        Continuation currCon = (Continuation)args[0];
         currCon.setReturnVal(best);
         sendArgument(currCon);
     }
@@ -124,7 +121,7 @@ public class TaskTsp extends CilkThread implements Task {
     public void run() {
 
         if(closure.isAncestor()) {
-            bitch(closure.getArguments());
+            testMethod(closure.getArguments());
         }
         else decompose((Continuation)closure.getArgument(0));
     }

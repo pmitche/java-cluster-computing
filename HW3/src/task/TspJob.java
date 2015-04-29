@@ -72,9 +72,6 @@ public class TspJob implements Job {
 
 
 
-        //TODO her er det sikkert mye feil
-
-
 
         List<Result> resultList = new ArrayList<Result>();
         for(int i=1; i<cities.length-1; i++) {
@@ -83,7 +80,7 @@ public class TspJob implements Job {
             } catch (InterruptedException e) {e.printStackTrace();}
         }
 
-        List<Integer> minPath = Arrays.asList(((TaskTsp.Wrapper) resultList.remove(0).getTaskReturnValue()).PATH);
+        List<Integer> minPath = Arrays.asList(((Integer[]) resultList.remove(0).getTaskReturnValue()));
 
         /*
 
