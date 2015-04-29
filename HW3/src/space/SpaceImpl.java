@@ -34,24 +34,22 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         this.readyClosureQueue = new LinkedBlockingQueue<Closure>();
         this.closures = new HashMap<>();
 
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                System.out.println(readyClosureQueue.size());
-                while (true){
-                    Closure c;
-                    try {
-                        System.out.println("a");
-                        c = SpaceImpl.getInstance().takeReadyClosure();
-                        System.out.println("b");
-                        c.call();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+        Thread t = new Thread(() -> {
+            System.out.println(readyClosureQueue.size());
+            while (true){
+                Closure c;
+                try {
+                    System.out.println("a");
+                    c = SpaceImpl.getInstance().takeReadyClosure();
+                    System.out.println("b");
+                    c.call();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
         });
         t.start();
+
     }
 
     public static void main(String[] args) throws RemoteException {
