@@ -36,9 +36,9 @@ public abstract class CilkThread implements Runnable, Task {
     }
     protected long spawnNext(CilkThread t, Object... arguments){
         Closure c = new Closure((int) Arrays.stream(arguments).filter(e -> !Optional.ofNullable(e).isPresent()).count(),arguments);
-        c.setCilkThread(t);
         c.setIsAncestor(true);
         t.setClosure(c);
+        c.setCilkThread(t);
         try {
             System.out.println("CilkThread; Putting closure in ready");
             SpaceImpl.getInstance().put(c);
