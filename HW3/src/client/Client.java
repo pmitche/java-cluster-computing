@@ -49,6 +49,7 @@ public class Client<T> extends JFrame
             runSingleJVM();
         else
             space = ( domainName == null ) ? SpaceImpl.getInstance() : (Space) Naming.lookup( url );
+        SpaceImpl.setInstance(space);
     }
 
     /**
