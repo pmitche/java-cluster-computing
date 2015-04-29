@@ -45,6 +45,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
                 c.call();
             }
         });
+
         //t.start();
     }
 
@@ -184,7 +185,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     public void putClosureInReady(Closure closure) throws RemoteException {
         try {
             readyClosureQueue.put(closure);
-            System.out.println("SpaceImpl; Putting closure in ready " + closure + " size: " + readyClosureQueue.size());
+    //        System.out.println("SpaceImpl; Putting closure in ready " + closure + " size: " + readyClosureQueue.size());
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
