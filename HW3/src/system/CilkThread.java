@@ -22,33 +22,50 @@ public abstract class CilkThread implements Runnable, Task {
         }
     }
 
+    /**
+     * puts the closure in the map
+     * @param t
+     * @param arguments
+     * @return
+     */
     protected long spawn(CilkThread t, Object... arguments){
         Closure c = new Closure((int) Arrays.stream(arguments).filter(e -> !Optional.ofNullable(e).isPresent()).count(),arguments);
         c.setCilkThread(t);
         t.setClosure(c);
         try {
-            System.out.println("CilkThread; spawn() Putting closure in map");
+    //        System.out.println("CilkThread; spawn() Putting closure in map");
             SpaceImpl.getInstance().put(c);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
         return c.getId();
     }
+    /**
+     * sets the ancestor and putting the closure in map
+     * @param t
+     * @param arguments
+     * @return
+     */
     protected long spawnNext(CilkThread t, Object... arguments){
         Closure c = new Closure((int) Arrays.stream(arguments).filter(e -> !Optional.ofNullable(e).isPresent()).count(),arguments);
         c.setIsAncestor(true);
         t.setClosure(c);
         c.setCilkThread(t);
         try {
-            System.out.println("CilkThread; spawnNext() Putting closure in map");
+  //          System.out.println("CilkThread; spawnNext() Putting closure in map");
             SpaceImpl.getInstance().put(c);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
         return c.getId();
     }
+
+    /**
+     * method for sending continuation to Space
+     * @param k
+     */
     protected void sendArgument(Continuation k){
-        System.out.println("CilkThread; Sending Continuation to Space");
+//        System.out.println("CilkThread; Sending Continuation to Space");
         try {
             SpaceImpl.getInstance().receiveArgument(k);
         } catch (RemoteException e) {
