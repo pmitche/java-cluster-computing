@@ -40,11 +40,7 @@ public class ComputerProxy implements Runnable {
                // space.put(closure);
                System.out.println("ComputerProxy; Computer failed, task re-entered in queue...");
                e.printStackTrace();
-
                return;
-
-           } catch (InterruptedException e) {
-               e.printStackTrace();
            }
 //           try {
 //               SpaceImpl.getInstance().putResult(r);

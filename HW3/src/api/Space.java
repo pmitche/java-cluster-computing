@@ -7,6 +7,7 @@ import java.util.List;
 import space.SpaceImpl;
 import system.Closure;
 import system.Computer;
+import system.Continuation;
 
 public interface Space extends Remote
 {
@@ -32,4 +33,7 @@ public interface Space extends Remote
 
     void putResult(Result r) throws RemoteException;
 
+    Closure takeReadyClosure() throws  RemoteException;
+
+    void receiveArgument(Continuation k) throws RemoteException;
 }

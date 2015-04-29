@@ -22,7 +22,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class SpaceImpl extends UnicastRemoteObject implements Space {
 
-    private static volatile SpaceImpl instance;
+    private static Space instance;
     private LinkedBlockingQueue<Task> taskQueue;
     private LinkedBlockingQueue<Result> resultQueue;
     private LinkedBlockingQueue<Closure> readyClosureQueue;
@@ -34,22 +34,20 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         this.readyClosureQueue = new LinkedBlockingQueue<Closure>();
         this.closures = new HashMap<>();
 
-        Thread t = new Thread(() -> {
+
+        Thread t = new Thread(() ->{
             System.out.println(readyClosureQueue.size());
             while (true){
-                Closure c;
+                Closure c = null;
                 try {
-                    System.out.println("a");
                     c = SpaceImpl.getInstance().takeReadyClosure();
-                    System.out.println("b");
-                    c.call();
-                } catch (InterruptedException e) {
+                } catch (RemoteException e) {
                     e.printStackTrace();
                 }
+                c.call();
             }
         });
         t.start();
-
     }
 
     public static void main(String[] args) throws RemoteException {
@@ -61,7 +59,6 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         SpaceImpl.getInstance();
         Continuation cont = new Continuation(-1,-1, new Integer(8));
         new TaskFibonacci(new Closure(0, cont));
-        System.out.println(SpaceImpl.getInstance().readyClosureQueue.size());
         System.out.println("Space running...");
     }
 
@@ -158,7 +155,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         }
     }
 
-    public static SpaceImpl getInstance(){
+    public static Space getInstance(){
         if (instance == null ) {
             synchronized (SpaceImpl.class) {
                 if (instance == null) {
@@ -173,7 +170,18 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         return instance;
     }
 
-    public void receiveArgument(Continuation k) {
+    public static void setInstance(Space space){
+        if (instance == null ) {
+            synchronized (SpaceImpl.class) {
+                if (instance == null) {
+                    instance = space;
+                }
+            }
+        }
+    }
+
+    @Override
+    public void receiveArgument(Continuation k) throws RemoteException{
         //TODO: for testing
         if (k.closureId == -1){
             System.out.println("SpaceImpl; Back to root");
@@ -183,10 +191,17 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
             closures.get(k.closureId).setArgument(k);
         }
     }
-
-    public Closure takeReadyClosure() throws InterruptedException {
-        System.out.println("SpaceImpl;  Getting closure, size before get: " + readyClosureQueue.size());
-        Closure c = readyClosureQueue.take();
+    @Override
+    public Closure takeReadyClosure() throws RemoteException {
+        System.out.println("SpaceImpl;  takeReadyClosure(), size before get: " + readyClosureQueue.size());
+        Closure c = null;
+        try {
+            c = readyClosureQueue.take();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("SpaceImpl; takeReadyClosure() ######, size after" +
+                " get: " + readyClosureQueue.size());
         return c;
     }
 }
