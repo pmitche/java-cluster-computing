@@ -42,12 +42,15 @@ public class TaskTsp extends CilkThread implements Task {
 
 //        int n = (Integer) (((ResultValueWrapper) c.argument).getN());
         int n = ((Wrapper)(c.argument)).N;
+
+//        Integer[] a = (Integer[])((ResultValueWrapper) c.argument).getTaskReturnValue();
+        Integer[] a = ((Wrapper)c.argument).PATH;
+
         if(n < 2) {
+            c.setReturnVal(a);
             sendArgument(c);
             return;
         }
-//        Integer[] a = (Integer[])((ResultValueWrapper) c.argument).getTaskReturnValue();
-        Integer[] a = ((Wrapper)c.argument).PATH;
 
         //Create all successor lists
         List<Integer[]> succLists = new ArrayList<>();
@@ -71,16 +74,16 @@ public class TaskTsp extends CilkThread implements Task {
     @Override
     public void compose(List list) {
 
-        ArrayList<Wrapper> temp = (ArrayList<Wrapper>)list.subList(1,list.size());
+        ArrayList<Integer[]> temp = (ArrayList<Integer[]>)list.subList(1,list.size());
         Continuation currCont = (Continuation)list.get(0);
 
-        Wrapper best = null;
+        Integer[] best = null;
         double shortest = Double.MAX_VALUE;
-        for(Wrapper res : temp) {
-            double path = totalDistance(res.PATH);//(Integer[])((ResultValueWrapper)cont.argument).getTaskReturnValue());
-            if(best==null || path < shortest) {
-                best = res;
-                shortest = path;
+        for(Integer[] path : temp) {
+            double way = totalDistance(path);//(Integer[])((ResultValueWrapper)cont.argument).getTaskReturnValue());
+            if(best==null || way < shortest) {
+                best = path;
+                shortest = way;
             }
         }
 
@@ -89,12 +92,12 @@ public class TaskTsp extends CilkThread implements Task {
     }
 
     private void bitch(Object[] fuck) {
-        Wrapper best = null;
+        Integer[] best = null;
         double shortest = Double.MAX_VALUE;
         for(int i=1; i<fuck.length; i++) {
-            double path = totalDistance(((Wrapper)fuck[i]).PATH);//(Integer[])((ResultValueWrapper)cont.argument).getTaskReturnValue());
+            double path = totalDistance((Integer[])fuck[i]);//(Integer[])((ResultValueWrapper)cont.argument).getTaskReturnValue());
             if(best==null || path < shortest) {
-                best = (Wrapper)fuck[i];
+                best = (Integer[])fuck[i];
                 shortest = path;
             }
         }
