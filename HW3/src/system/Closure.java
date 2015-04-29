@@ -4,6 +4,7 @@ import api.Task;
 import space.SpaceImpl;
 
 import java.io.Serializable;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,13 +27,23 @@ public class Closure implements Serializable {
         this.cilkThread = null;
         this.isAncestor = false;
         //TODO: can this casue error?
-        SpaceImpl.getInstance().put(this);
+        try {
+            SpaceImpl.getInstance().put(this);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     private void ready() {
         //TODO: kopier variabler in i Cilk thread
+        System.out.println("Closure; In ready()");
         if (missingArgsCount == 0 && cilkThread != null){
-            SpaceImpl.getInstance().putClosureInReady(this);
+            try {
+                System.out.println("Closure: In ready(), putting closure in space readyQueue");
+                SpaceImpl.getInstance().putClosureInReady(this);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
     }
 

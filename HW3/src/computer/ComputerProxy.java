@@ -30,13 +30,15 @@ public class ComputerProxy implements Runnable {
            Closure closure = null;
            Result r = null;
            try {
-               closure = SpaceImpl.getInstance().getReadyClosure();
+               System.out.println("ComputerProxy; Waiting for ready Closure");
+               closure = SpaceImpl.getInstance().takeReadyClosure();
+               System.out.println("ComputerProxy; took and executing closure: "+closure);
                r = (Result) computer.execute(closure);
-               System.out.println("closure "+closure);
+               System.out.println("ComputerProxy; done executing closure: "+closure);
            } catch (RemoteException e) {
                //TODO: re-enter closure
                // space.put(closure);
-               System.out.println("Computer failed, task re-entered in queue...");
+               System.out.println("ComputerProxy; Computer failed, task re-entered in queue...");
                e.printStackTrace();
 
                return;

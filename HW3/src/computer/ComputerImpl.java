@@ -45,6 +45,7 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
 
     @Override
     public <T> T execute(Task<T> task) throws RemoteException {
+        System.out.println("ComputerImpl; execute("+task+")");
         long elaps = System.nanoTime();
         T t= task.call();
         System.out.println((System.nanoTime()-elaps)/1000000);
