@@ -33,7 +33,7 @@ public abstract class CilkThread implements Runnable, Task {
         c.setCilkThread(t);
         t.setClosure(c);
         try {
-            System.out.println("CilkThread; spawn() Putting closure in map");
+    //        System.out.println("CilkThread; spawn() Putting closure in map");
             SpaceImpl.getInstance().put(c);
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -52,7 +52,7 @@ public abstract class CilkThread implements Runnable, Task {
         t.setClosure(c);
         c.setCilkThread(t);
         try {
-            System.out.println("CilkThread; spawnNext() Putting closure in map");
+  //          System.out.println("CilkThread; spawnNext() Putting closure in map");
             SpaceImpl.getInstance().put(c);
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -65,7 +65,7 @@ public abstract class CilkThread implements Runnable, Task {
      * @param k
      */
     protected void sendArgument(Continuation k){
-        System.out.println("CilkThread; Sending Continuation to Space");
+//        System.out.println("CilkThread; Sending Continuation to Space");
         try {
             SpaceImpl.getInstance().receiveArgument(k);
         } catch (RemoteException e) {
