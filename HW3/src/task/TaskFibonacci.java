@@ -39,9 +39,8 @@ public class TaskFibonacci extends CilkThread {
         int n = (int) k.argument;
         if(n<2) {
             k.setReturnVal(n);
-            sendArgument(k); //TODO send n
+            sendArgument(k);
         } else {
-            //TODO: fix pointer hax
             long id = spawnNext(new TaskFibonacci(null), k, null, null);
             Continuation c1 = new Continuation(id, 1, n-1)
                         ,c2 = new Continuation(id, 2, n-2);
