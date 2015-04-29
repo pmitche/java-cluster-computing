@@ -195,14 +195,14 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     }
     @Override
     public Closure takeReadyClosure() throws RemoteException {
-        System.out.println("SpaceImpl;  Getting closure, size before get: " + readyClosureQueue.size());
+        System.out.println("SpaceImpl;  takeReadyClosure(), size before get: " + readyClosureQueue.size());
         Closure c = null;
         try {
             c = readyClosureQueue.take();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("SpaceImpl; ###### Getting closure, size after" +
+        System.out.println("SpaceImpl; takeReadyClosure() ######, size after" +
                 " get: " + readyClosureQueue.size());
         return c;
     }
