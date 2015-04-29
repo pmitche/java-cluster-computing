@@ -47,8 +47,8 @@ public class Client<T> extends JFrame
         String url = "rmi://" + domainName + ":" + Space.PORT + "/" + Space.SERVICE_NAME;
         if(singleJVM)
             runSingleJVM();
-        //else
-            //space = ( domainName == null ) ? new SpaceImpl() : (Space) Naming.lookup( url );
+        else
+            space = ( domainName == null ) ? SpaceImpl.getInstance() : (Space) Naming.lookup( url );
     }
 
     /**

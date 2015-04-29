@@ -6,6 +6,7 @@ import system.Closure;
 import system.Continuation;
 import system.ResultValueWrapper;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,12 +38,14 @@ public class TaskTsp extends CilkThread implements Task {
     @Override
     public void decompose(Continuation c) {
 
-        int n = (Integer)((ResultValueWrapper)c.argument).getN();
+//        int n = (Integer) (((ResultValueWrapper) c.argument).getN());
+        int n = ((Wrapper)(c.argument)).N;
         if(n < 2) {
             sendArgument(c);
             return;
         }
-        Integer[] a = (Integer[])((ResultValueWrapper) c.argument).getTaskReturnValue();
+//        Integer[] a = (Integer[])((ResultValueWrapper) c.argument).getTaskReturnValue();
+        Integer[] a = ((Wrapper)c.argument).PATH;
 
         //Create all successor lists
         List<Integer[]> succLists = new ArrayList<>();
@@ -54,8 +57,8 @@ public class TaskTsp extends CilkThread implements Task {
 
         //Spawn a new Continuation for each successor entry
         for(int i=0; i<succLists.size(); i++) {
-            ResultValueWrapper rvw = new ResultValueWrapper(succLists.get(i), n-1);
-            spawn(new TaskTsp(null, CITIES), new Continuation(id, i + 1, rvw));
+//            ResultValueWrapper rvw = new ResultValueWrapper(succLists.get(i), n-1);
+            spawn(new TaskTsp(null, CITIES), new Continuation(id, i + 1, new Wrapper(n-1, succLists.get(i))));
         }
     }
 
@@ -66,12 +69,13 @@ public class TaskTsp extends CilkThread implements Task {
     @Override
     public void compose(List list) {
         List<Continuation> temp = (List<Continuation>) list;
-        Continuation currCont = temp.remove(0);
+        Continuation currCont = null;
+        currCont = temp.remove(0);
 
         Continuation best = null;
         double shortest = Double.MAX_VALUE;
         for(Continuation cont : temp) {
-            double path = totalDistance((Integer[])((ResultValueWrapper)cont.argument).getTaskReturnValue());
+            double path = totalDistance(((Wrapper)cont.argument).PATH);//(Integer[])((ResultValueWrapper)cont.argument).getTaskReturnValue());
             if(best==null || path < shortest) {
                 best = cont;
                 shortest = path;
@@ -80,6 +84,15 @@ public class TaskTsp extends CilkThread implements Task {
 
         currCont.setReturnVal(best.argument);
         sendArgument(currCont);
+    }
+
+    public static final class Wrapper implements Serializable{
+        public final Integer N;
+        public final Integer[] PATH;
+        public Wrapper(Integer n, Integer[] path){
+            this.N = n;
+            this.PATH = path;
+        }
     }
 
 

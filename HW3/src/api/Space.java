@@ -4,6 +4,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 
+import space.SpaceImpl;
 import system.Closure;
 import system.Computer;
 import system.Continuation;
@@ -12,6 +13,7 @@ public interface Space extends Remote
 {
     public static int PORT = 1099;
     public static String SERVICE_NAME = "Space";
+
 
     void putAll(List<Task> taskList) throws RemoteException;
 

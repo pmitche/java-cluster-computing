@@ -11,6 +11,7 @@ import task.TaskTsp;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -50,7 +51,8 @@ public class TspJob implements Job {
 
         try {
             space.put(new TaskTsp(new Closure(0, new Continuation(-1,-1,
-                      new ResultValueWrapper(cities.length, startPath))), cities));
+                      //new ResultValueWrapper(cities.length, startPath))), cities));
+                    new TaskTsp.Wrapper(cities.length, startPath))), cities));
         } catch (InterruptedException e) {  e.printStackTrace();    }
 
     }
@@ -81,6 +83,10 @@ public class TspJob implements Job {
             } catch (InterruptedException e) {e.printStackTrace();}
         }
 
+        List<Integer> minPath = Arrays.asList(((TaskTsp.Wrapper) resultList.remove(0).getTaskReturnValue()).PATH);
+
+        /*
+
         //Process task results to final result
         ResultValueWrapper rw0 = (ResultValueWrapper)resultList.remove(0).getTaskReturnValue();
         List<Integer> minPath = (List<Integer>)rw0.getTaskReturnValue();
@@ -93,7 +99,7 @@ public class TspJob implements Job {
                 minDistance = dist;
                 minPath = tmp;
             }
-        }
+        }*/
         return minPath;
     }
 }

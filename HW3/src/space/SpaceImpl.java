@@ -34,22 +34,20 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         this.readyClosureQueue = new LinkedBlockingQueue<Closure>();
         this.closures = new HashMap<>();
 
-//        Thread t = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                System.out.println(readyClosureQueue.size());
-//                while (true){
-//                    Closure c = null;
-//                    try {
-//                        c = SpaceImpl.getInstance().takeReadyClosure();
-//                    } catch (RemoteException e) {
-//                        e.printStackTrace();
-//                    }
-//                    c.call();
-//                }
-//            }
-//        });
-//        t.start();
+
+        Thread t = new Thread(() ->{
+            System.out.println(readyClosureQueue.size());
+            while (true){
+                Closure c = null;
+                try {
+                    c = SpaceImpl.getInstance().takeReadyClosure();
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+                c.call();
+            }
+        });
+        t.start();
     }
 
     public static void main(String[] args) throws RemoteException {
@@ -195,14 +193,14 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     }
     @Override
     public Closure takeReadyClosure() throws RemoteException {
-        System.out.println("SpaceImpl;  Getting closure, size before get: " + readyClosureQueue.size());
+        System.out.println("SpaceImpl;  takeReadyClosure(), size before get: " + readyClosureQueue.size());
         Closure c = null;
         try {
             c = readyClosureQueue.take();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("SpaceImpl; ###### Getting closure, size after" +
+        System.out.println("SpaceImpl; takeReadyClosure() ######, size after" +
                 " get: " + readyClosureQueue.size());
         return c;
     }
