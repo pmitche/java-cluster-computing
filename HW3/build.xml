@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="hw3" default="everything" basedir=".">
+
+    <!-- set global properties for this build -->
+    <property name="src" location="src"/>
+    <property name="build" location="build"/>
+    <property name="dist"  location="dist"/>
+    <property name="lib" location="library"/>
+    <property name="ip" value="localhost"/>
+
+
+    <!-- codebase properties -->
+    <!--
+    <property name="computer_file_codebase" location="/src/computer" />
+    <property name="computer_web_codebase" value="build/tasks" />
+    <property name="client_file_codebase" location="./client_file_codebase" />
+    <property name="client_web_codebase" value="http://www.cs.ucsb.edu/~cappello/cs290b/hw1/client/" />
+    -->
+
+    <target name="everything" depends="dist, javadoc"/>
+
+    <target name="compile" description="compile the source">
+        <!-- Create the build directory structure used by compile -->
+        <mkdir dir="${build}"/>
+
+        <!-- Compile the java code from ${src} into ${build} -->
+        <javac srcdir="${src}" destdir="${build}"/>
+    </target>
+
+    <!--  Make necessary jar files. -->
+    <target name="dist" depends="compile" description="generate the distribution" >
+        <!-- Create the distribution directory -->
+        <mkdir dir="${dist}"/>
+
+        <!-- Make computer jar file -->
+        <jar jarfile="${dist}/computer.jar" basedir="${build}" includes="computer/** api/** task/** system/** space/** task/**">
+            <manifest>
+                <attribute name="Main-Class" value="computer.ComputerImpl"/>
+            </manifest>
+        </jar>
+
+        <!-- Make clientEuclideanTsp jar file -->
+        <jar jarfile="${dist}/clientEuclideanTsp.jar" basedir="${build}" includes="system/** computer/** api/** task/** client/** space/**">
+            <manifest>
+                <attribute name="Main-Class" value="client.ClientTsp"/>
+            </manifest>
+        </jar>
+
+        <!-- Make clientMandelbrotSet jar file -->
+        <jar jarfile="${dist}/clientFib.jar" basedir="${build}" includes="system/** computer/** space/** client/** api/** task/** ">
+            <manifest>
+                <attribute name="Main-Class" value="client.ClientFibonacci"/>
+            </manifest>
+        </jar>
+
+        <!-- Make space jar file -->
+        <jar jarfile="${dist}/space.jar" basedir="${build}" includes="computer/** space/** api/** system/** task/**">
+            <manifest>
+                <attribute name="Main-Class" value="space.SpaceImpl"/>
+            </manifest>
+        </jar>
+
+        <!-- Make tasks-dl jar file -->
+        <jar jarfile="${dist}/tasks-dl.jar" basedir="${build}" includes="task/** api**"/>
+
+    </target>
+
+    <!-- Create Javadocs -->
+    <target name="javadoc" description="create javadocs">
+        <javadoc packagenames="tasks.*,api.*" sourcepath="${src}" destdir="documents/javadoc" />
+    </target>
+
+    <target name="runComputer" description="run computer" >
+        <java classname="computer.ComputerImpl" fork="true">
+            <jvmarg value="-Djava.security.policy=policy"/>
+            <classpath>
+                <pathelement location="dist/computer.jar"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="runSpace" description="run space">
+        <java classname="space.SpaceImpl" fork="true">
+            <jvmarg value="-Djava.security.policy=policy"/>
+            <classpath>
+                <pathelement location="dist/space.jar"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="runClientTsp" description="run TSP client" >
+        <java classname="client.ClientTsp" fork="true">
+            <jvmarg value="-Djava.security.policy=policy"/>
+            <arg value="${ip}"/>
+            <classpath>
+                <pathelement location="dist/clientEuclideanTsp.jar"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="runClientFib" description="run MandelbrotSet client" >
+        <java classname="client.ClientFibonacci" fork="true">
+            <jvmarg value="-Djava.security.policy=policy"/>
+            <arg value="${ip}"/>
+            <classpath>
+                <pathelement location="dist/clientFib.jar"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="clean" description="clean up" >
+        <!-- Delete the ${build} and ${dist} directory trees -->
+        <!-- <delete dir="${client_file_codebase}/tasks"/> -->
+        <delete dir="${build}"/>
+        <delete dir="${dist}"/>
+    </target>
+
+</project>
