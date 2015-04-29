@@ -22,6 +22,12 @@ public abstract class CilkThread implements Runnable, Task {
         }
     }
 
+    /**
+     * puts the closure in the map
+     * @param t
+     * @param arguments
+     * @return
+     */
     protected long spawn(CilkThread t, Object... arguments){
         Closure c = new Closure((int) Arrays.stream(arguments).filter(e -> !Optional.ofNullable(e).isPresent()).count(),arguments);
         c.setCilkThread(t);
@@ -34,6 +40,12 @@ public abstract class CilkThread implements Runnable, Task {
         }
         return c.getId();
     }
+    /**
+     * sets the ancestor and putting the closure in map
+     * @param t
+     * @param arguments
+     * @return
+     */
     protected long spawnNext(CilkThread t, Object... arguments){
         Closure c = new Closure((int) Arrays.stream(arguments).filter(e -> !Optional.ofNullable(e).isPresent()).count(),arguments);
         c.setIsAncestor(true);
@@ -47,6 +59,11 @@ public abstract class CilkThread implements Runnable, Task {
         }
         return c.getId();
     }
+
+    /**
+     * method for sending continuation to Space
+     * @param k
+     */
     protected void sendArgument(Continuation k){
 //        System.out.println("CilkThread; Sending Continuation to Space");
         try {

@@ -6,6 +6,11 @@ public class Result<T> implements Serializable
     private final T taskReturnValue;
     private final long taskRunTime;
 
+    /**
+     * constructor for results of the returnvalue and run time for each task
+     * @param taskReturnValue
+     * @param taskRunTime
+     */
     public Result( T taskReturnValue, long taskRunTime )
     {
         assert taskReturnValue != null;

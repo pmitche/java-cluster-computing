@@ -11,6 +11,7 @@ import system.Continuation;
 
 public interface Space extends Remote
 {
+
     public static int PORT = 1099;
     public static String SERVICE_NAME = "Space";
 

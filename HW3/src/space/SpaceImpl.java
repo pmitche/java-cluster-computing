@@ -45,7 +45,8 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
                 c.call();
             }
         });
-        t.start();
+
+        //t.start();
     }
 
     public static void main(String[] args) throws RemoteException {
