@@ -54,8 +54,8 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         String ip;
         ip = args.length > 0 ? args[0] : inputIp();
         System.setProperty("java.rmi.server.hostname", ip);
-        Continuation cont = new Continuation(-1,-1, new Integer(8));
-        new TaskFibonacci(new Closure(0, cont));
+        //Continuation cont = new Continuation(-1,-1, new Integer(8));
+        //new TaskFibonacci(new Closure(0, cont));
         System.out.println("Space running...");
     }
 
