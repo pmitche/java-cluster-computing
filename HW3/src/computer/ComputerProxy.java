@@ -33,7 +33,7 @@ public class ComputerProxy implements Runnable {
                System.out.println("ComputerProxy; Waiting for ready Closure");
                closure = SpaceImpl.getInstance().takeReadyClosure();
                System.out.println("ComputerProxy; took and executing closure: "+closure);
-               r = (Result) computer.execute(closure);
+               computer.execute(closure);
                System.out.println("ComputerProxy; done executing closure: "+closure);
            } catch (RemoteException e) {
                //TODO: re-enter closure
