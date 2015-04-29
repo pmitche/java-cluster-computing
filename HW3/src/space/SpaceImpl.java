@@ -22,7 +22,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class SpaceImpl extends UnicastRemoteObject implements Space {
 
-    private static volatile Space instance;
+    private static Space instance;
     private LinkedBlockingQueue<Task> taskQueue;
     private LinkedBlockingQueue<Result> resultQueue;
     private LinkedBlockingQueue<Closure> readyClosureQueue;
@@ -34,24 +34,22 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         this.readyClosureQueue = new LinkedBlockingQueue<Closure>();
         this.closures = new HashMap<>();
 
-//        Thread t = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                System.out.println(readyClosureQueue.size());
-//                while (true){
-//                    Closure c = null;
-//                    System.out.println("a");
-//                    try {
-//                        c = SpaceImpl.getInstance().takeReadyClosure();
-//                    } catch (RemoteException e) {
-//                        e.printStackTrace();
-//                    }
-//                    System.out.println("b");
-//                    c.call();
-//                }
-//            }
-//        });
-//        t.start();
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println(readyClosureQueue.size());
+                while (true){
+                    Closure c = null;
+                    try {
+                        c = SpaceImpl.getInstance().takeReadyClosure();
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                    c.call();
+                }
+            }
+        });
+        t.start();
     }
 
     public static void main(String[] args) throws RemoteException {
@@ -204,6 +202,8 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        System.out.println("SpaceImpl; ###### Getting closure, size after" +
+                " get: " + readyClosureQueue.size());
         return c;
     }
 }

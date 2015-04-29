@@ -17,11 +17,9 @@ import java.util.Scanner;
  * Created by Kyrre on 13.04.2015.
  */
 public class ComputerImpl extends UnicastRemoteObject implements Computer {
-    private final Space space;
     private int id = -1;
 
     public ComputerImpl(Space space) throws RemoteException {
-        this.space = space;
         SpaceImpl.setInstance(space);
     }
 
@@ -32,7 +30,7 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
         String url = "//" + ip + "/" + Space.SERVICE_NAME;
         Space space = (Space) Naming.lookup(url);
         ComputerImpl computer = new ComputerImpl(space);
-        space.register(computer);
+        SpaceImpl.getInstance().register(computer);
         System.out.println("Registered to Space, running...");
     }
 
