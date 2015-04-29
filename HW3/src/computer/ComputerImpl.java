@@ -2,6 +2,7 @@ package computer;
 
 import api.Space;
 import api.Task;
+import space.SpaceImpl;
 import system.Closure;
 import system.Computer;
 
@@ -21,6 +22,7 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
 
     public ComputerImpl(Space space) throws RemoteException {
         this.space = space;
+        SpaceImpl.setInstance(space);
     }
 
     public static void main(String[] args) throws RemoteException, NotBoundException, MalformedURLException, InterruptedException {

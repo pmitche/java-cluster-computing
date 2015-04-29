@@ -49,7 +49,11 @@ public abstract class CilkThread implements Runnable, Task {
     }
     protected void sendArgument(Continuation k){
         System.out.println("CilkThread; Sending Continuation to Space");
-        SpaceImpl.getInstance().receiveArgument(k);
+        try {
+            SpaceImpl.getInstance().receiveArgument(k);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setClosure(Closure closure) {
