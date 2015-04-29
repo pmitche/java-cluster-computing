@@ -36,10 +36,10 @@ public class Closure implements Serializable {
 
     private void ready() {
         //TODO: kopier variabler in i Cilk thread
-        System.out.println("Closure; In ready()");
+  //      System.out.println("Closure; In ready()");
         if (missingArgsCount == 0 && cilkThread != null){
             try {
-                System.out.println("Closure: In ready(), putting closure in space readyQueue");
+//                System.out.println("Closure: In ready(), putting closure in space readyQueue");
                 SpaceImpl.getInstance().putClosureInReady(this);
             } catch (RemoteException e) {
                 e.printStackTrace();
@@ -70,8 +70,8 @@ public class Closure implements Serializable {
         return arguments[i];
     }
 
-    public List getArguments() {
-        return Arrays.asList(arguments);
+    public Object[] getArguments() {
+        return arguments.clone();
     }
 
     public boolean isAncestor() {

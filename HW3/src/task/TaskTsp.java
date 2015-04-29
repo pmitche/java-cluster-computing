@@ -7,7 +7,9 @@ import system.Continuation;
 import system.ResultValueWrapper;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -68,23 +70,39 @@ public class TaskTsp extends CilkThread implements Task {
      */
     @Override
     public void compose(List list) {
-        List<Continuation> temp = (List<Continuation>) list;
-        Continuation currCont = null;
-        currCont = temp.remove(0);
 
-        Continuation best = null;
+        ArrayList<Wrapper> temp = (ArrayList<Wrapper>)list.subList(1,list.size());
+        Continuation currCont = (Continuation)list.get(0);
+
+        Wrapper best = null;
         double shortest = Double.MAX_VALUE;
-        for(Continuation cont : temp) {
-            double path = totalDistance(((Wrapper)cont.argument).PATH);//(Integer[])((ResultValueWrapper)cont.argument).getTaskReturnValue());
+        for(Wrapper res : temp) {
+            double path = totalDistance(res.PATH);//(Integer[])((ResultValueWrapper)cont.argument).getTaskReturnValue());
             if(best==null || path < shortest) {
-                best = cont;
+                best = res;
                 shortest = path;
             }
         }
 
-        currCont.setReturnVal(best.argument);
+        currCont.setReturnVal(best);
         sendArgument(currCont);
     }
+
+    private void bitch(Object[] fuck) {
+        Wrapper best = null;
+        double shortest = Double.MAX_VALUE;
+        for(int i=1; i<fuck.length; i++) {
+            double path = totalDistance(((Wrapper)fuck[i]).PATH);//(Integer[])((ResultValueWrapper)cont.argument).getTaskReturnValue());
+            if(best==null || path < shortest) {
+                best = (Wrapper)fuck[i];
+                shortest = path;
+            }
+        }
+        Continuation currCon = (Continuation)fuck[0];
+        currCon.setReturnVal(best);
+        sendArgument(currCon);
+    }
+
 
     public static final class Wrapper implements Serializable{
         public final Integer N;
@@ -101,9 +119,11 @@ public class TaskTsp extends CilkThread implements Task {
      */
     @Override
     public void run() {
-        List<Continuation> conts = (List<Continuation>)closure.getArguments();
-        if(closure.isAncestor()) compose(conts);
-        else decompose(conts.get(0));
+
+        if(closure.isAncestor()) {
+            bitch(closure.getArguments());
+        }
+        else decompose((Continuation)closure.getArgument(0));
     }
 
     /**

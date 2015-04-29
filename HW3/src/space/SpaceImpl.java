@@ -57,8 +57,8 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         ip = args.length > 0 ? args[0] : inputIp();
         System.setProperty("java.rmi.server.hostname", ip);
         SpaceImpl.getInstance();
-        Continuation cont = new Continuation(-1,-1, new Integer(8));
-        new TaskFibonacci(new Closure(0, cont));
+//        Continuation cont = new Continuation(-1,-1, new Integer(8));
+  //      new TaskFibonacci(new Closure(0, cont));
         System.out.println("Space running...");
     }
 
@@ -82,14 +82,14 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     @Override
     public synchronized void put(Closure closure) throws RemoteException{
         closures.put(closure.getId(), closure);
-        System.out.println("SpaceImpl; Putting closure " + closure + " size: " + closures.size());
+  //      System.out.println("SpaceImpl; Putting closure " + closure + " size: " + closures.size());
     }
 
     @Override
     public void putClosureInReady(Closure closure) throws RemoteException {
         try {
             readyClosureQueue.put(closure);
-            System.out.println("SpaceImpl; Putting closure in ready " + closure + " size: " + readyClosureQueue.size());
+    //        System.out.println("SpaceImpl; Putting closure in ready " + closure + " size: " + readyClosureQueue.size());
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -193,15 +193,15 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     }
     @Override
     public Closure takeReadyClosure() throws RemoteException {
-        System.out.println("SpaceImpl;  takeReadyClosure(), size before get: " + readyClosureQueue.size());
+//        System.out.println("SpaceImpl;  takeReadyClosure(), size before get: " + readyClosureQueue.size());
         Closure c = null;
         try {
             c = readyClosureQueue.take();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("SpaceImpl; takeReadyClosure() ######, size after" +
-                " get: " + readyClosureQueue.size());
+  //      System.out.println("SpaceImpl; takeReadyClosure() ######, size after" +
+    //            " get: " + readyClosureQueue.size());
         return c;
     }
 }
