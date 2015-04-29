@@ -52,6 +52,7 @@ public class Closure implements Serializable {
     }
 
     public synchronized void call(){
+        cilkThread.setClosure(this);
         cilkThread.call();
     }
 
