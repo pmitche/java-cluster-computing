@@ -88,23 +88,34 @@ public class TaskTsp extends CilkThread implements Task {
         sendArgument(currCont);
     }
 
-    private void testMethod(Object[] args) {
-        Integer[] best = null;
-        double shortest = Double.MAX_VALUE;
-        for(int i=1; i<args.length; i++) {
-            double path = totalDistance((Integer[])args[i]);//(Integer[])((ResultValueWrapper)cont.argument).getTaskReturnValue());
-            if(best==null || path < shortest) {
-                best = (Integer[])args[i];
-                shortest = path;
+    private void testMethod() {
+        Continuation currCon = (Continuation)closure.getArgument(0);
+        List<Integer[]> list = new ArrayList<>();
+
+        int i=1;
+        while(true) {
+            try {
+                closure.getArgument(i++);
+            } catch (IndexOutOfBoundsException e) {
+                break;
             }
         }
-        Continuation currCon = (Continuation)args[0];
+
+        Integer[] best = null;
+        double shortest = Double.MAX_VALUE;
+        for(Integer[] path : list) {
+            double dist = totalDistance(path);
+            if(dist < shortest) {
+                best = path;
+                shortest = dist;
+            }
+        }
         currCon.setReturnVal(best);
         sendArgument(currCon);
     }
 
 
-    public static final class Wrapper implements Serializable{
+    public static final class Wrapper implements Serializable {
         public final Integer N;
         public final Integer[] PATH;
         public Wrapper(Integer n, Integer[] path){
@@ -121,7 +132,7 @@ public class TaskTsp extends CilkThread implements Task {
     public void run() {
 
         if(closure.isAncestor()) {
-            testMethod(closure.getArguments());
+            testMethod();
         }
         else decompose((Continuation)closure.getArgument(0));
     }
