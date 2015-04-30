@@ -29,7 +29,7 @@ public abstract class CilkThread implements Runnable, Task {
      * @return
      */
     protected long spawn(CilkThread t, Object... arguments){
-        Closure c = new Closure((int) Arrays.stream(arguments).filter(e -> !Optional.ofNullable(e).isPresent()).count(),arguments);
+        Closure c = new Closure((int) Arrays.stream(arguments).filter(e -> e == null).count(),arguments);
         c.setCilkThread(t);
         t.setClosure(c);
         try {
@@ -47,7 +47,7 @@ public abstract class CilkThread implements Runnable, Task {
      * @return
      */
     protected long spawnNext(CilkThread t, Object... arguments){
-        Closure c = new Closure((int) Arrays.stream(arguments).filter(e -> !Optional.ofNullable(e).isPresent()).count(),arguments);
+        Closure c = new Closure((int) Arrays.stream(arguments).filter(e -> e == null).count(),arguments);
         c.setIsAncestor(true);
         t.setClosure(c);
         c.setCilkThread(t);

@@ -7,7 +7,6 @@ import computer.ComputerProxy;
 import system.Closure;
 import system.Computer;
 import system.Continuation;
-import task.TaskFibonacci;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -170,7 +169,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     }
 
     @Override
-    public void receiveArgument(Continuation k) throws RemoteException{
+    public synchronized void receiveArgument(Continuation k) throws RemoteException{
         //TODO: for testing
         if (k.closureId == -1){
             System.out.println("SpaceImpl; Back to root");
@@ -182,8 +181,9 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     }
 
     @Override
-    public void putClosureInReady(Closure closure) throws RemoteException {
+    public synchronized void putClosureInReady(Closure closure) throws RemoteException {
         try {
+            closure.isArgsPresent();
             readyClosureQueue.put(closure);
     //        System.out.println("SpaceImpl; Putting closure in ready " + closure + " size: " + readyClosureQueue.size());
         } catch (InterruptedException e) {
@@ -202,5 +202,12 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
   //      System.out.println("SpaceImpl; takeReadyClosure() ######, size after" +
     //            " get: " + readyClosureQueue.size());
         return c;
+    }
+
+    private volatile int id_maker = 0;
+
+    @Override
+    public synchronized int getNextID() throws RemoteException{
+        return ++id_maker;
     }
 }
