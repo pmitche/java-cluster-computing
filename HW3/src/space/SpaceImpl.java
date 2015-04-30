@@ -25,7 +25,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     private LinkedBlockingQueue<Task> taskQueue;
     private LinkedBlockingQueue<Result> resultQueue;
     private LinkedBlockingQueue<Closure> readyClosureQueue;
-    private HashMap<Long,Closure> closures;
+    private HashMap<String,Closure> closures;
 
     private SpaceImpl() throws RemoteException {
         this.taskQueue = new LinkedBlockingQueue<Task>();
@@ -152,10 +152,11 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
 
     @Override
     public synchronized void receiveArgument(Continuation k) throws RemoteException{
-        if (k.closureId == -1){
+        if (k.closureId.equals("-1")){
             putResult(new Result(k.getReturnVal(),-1));
         }else {
-            closures.get(k.closureId).setArgument(k);
+            Closure c = closures.get(k.closureId);
+                    c.setArgument(k);
         }
     }
 
@@ -176,11 +177,5 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
             e.printStackTrace();
         }
         return c;
-    }
-
-    private volatile int id_maker = 0;
-    @Override
-    public synchronized int getNextID() throws RemoteException{
-        return ++id_maker;
     }
 }

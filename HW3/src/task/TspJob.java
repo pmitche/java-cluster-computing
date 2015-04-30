@@ -50,7 +50,7 @@ public class TspJob implements Job {
             startPath[i] = i;
 
         try {
-            space.put(new TaskTsp(new Closure(0, new Continuation(-1,-1,
+            space.put(new TaskTsp(new Closure(0, new Continuation("-1",-1,
                       //new ResultValueWrapper(cities.length, startPath))), cities));
                     new TaskTsp.Wrapper(cities.length, startPath))), cities));
         } catch (InterruptedException e) {  e.printStackTrace();    }

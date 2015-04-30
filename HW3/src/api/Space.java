@@ -36,7 +36,5 @@ public interface Space extends Remote
 
     Closure takeReadyClosure() throws  RemoteException;
 
-    int getNextID() throws RemoteException;
-
     void receiveArgument(Continuation k) throws RemoteException;
 }

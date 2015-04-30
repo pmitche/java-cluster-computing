@@ -28,7 +28,7 @@ public abstract class CilkThread implements Runnable, Task {
      * @param arguments
      * @return
      */
-    protected long spawn(CilkThread t, Object... arguments){
+    protected String spawn(CilkThread t, Object... arguments){
         Closure c = new Closure((int) Arrays.stream(arguments).filter(e -> e == null).count(),arguments);
         c.setCilkThread(t);
         t.setClosure(c);
@@ -45,7 +45,7 @@ public abstract class CilkThread implements Runnable, Task {
      * @param arguments
      * @return
      */
-    protected long spawnNext(CilkThread t, Object... arguments){
+    protected String spawnNext(CilkThread t, Object... arguments){
         Closure c = new Closure((int) Arrays.stream(arguments).filter(e -> e == null).count(),arguments);
         c.setIsAncestor(true);
         t.setClosure(c);

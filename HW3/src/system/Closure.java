@@ -8,6 +8,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -15,7 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Closure implements Serializable {
 
-    private long id;
+    private String id;
     private CilkThread cilkThread;
     private int missingArgsCount;
     private Object[] arguments;
@@ -26,9 +27,8 @@ public class Closure implements Serializable {
         this.missingArgsCount = missingArgsCount;
         this.cilkThread = null;
         this.isAncestor = false;
-        this.id = this.hashCode();
+        this.id =  UUID.randomUUID().toString();
         try {
-            this.id = SpaceImpl.getInstance().getNextID();
             SpaceImpl.getInstance().put(this);
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -46,7 +46,7 @@ public class Closure implements Serializable {
         }
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 

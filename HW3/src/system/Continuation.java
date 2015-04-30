@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class Continuation implements Serializable{
 
-    public final long closureId;
+    public final String closureId;
     public final int offset;
     public final Object argument;
     private Object returnVal;
@@ -18,7 +18,7 @@ public class Continuation implements Serializable{
      * @param offset: Integer offset
      * @param argument: Object argument being passed to constructor
      */
-    public Continuation(long closureId, int offset, Object argument) {
+    public Continuation(String closureId, int offset, Object argument) {
         this.closureId = closureId;
         this.offset = offset;
         this.argument = argument;

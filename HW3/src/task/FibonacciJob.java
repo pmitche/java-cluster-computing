@@ -34,7 +34,7 @@ public class FibonacciJob implements Job {
     @Override
     public void generateTasks(Space space) throws RemoteException {
         try {
-            space.put(new TaskFibonacci(new Closure(0, new Continuation(-1, -1, new Integer(DEPTH)))));
+            space.put(new TaskFibonacci(new Closure(0, new Continuation("-1", -1, new Integer(DEPTH)))));
         } catch (InterruptedException e) {   e.printStackTrace();   }
     }
 

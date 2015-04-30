@@ -41,7 +41,7 @@ public class TaskFibonacci extends CilkThread {
             k.setReturnVal(n);
             sendArgument(k);
         } else {
-            long id = spawnNext(new TaskFibonacci(null), k, null, null);
+            String id = spawnNext(new TaskFibonacci(null), k, null, null);
             Continuation c1 = new Continuation(id, 1, n-1)
                         ,c2 = new Continuation(id, 2, n-2);
             spawn(new TaskFibonacci(null), c1);
@@ -76,7 +76,11 @@ public class TaskFibonacci extends CilkThread {
     public void run() {
         System.out.println("TaskFibonacci; run()");
         if (closure.isAncestor()){
-            sum((Continuation) closure.getArgument(0), (int) closure.getArgument(1),(int) closure.getArgument(2));
+            try {
+                sum((Continuation) closure.getArgument(0), (int) closure.getArgument(1),(int) closure.getArgument(2));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         } else {
             decompose((Continuation) closure.getArgument(0));
         }
