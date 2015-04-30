@@ -17,18 +17,13 @@ public class Closure implements Serializable {
 
     private long id;
     private CilkThread cilkThread;
-    private AtomicInteger missingArgsCount;
+    private int missingArgsCount;
     private Object[] arguments;
     private boolean isAncestor;
 
     public Closure(int missingArgsCount, Object... arguments) {
         this.arguments = arguments;
-        this.missingArgsCount = new AtomicInteger(missingArgsCount);
-        if (arguments.length > 1) {
-            if (missingArgsCount != 2) {
-                System.out.println();
-            }
-        }
+        this.missingArgsCount = missingArgsCount;
         this.cilkThread = null;
         this.isAncestor = false;
         this.id = this.hashCode();
@@ -43,12 +38,8 @@ public class Closure implements Serializable {
 
     private synchronized void ready() {
         //TODO: kopier variabler in i Cilk thread
-  //      System.out.println("Closure; In ready()");
-        if (missingArgsCount.get() == 0 && cilkThread != null){
+        if (missingArgsCount == 0 && cilkThread != null){
             try {
-//                System.out.println("Closure: In ready(), putting closure in space readyQueue");
-
-                isArgsPresent();
                 SpaceImpl.getInstance().putClosureInReady(this);
             } catch (RemoteException e) {
                 e.printStackTrace();
@@ -75,7 +66,7 @@ public class Closure implements Serializable {
             System.out.println("dada");
         }
         arguments[k.offset] = k.getReturnVal();
-        missingArgsCount.decrementAndGet();
+        missingArgsCount--;
         ready();
     }
 
@@ -93,14 +84,5 @@ public class Closure implements Serializable {
 
     public void setIsAncestor(boolean isAncestor) {
         this.isAncestor = isAncestor;
-    }
-
-    public boolean isArgsPresent() {
-        for (Object argument : arguments) {
-            if (argument == null){
-                return false;
-            }
-        }
-        return true;
     }
 }
