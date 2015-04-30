@@ -32,20 +32,6 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         this.resultQueue = new LinkedBlockingQueue<Result>();
         this.readyClosureQueue = new LinkedBlockingQueue<Closure>();
         this.closures = new HashMap<>();
-
-        Thread t = new Thread(() ->{
-            while (true){
-                Closure c = null;
-                try {
-                    c = SpaceImpl.getInstance().takeReadyClosure();
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-                c.call();
-            }
-        });
-
-        //t.start();
     }
 
     public static void main(String[] args) throws RemoteException {
@@ -54,9 +40,6 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         String ip;
         ip = args.length > 0 ? args[0] : inputIp();
         System.setProperty("java.rmi.server.hostname", ip);
-
-        //Continuation cont = new Continuation(-1,-1, new Integer(8));
-        //new TaskFibonacci(new Closure(0, cont));
         System.out.println("Space running...");
     }
 
@@ -80,7 +63,6 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     @Override
     public synchronized void put(Closure closure) throws RemoteException{
         closures.put(closure.getId(), closure);
-  //      System.out.println("SpaceImpl; Putting closure " + closure + " size: " + closures.size());
     }
 
     @Override
@@ -170,10 +152,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
 
     @Override
     public synchronized void receiveArgument(Continuation k) throws RemoteException{
-        //TODO: for testing
         if (k.closureId == -1){
-            System.out.println("SpaceImpl; Back to root");
-            System.out.println("\"Result\": "+k.getReturnVal());
             putResult(new Result(k.getReturnVal(),-1));
         }else {
             closures.get(k.closureId).setArgument(k);

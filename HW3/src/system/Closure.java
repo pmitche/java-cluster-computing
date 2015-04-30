@@ -27,7 +27,6 @@ public class Closure implements Serializable {
         this.cilkThread = null;
         this.isAncestor = false;
         this.id = this.hashCode();
-        //TODO: can this casue error?
         try {
             this.id = SpaceImpl.getInstance().getNextID();
             SpaceImpl.getInstance().put(this);

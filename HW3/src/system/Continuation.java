@@ -10,7 +10,7 @@ public class Continuation implements Serializable{
     public final long closureId;
     public final int offset;
     public final Object argument;
-    public Object returnVal;
+    private Object returnVal;
 
     /**
      * Continuation constructor

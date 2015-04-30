@@ -23,7 +23,6 @@ public class Client<T> extends JFrame
 {
     final protected Job job;
     private Space space;
-    protected T taskReturnValue;
     private long clientStartTime;
 
     /**
@@ -85,19 +84,6 @@ public class Client<T> extends JFrame
     protected void runSingleJVM() {
         SpaceImpl localSpace;
         ComputerImpl localComputer;
-
-        //try {
-//            localSpace = new SpaceImpl();
-//            localSpace.initLocal(localSpace);
-//            localComputer = new ComputerImpl(localSpace);
-//            localComputer.initLocal(localComputer);
-
-           // localSpace.register(localComputer);
-            //space = localSpace;
-       // } catch (RemoteException re) {
-         //   System.out.println("FAILLL!!!");
-          //  re.printStackTrace();
-       // }
     }
 
     /**
