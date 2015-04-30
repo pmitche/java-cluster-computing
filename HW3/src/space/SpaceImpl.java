@@ -140,6 +140,12 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         return instance;
     }
 
+    /**Should only be used, to active a JVM global reference to the remote space. As such it should be
+     * run before getInstance, except if you intend to create a local Space.
+     * The cleanest workaround we have found to an "issue" with RMI and the singleton pattern.
+     * This is not an ideal solution, but it is the cleanest we can think of.
+     * @param space
+     */
     public static void setInstance(Space space){
         if (instance == null ) {
             synchronized (SpaceImpl.class) {
@@ -150,6 +156,11 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         }
     }
 
+    /**
+     * Sets an argument for the Closure corresponding to k.closureId.
+     * @param k: Continuation coresponding to a Closure, and it's missing argument.
+     * @throws RemoteException
+     */
     @Override
     public synchronized void receiveArgument(Continuation k) throws RemoteException{
         if (k.closureId.equals("-1")){
