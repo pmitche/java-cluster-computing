@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +22,7 @@ import java.util.logging.Logger;
 public class ClientTsp extends Client<List<Integer>> implements Serializable
 {
     private static final int NUM_PIXALS = 600;
-    private static final double[][] CITIES =
+    public static final double[][] CITIES =
             {
                     { 1, 1 },
                     { 8, 1 },
@@ -63,9 +64,16 @@ public class ClientTsp extends Client<List<Integer>> implements Serializable
 
         client.begin();
         long elaps = System.nanoTime();
-        final List<Integer> value = client.runJob();
+        final Object value = client.runJob();
+
+        //Shouldn't be neccesary but it is... //TODO
+        ArrayList<Integer> res = null;
+        if(value instanceof ArrayList) {
+            res = (ArrayList<Integer>)value;
+        }
+
         System.out.println((System.nanoTime()-elaps)/1000000);
-        client.add( client.getLabel( value.toArray( new Integer[0] ) ) );
+        client.add( client.getLabel( res.toArray(new Integer[0])));//res.toArray( new Integer[0] ) ) );
         client.end();
     }
 
