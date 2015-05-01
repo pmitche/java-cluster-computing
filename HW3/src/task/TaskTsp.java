@@ -62,7 +62,7 @@ public class TaskTsp extends CilkThread {
             succList.add(new Wrapper(succUnvisited, succVisited));
         }
 
-        long id = -1;
+        String id = "-1";
         //Spawn next to get ID
 /*
         List<Integer[]> temp = new ArrayList() {{

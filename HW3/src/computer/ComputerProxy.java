@@ -42,11 +42,6 @@ public class ComputerProxy implements Runnable {
                e.printStackTrace();
                return;
            }
-//           try {
-//               SpaceImpl.getInstance().putResult(r);
-//           } catch (RemoteException e) {
-//               e.printStackTrace();
-//           }
        }
     }
 }

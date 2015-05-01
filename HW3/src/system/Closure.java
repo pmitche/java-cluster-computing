@@ -8,13 +8,15 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by Kyrre on 23.04.2015.
  */
 public class Closure implements Serializable {
 
-    private final long id;
+    private String id;
     private CilkThread cilkThread;
     private int missingArgsCount;
     private Object[] arguments;
@@ -23,10 +25,9 @@ public class Closure implements Serializable {
     public Closure(int missingArgsCount, Object... arguments) {
         this.arguments = arguments;
         this.missingArgsCount = missingArgsCount;
-        this.id = this.hashCode();
         this.cilkThread = null;
         this.isAncestor = false;
-        //TODO: can this casue error?
+        this.id =  UUID.randomUUID().toString();
         try {
             SpaceImpl.getInstance().put(this);
         } catch (RemoteException e) {
@@ -34,12 +35,10 @@ public class Closure implements Serializable {
         }
     }
 
-    private void ready() {
+    private synchronized void ready() {
         //TODO: kopier variabler in i Cilk thread
-  //      System.out.println("Closure; In ready()");
         if (missingArgsCount == 0 && cilkThread != null){
             try {
-//                System.out.println("Closure: In ready(), putting closure in space readyQueue");
                 SpaceImpl.getInstance().putClosureInReady(this);
             } catch (RemoteException e) {
                 e.printStackTrace();
@@ -47,7 +46,7 @@ public class Closure implements Serializable {
         }
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
@@ -62,6 +61,9 @@ public class Closure implements Serializable {
     }
 
     public synchronized void setArgument(Continuation k) {
+        if (k.getReturnVal() == null){
+            System.out.println("dada");
+        }
         arguments[k.offset] = k.getReturnVal();
         missingArgsCount--;
         ready();

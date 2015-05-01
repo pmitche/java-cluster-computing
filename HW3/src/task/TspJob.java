@@ -54,21 +54,11 @@ public class TspJob implements Job {
         partialTrip.add(0);
 
         System.out.println((unusedCities==null)+" : "+(partialTrip==null));
-        TaskTsp startTask = new TaskTsp(new Closure(0, new Continuation(-1,-1,new TaskTsp.Wrapper(unusedCities, partialTrip))));
+        TaskTsp startTask = new TaskTsp(new Closure(0, new Continuation("-1",-1,new TaskTsp.Wrapper(unusedCities, partialTrip))));
 
         try {
             space.put(startTask);
         } catch (InterruptedException e) {e.printStackTrace();}
-        /*
-        try {
-            space.put(
-                    new TaskTsp(
-                            new Closure(0,
-                                    new Continuation(-1,-1,null)
-                            )
-                    , unusedCities,partialTrip));
-        } catch (InterruptedException e) {  e.printStackTrace();    }
-*/
     }
 
     /**

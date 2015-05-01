@@ -7,7 +7,6 @@ import computer.ComputerProxy;
 import system.Closure;
 import system.Computer;
 import system.Continuation;
-import task.TaskFibonacci;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -26,27 +25,13 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     private LinkedBlockingQueue<Task> taskQueue;
     private LinkedBlockingQueue<Result> resultQueue;
     private LinkedBlockingQueue<Closure> readyClosureQueue;
-    private HashMap<Long,Closure> closures;
+    private HashMap<String,Closure> closures;
 
     private SpaceImpl() throws RemoteException {
         this.taskQueue = new LinkedBlockingQueue<Task>();
         this.resultQueue = new LinkedBlockingQueue<Result>();
         this.readyClosureQueue = new LinkedBlockingQueue<Closure>();
         this.closures = new HashMap<>();
-
-        Thread t = new Thread(() ->{
-            while (true){
-                Closure c = null;
-                try {
-                    c = SpaceImpl.getInstance().takeReadyClosure();
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-                c.call();
-            }
-        });
-
-        //t.start();
     }
 
     public static void main(String[] args) throws RemoteException {
@@ -55,9 +40,6 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         String ip;
         ip = args.length > 0 ? args[0] : inputIp();
         System.setProperty("java.rmi.server.hostname", ip);
-
-        //Continuation cont = new Continuation(-1,-1, new Integer(8));
-        //new TaskFibonacci(new Closure(0, cont));
         System.out.println("Space running...");
     }
 
@@ -81,7 +63,6 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     @Override
     public synchronized void put(Closure closure) throws RemoteException{
         closures.put(closure.getId(), closure);
-  //      System.out.println("SpaceImpl; Putting closure " + closure + " size: " + closures.size());
     }
 
     @Override
@@ -159,6 +140,12 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         return instance;
     }
 
+    /**Should only be used, to active a JVM global reference to the remote space. As such it should be
+     * run before getInstance, except if you intend to create a local Space.
+     * The cleanest workaround we have found to an "issue" with RMI and the singleton pattern.
+     * This is not an ideal solution, but it is the cleanest we can think of.
+     * @param space
+     */
     public static void setInstance(Space space){
         if (instance == null ) {
             synchronized (SpaceImpl.class) {
@@ -169,12 +156,14 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         }
     }
 
+    /**
+     * Sets an argument for the Closure corresponding to k.closureId.
+     * @param k: Continuation coresponding to a Closure, and it's missing argument.
+     * @throws RemoteException
+     */
     @Override
-    public void receiveArgument(Continuation k) throws RemoteException{
-        //TODO: for testing
-        if (k.closureId == -1){
-            System.out.println("SpaceImpl; Back to root");
-            System.out.println("\"Result\": "+k.getReturnVal());
+    public synchronized void receiveArgument(Continuation k) throws RemoteException{
+        if (k.closureId.equals("-1")){
             putResult(new Result(k.getReturnVal(),-1));
         } else {
             closures.get(k.closureId).setArgument(k);
@@ -182,25 +171,21 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     }
 
     @Override
-    public void putClosureInReady(Closure closure) throws RemoteException {
+    public synchronized void putClosureInReady(Closure closure) throws RemoteException {
         try {
             readyClosureQueue.put(closure);
-    //        System.out.println("SpaceImpl; Putting closure in ready " + closure + " size: " + readyClosureQueue.size());
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
     @Override
     public Closure takeReadyClosure() throws RemoteException {
-//        System.out.println("SpaceImpl;  takeReadyClosure(), size before get: " + readyClosureQueue.size());
         Closure c = null;
         try {
             c = readyClosureQueue.take();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-  //      System.out.println("SpaceImpl; takeReadyClosure() ######, size after" +
-    //            " get: " + readyClosureQueue.size());
         return c;
     }
 }
