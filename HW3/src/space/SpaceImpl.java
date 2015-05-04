@@ -71,7 +71,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     }
 
     @Override
-    public void exit() throws RemoteException {
+    public void exit() throws RemoteException { 
         System.exit(0);
     }
 
