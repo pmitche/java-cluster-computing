@@ -28,6 +28,9 @@ public class CoreProxy implements Runnable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        threadCount.decrementAndGet();
+        synchronized (threadCount){
+            threadCount.incrementAndGet();
+            threadCount.notify();
+        }
     }
 }
