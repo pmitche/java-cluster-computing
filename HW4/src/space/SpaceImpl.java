@@ -11,9 +11,7 @@ import system.Continuation;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -170,6 +168,11 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
             c.setArgument(k);
 
         }
+    }
+
+    @Override
+    public synchronized void notifyDone(String closureId) throws RemoteException {
+        readyClosureQueue.removeAll(Collections.singleton(closures.get(closureId)));
     }
 
     @Override
