@@ -49,15 +49,6 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
         System.out.println("Registered to Space, running...");
     }
 
-    /**
-     * Sets the SecurityManager.
-     * @param localComputer Computer instance
-     */
-    public void initLocal(Computer localComputer) {
-        if(System.getSecurityManager()==null)
-            System.setSecurityManager(new SecurityManager());
-    }
-
     @Override
     public <T> T execute(Task<T> task) throws RemoteException {
         System.out.println("ComputerImpl; execute("+task+")");
@@ -71,10 +62,11 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
     public <T> T execute(Closure closure) throws RemoteException {
         synchronized (threadCount){
             try {
-                if (threadCount.get() == 0){
+                tasks.put(closure);
+                System.out.println("ComputerImpl; execute(); tasks size: "+tasks.size());
+                if (threadCount.get() == 0 || tasks.size() > Space.PREFETCH_LIMIT){
                     threadCount.wait();
                 }
-                tasks.put(closure);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
