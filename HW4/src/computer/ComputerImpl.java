@@ -26,18 +26,15 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
 
     protected final AtomicInteger threadCount;
     protected final LinkedBlockingQueue<Closure> tasks;
-    //TODO: move to better place
-    public final boolean MULTICORE = true;
     public final int coreCount;
 
     public ComputerImpl(Space space) throws RemoteException {
         SpaceImpl.setInstance(space);
-        //TODO: Change to system number of cores
         tasks = new LinkedBlockingQueue<>();
-        coreCount = MULTICORE ? Runtime.getRuntime().availableProcessors() : 1;
+        coreCount = SpaceImpl.MULTICORE ? Runtime.getRuntime().availableProcessors() : 1;
         threadCount = new AtomicInteger(coreCount);
         for (int i = 0; i < coreCount; i++) {
-            new Thread(new CoreProxy(threadCount, tasks)).start();
+            new Thread(new CoreProxy(threadCount, tasks, i)).start();
         }
     }
 
@@ -52,15 +49,6 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
         System.out.println("Registered to Space, running...");
     }
 
-    /**
-     * Sets the SecurityManager.
-     * @param localComputer Computer instance
-     */
-    public void initLocal(Computer localComputer) {
-        if(System.getSecurityManager()==null)
-            System.setSecurityManager(new SecurityManager());
-    }
-
     @Override
     public <T> T execute(Task<T> task) throws RemoteException {
         System.out.println("ComputerImpl; execute("+task+")");
@@ -70,15 +58,15 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
         return t;
     }
 
-    //TODO: MÅ locke på det samme som proxy
     @Override
     public <T> T execute(Closure closure) throws RemoteException {
         synchronized (threadCount){
             try {
-                if (threadCount.get() == 0){
+                tasks.put(closure);
+                System.out.println("ComputerImpl; execute(); tasks size: "+tasks.size());
+                if (threadCount.get() == 0 || tasks.size() > Space.PREFETCH_LIMIT){
                     threadCount.wait();
                 }
-                tasks.put(closure);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

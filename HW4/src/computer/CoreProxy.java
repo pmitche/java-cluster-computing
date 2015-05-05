@@ -13,8 +13,10 @@ public class CoreProxy implements Runnable {
 
     private final AtomicInteger threadCount;
     private final LinkedBlockingQueue<Closure> tasks;
+    private final int threadId;
 
-    public CoreProxy(AtomicInteger threadCount, LinkedBlockingQueue<Closure> tasks) {
+    public CoreProxy(AtomicInteger threadCount, LinkedBlockingQueue<Closure> tasks, int threadId) {
+        this.threadId = threadId;
         this.threadCount = threadCount;
         this.tasks = tasks;
     }
@@ -24,8 +26,12 @@ public class CoreProxy implements Runnable {
         while (true){
             try {
                 //TODO: Handle exception
+                long waitTime = System.nanoTime();
                 Closure c = tasks.take();
+                waitTime = (System.nanoTime()-waitTime)/1000000;
+                System.out.println("CoreProxy; run(); wait time: "+waitTime);
                 threadCount.decrementAndGet();
+                System.out.println("CoreProxy; run(); Thread: "+threadId);
                 c.call();
             } catch (InterruptedException e) {
                 e.printStackTrace();

@@ -74,7 +74,6 @@ public class TaskFibonacci extends CilkThread {
      */
     @Override
     public void run() {
-        System.out.println("TaskFibonacci; run()");
         if (closure.isAncestor()){
             try {
                 sum((Continuation) closure.getArgument(0), (int) closure.getArgument(1),(int) closure.getArgument(2));
