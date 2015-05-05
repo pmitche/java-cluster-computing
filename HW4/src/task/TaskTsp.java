@@ -1,6 +1,5 @@
 package task;
 
-import api.Task;
 import client.ClientTsp;
 import system.CilkThread;
 import system.Closure;
@@ -8,14 +7,15 @@ import system.Continuation;
 import system.ResultValueWrapper;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by hallvard on 4/26/15.
  */
 public class TaskTsp extends CilkThread {
 
-    private final long START_TIME = System.nanoTime();
+    private final long START_TIME = System.nanoTime(); //TODO
 
     public TaskTsp(Closure closure) {
         super(closure);
