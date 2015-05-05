@@ -11,7 +11,7 @@ import java.rmi.RemoteException;
  */
 public class ClientFibonacci extends Client {
 
-    private static final int DEPTH = 14;
+    private static final int DEPTH = 16;
 
     /**
      * Client constructor

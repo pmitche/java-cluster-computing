@@ -1,18 +1,14 @@
 package task;
 
 import api.Job;
-import api.Result;
 import api.Space;
-import api.Task;
 import system.Closure;
 import system.Continuation;
 import system.ResultValueWrapper;
-import task.TaskTsp;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by hallvard on 4/28/15.
@@ -45,16 +41,19 @@ public class TspJob implements Job {
     @Override
     public void generateTasks(Space space) throws RemoteException {
 
-        Integer[] startPath = new Integer[cities.length];
-        for(int i=0; i<startPath.length; i++)
-            startPath[i] = i;
+        ArrayList<Integer> unusedCities = new ArrayList<>();
+        for(int i=1; i<cities.length; i++)
+            unusedCities.add(i);
+
+        ArrayList<Integer> partialTrip = new ArrayList<>();
+        partialTrip.add(0);
+
+        System.out.println((unusedCities==null)+" : "+(partialTrip==null));
+        TaskTsp startTask = new TaskTsp(new Closure(0, new Continuation("-1",-1,new TaskTsp.Wrapper(unusedCities, partialTrip))));
 
         try {
-            space.put(new TaskTsp(new Closure(0, new Continuation("-1",-1,
-                      //new ResultValueWrapper(cities.length, startPath))), cities));
-                    new TaskTsp.Wrapper(cities.length, startPath))), cities));
-        } catch (InterruptedException e) {  e.printStackTrace();    }
-
+            space.put(startTask);
+        } catch (InterruptedException e) {e.printStackTrace();}
     }
 
     /**
@@ -70,34 +69,10 @@ public class TspJob implements Job {
     public Object collectResults(Space space) throws RemoteException {
         //Collect task results
 
-
-
-
-        List<Result> resultList = new ArrayList<Result>();
-        for(int i=1; i<cities.length-1; i++) {
-            try {
-                resultList.add(i - 1, space.take());
-            } catch (InterruptedException e) {e.printStackTrace();}
-        }
-
-        List<Integer> minPath = Arrays.asList(((Integer[]) resultList.remove(0).getTaskReturnValue()));
-
-        /*
-
-        //Process task results to final result
-        ResultValueWrapper rw0 = (ResultValueWrapper)resultList.remove(0).getTaskReturnValue();
-        List<Integer> minPath = (List<Integer>)rw0.getTaskReturnValue();
-        double minDistance = (Double)rw0.getN();
-        for (Result r : resultList) {
-            ResultValueWrapper rw = (ResultValueWrapper)r.getTaskReturnValue();
-            List<Integer> tmp = (List<Integer>)rw.getTaskReturnValue();
-            double dist = (Double)rw.getN();
-            if(dist < minDistance){
-                minDistance = dist;
-                minPath = tmp;
-            }
-        }*/
-        return minPath;
+        try {
+            return ((ResultValueWrapper)space.take().getTaskReturnValue()).getTaskReturnValue();
+        } catch (InterruptedException e) {  e.printStackTrace();     }
+        return Optional.empty();
     }
 }
 
