@@ -63,7 +63,7 @@ public class ClientTsp extends Client<List<Integer>> implements Serializable
         final ClientTsp client = new ClientTsp("localhost", singleJVM);
 
         client.begin();
-        long elaps = System.nanoTime();
+        long elaps = System.nanoTime();!
         final Object value = client.runJob();
 
         //Shouldn't be neccesary but it is... //TODO
