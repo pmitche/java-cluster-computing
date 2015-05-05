@@ -165,9 +165,8 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     public synchronized void receiveArgument(Continuation k) throws RemoteException{
         if (k.closureId.equals("-1")){
             putResult(new Result(k.getReturnVal(),-1));
-        }else {
-            Closure c = closures.get(k.closureId);
-                    c.setArgument(k);
+        } else {
+            closures.get(k.closureId).setArgument(k);
         }
     }
 

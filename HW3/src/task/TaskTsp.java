@@ -1,26 +1,24 @@
 package task;
 
 import api.Task;
+import client.ClientTsp;
 import system.CilkThread;
 import system.Closure;
 import system.Continuation;
+import system.ResultValueWrapper;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by hallvard on 4/26/15.
  */
-public class TaskTsp extends CilkThread implements Task {
+public class TaskTsp extends CilkThread {
 
     private final long START_TIME = System.nanoTime(); //TODO
 
-    private final double[][] CITIES;
-
-    public TaskTsp(Closure closure, double[][] cities) {
+    public TaskTsp(Closure closure) {
         super(closure);
-        this.CITIES = cities;
     }
 
     @Override
@@ -37,10 +35,9 @@ public class TaskTsp extends CilkThread implements Task {
     @Override
     public void decompose(Continuation c) {
 
-//        int n = (Integer) (((ResultValueWrapper) c.argument).getN());
+        Wrapper w = (Wrapper)c.argument;
+/*
         int n = ((Wrapper)(c.argument)).N;
-
-//        Integer[] a = (Integer[])((ResultValueWrapper) c.argument).getTaskReturnValue();
         Integer[] a = ((Wrapper)c.argument).PATH;
 
         if(n < 2) {
@@ -48,19 +45,59 @@ public class TaskTsp extends CilkThread implements Task {
             sendArgument(c);
             return;
         }
+*/
+        if(w.UNUSED.size()==0) {
+            c.setReturnVal(new ResultValueWrapper<>(w.PATH, totalDistance(w.PATH.toArray(new Integer[0]))));
+            sendArgument(c);
+            return;
+        }
 
+        List<Wrapper> succList = new ArrayList<>();
         //Create all successor lists
-        List<Integer[]> succLists = new ArrayList<>();
-        for(int i=1; i<n; i++)
-            succLists.add(swap(a.clone(), i, n-1));
+        for(Integer next : w.UNUSED) {
+            ArrayList<Integer> succUnvisited = new ArrayList<>(w.UNUSED);
+            ArrayList<Integer> succVisited = new ArrayList<>(w.PATH);
+            succUnvisited.remove(next);
+            succVisited.add(next);
+            succList.add(new Wrapper(succUnvisited, succVisited));
+        }
 
+        String id = "-1";
         //Spawn next to get ID
-        String id = spawnNext(new TaskTsp(null, CITIES),c, new Object[succLists.size()]);
+/*
+        List<Integer[]> temp = new ArrayList() {{
+           for(Integer[] il : succLists) {
+               add(null);
+           }
+        }};
+*/
+        switch(succList.size())
+        {
+            case 0: {System.out.println("PIKK"); break;}
+            case 1: { id = spawnNext(new TaskTsp(null),c, null); break; }
+            case 2: { id = spawnNext(new TaskTsp(null),c, null, null); break; }
+            case 3: { id = spawnNext(new TaskTsp(null),c, null, null, null); break; }
+            case 4: { id = spawnNext(new TaskTsp(null),c, null, null, null, null); break; }
+            case 5: { id = spawnNext(new TaskTsp(null),c, null, null, null, null, null); break; }
+            case 6: { id = spawnNext(new TaskTsp(null),c, null, null, null, null, null, null); break; }
+            case 7: { id = spawnNext(new TaskTsp(null),c, null, null, null, null, null, null, null); break; }
+            case 8: { id = spawnNext(new TaskTsp(null),c, null, null, null, null, null, null, null, null); break; }
+            case 9: { id = spawnNext(new TaskTsp(null),c, null, null, null, null, null, null, null, null, null); break; }
+            case 10: { id = spawnNext(new TaskTsp(null),c, null, null, null, null, null, null, null, null, null, null); break; }
+            case 11: { id = spawnNext(new TaskTsp(null),c, null, null, null, null, null, null, null, null, null, null, null); break; }
+            case 12: { id = spawnNext(new TaskTsp(null),c, null, null, null, null, null, null, null, null, null, null, null, null); break; }
+            case 13: { id = spawnNext(new TaskTsp(null),c, null, null, null, null, null, null, null, null, null, null, null, null, null); break; }
+            case 14: { id = spawnNext(new TaskTsp(null),c, null, null, null, null, null, null, null, null, null, null, null, null, null, null); break; }
+            case 15: { id = spawnNext(new TaskTsp(null),c, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null); break; }
+            case 16: { id = spawnNext(new TaskTsp(null),c, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null); break; }
+            case 17: { id = spawnNext(new TaskTsp(null),c, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null); break; }
+            default: {System.out.println("AIDS");}
+        }
+//        id = spawnNext(new TaskTsp(null),c, temp.toArray(new Integer[0]));
 
         //Spawn a new Continuation for each successor entry
-        for(int i=0; i<succLists.size(); i++) {
-//            ResultValueWrapper rvw = new ResultValueWrapper(succLists.get(i), n-1);
-            spawn(new TaskTsp(null, CITIES), new Continuation(id, i + 1, new Wrapper(n-1, succLists.get(i))));
+        for(int i=0; i<w.UNUSED.size(); i++) {
+            spawn(new TaskTsp(null), new Continuation(id, i + 1,succList.get(i)));
         }
     }
 
@@ -71,7 +108,7 @@ public class TaskTsp extends CilkThread implements Task {
     @Override
     public void compose(List list) {
 
-        ArrayList<Integer[]> temp = (ArrayList<Integer[]>)list.subList(1,list.size());
+        ArrayList<Integer[]> temp = (ArrayList<Integer[]>)list.subList(1, list.size());
         Continuation currCont = (Continuation)list.get(0);
 
         Integer[] best = null;
@@ -83,32 +120,52 @@ public class TaskTsp extends CilkThread implements Task {
                 shortest = way;
             }
         }
-
         currCont.setReturnVal(best);
         sendArgument(currCont);
     }
 
-    private void testMethod(Object[] args) {
-        Integer[] best = null;
-        double shortest = Double.MAX_VALUE;
-        for(int i=1; i<args.length; i++) {
-            double path = totalDistance((Integer[])args[i]);//(Integer[])((ResultValueWrapper)cont.argument).getTaskReturnValue());
-            if(best==null || path < shortest) {
-                best = (Integer[])args[i];
-                shortest = path;
+    private void testMethod() {
+        Continuation currCon = (Continuation)closure.getArgument(0);
+        List<ResultValueWrapper> list = new ArrayList<>();
+
+        int i=1;
+        while(true) {
+            try {
+                list.add((ResultValueWrapper) closure.getArgument(i++));
+            } catch (IndexOutOfBoundsException e) {
+                break;
             }
         }
-        Continuation currCon = (Continuation)args[0];
+
+
+        ResultValueWrapper best = null;
+        double shortest = Double.MAX_VALUE;
+        for(ResultValueWrapper rvw : list) {
+            if((Double)rvw.getN() < shortest) {
+                best = rvw;
+                shortest = (Double)rvw.getN();
+            }
+        }
+        /*
+        for(Integer[] path : list) {
+            double dist = totalDistance(path);
+            if(dist < shortest) {
+                best = path;
+                shortest = dist;
+            }
+        }
+        */
+
         currCon.setReturnVal(best);
         sendArgument(currCon);
     }
 
 
-    public static final class Wrapper implements Serializable{
-        public final Integer N;
-        public final Integer[] PATH;
-        public Wrapper(Integer n, Integer[] path){
-            this.N = n;
+    public static final class Wrapper implements Serializable {
+        public final List<Integer> UNUSED;
+        public final List<Integer> PATH;
+        public Wrapper(List<Integer> used, List<Integer> path){
+            this.UNUSED = used;
             this.PATH = path;
         }
     }
@@ -121,7 +178,7 @@ public class TaskTsp extends CilkThread implements Task {
     public void run() {
 
         if(closure.isAncestor()) {
-            testMethod(closure.getArguments());
+            testMethod();
         }
         else decompose((Continuation)closure.getArgument(0));
     }
@@ -161,7 +218,9 @@ public class TaskTsp extends CilkThread implements Task {
         double distance = 0;
         for (int i = 0; i < a.length; i++){
             if (i < a.length-1){
-                distance += euclideanDistance(CITIES[a[i]], CITIES[a[i+1]]);
+                System.out.println("Cities: "+(ClientTsp.CITIES==null));
+                System.out.println("List: "+(a==null));
+                distance += euclideanDistance(ClientTsp.CITIES[a[i]], ClientTsp.CITIES[a[i+1]]);
             }
         }
         return distance;
