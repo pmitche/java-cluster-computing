@@ -167,7 +167,8 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
             putResult(new Result(k.getReturnVal(),-1));
         }else {
             Closure c = closures.get(k.closureId);
-                    c.setArgument(k);
+            c.setArgument(k);
+
         }
     }
 

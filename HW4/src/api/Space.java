@@ -15,7 +15,7 @@ public interface Space extends Remote
     public static int PORT = 1099;
     public static String SERVICE_NAME = "Space";
     public static boolean MULTICORE = true;
-    public static int PREFETCH_LIMIT = 10;
+    public static int PREFETCH_LIMIT = 5;
 
     void putAll(List<Task> taskList) throws RemoteException;
 

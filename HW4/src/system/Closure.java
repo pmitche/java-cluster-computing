@@ -60,9 +60,6 @@ public class Closure implements Serializable {
     }
 
     public synchronized void setArgument(Continuation k) {
-        if (k.getReturnVal() == null){
-            System.out.println("dada");
-        }
         arguments[k.offset] = k.getReturnVal();
         missingArgsCount--;
         ready();
