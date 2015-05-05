@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class MandelbrotSetJob implements Job {
 
-    private int numberOfTasks; //TODO how many tasks will this job be divided into??
+    private int numberOfTasks;
 
     private final double xCorner, yCorner, edgeLength;
     private final int n, iterationLimit;

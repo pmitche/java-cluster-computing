@@ -53,18 +53,3 @@ public class ClientFibonacci extends Client {
     }
 
 }
-
-//TODO
-//CHECKLIST
-/*
-
-[X]  get Spaceimpl domainName
-[]  remote referance to space from rmiregistry
-[X]  Instansiates the problem
-[]  logs arguments
-[X]  sends the root task T to space
-[X]  retrieves result from space
-[X]  displays the solution to the root task
-[X]  logs the root tasks elapsed time
-
- */

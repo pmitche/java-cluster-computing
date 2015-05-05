@@ -47,7 +47,6 @@ public class TaskMandelbrotSet implements Task<Result<ResultValueWrapper>> {
         }
         // creating a wrapper for composing the results
         ResultValueWrapper wrap = new ResultValueWrapper(result,row);
-        //TODO: Change ast argument
         return new Result<ResultValueWrapper>(wrap,-1);
     }
 

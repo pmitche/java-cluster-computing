@@ -36,7 +36,6 @@ public class Closure implements Serializable {
     }
 
     private synchronized void ready() {
-        //TODO: kopier variabler in i Cilk thread
         if (missingArgsCount == 0 && cilkThread != null){
             try {
                 SpaceImpl.getInstance().putClosureInReady(this);
