@@ -13,8 +13,10 @@ public class CoreProxy implements Runnable {
 
     private final AtomicInteger threadCount;
     private final LinkedBlockingQueue<Closure> tasks;
+    private final int threadId;
 
-    public CoreProxy(AtomicInteger threadCount, LinkedBlockingQueue<Closure> tasks) {
+    public CoreProxy(AtomicInteger threadCount, LinkedBlockingQueue<Closure> tasks, int threadId) {
+        this.threadId = threadId;
         this.threadCount = threadCount;
         this.tasks = tasks;
     }
@@ -26,6 +28,7 @@ public class CoreProxy implements Runnable {
                 //TODO: Handle exception
                 Closure c = tasks.take();
                 threadCount.decrementAndGet();
+                System.out.println("CoreProxy; run(); Thread: "+threadId);
                 c.call();
             } catch (InterruptedException e) {
                 e.printStackTrace();

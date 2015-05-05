@@ -44,10 +44,8 @@ public class ClientFibonacci extends Client {
         final ClientFibonacci client= new ClientFibonacci("localhost", singleJVM);
 
         client.begin();
-        long elaps = System.nanoTime();
         final Integer value = (Integer)client.runJob();
         System.out.println("Job completed, solution: "+value);
-        System.out.println((System.nanoTime()-elaps)/1000000);
         System.out.println();
         client.end();
     }

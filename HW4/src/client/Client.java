@@ -96,7 +96,7 @@ public class Client<T> extends JFrame
         long elaps = System.nanoTime();
         job.generateTasks(space);
         T t = (T) job.collectResults(space);
-        System.out.println((System.nanoTime()-elaps)/1000000);
+        System.out.println("Client; runJob(): Roundtrip time: "+(System.nanoTime()-elaps)/1000000);
         return t;
     }
 }

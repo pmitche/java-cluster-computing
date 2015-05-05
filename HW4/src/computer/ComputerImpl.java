@@ -27,7 +27,7 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
     protected final AtomicInteger threadCount;
     protected final LinkedBlockingQueue<Closure> tasks;
     //TODO: move to better place
-    public final boolean MULTICORE = true;
+    public final boolean MULTICORE = false;
     public final int coreCount;
 
     public ComputerImpl(Space space) throws RemoteException {
@@ -37,7 +37,7 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
         coreCount = MULTICORE ? Runtime.getRuntime().availableProcessors() : 1;
         threadCount = new AtomicInteger(coreCount);
         for (int i = 0; i < coreCount; i++) {
-            new Thread(new CoreProxy(threadCount, tasks)).start();
+            new Thread(new CoreProxy(threadCount, tasks, i)).start();
         }
     }
 
@@ -70,7 +70,6 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
         return t;
     }
 
-    //TODO: MÅ locke på det samme som proxy
     @Override
     public <T> T execute(Closure closure) throws RemoteException {
         synchronized (threadCount){
