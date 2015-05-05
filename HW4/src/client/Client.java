@@ -93,6 +93,7 @@ public class Client<T> extends JFrame
      */
     public T runJob() throws RemoteException
     {
+        System.out.println("Client; runJob(): running...");
         long elaps = System.nanoTime();
         job.generateTasks(space);
         T t = (T) job.collectResults(space);

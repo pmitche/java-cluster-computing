@@ -26,15 +26,12 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
 
     protected final AtomicInteger threadCount;
     protected final LinkedBlockingQueue<Closure> tasks;
-    //TODO: move to better place
-    public final boolean MULTICORE = false;
     public final int coreCount;
 
     public ComputerImpl(Space space) throws RemoteException {
         SpaceImpl.setInstance(space);
-        //TODO: Change to system number of cores
         tasks = new LinkedBlockingQueue<>();
-        coreCount = MULTICORE ? Runtime.getRuntime().availableProcessors() : 1;
+        coreCount = SpaceImpl.MULTICORE ? Runtime.getRuntime().availableProcessors() : 1;
         threadCount = new AtomicInteger(coreCount);
         for (int i = 0; i < coreCount; i++) {
             new Thread(new CoreProxy(threadCount, tasks, i)).start();
