@@ -21,16 +21,19 @@ public class CoreProxy implements Runnable {
 
     @Override
     public void run() {
-        threadCount.decrementAndGet();
-        try {
-            //TODO: Handle exception
-            tasks.take().call();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        synchronized (threadCount){
-            threadCount.incrementAndGet();
-            threadCount.notify();
+        while (true){
+            try {
+                //TODO: Handle exception
+                Closure c = tasks.take();
+                threadCount.decrementAndGet();
+                c.call();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            synchronized (threadCount){
+                threadCount.incrementAndGet();
+                threadCount.notify();
+            }
         }
     }
 }

@@ -175,6 +175,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     public synchronized void putClosureInReady(Closure closure) throws RemoteException {
         try {
             readyClosureQueue.put(closure);
+            System.out.println("SpaceImpl; putClosureInReady()");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

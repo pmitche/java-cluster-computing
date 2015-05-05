@@ -75,7 +75,7 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
     public <T> T execute(Closure closure) throws RemoteException {
         synchronized (threadCount){
             try {
-                while (threadCount.get() == 0){
+                if (threadCount.get() == 0){
                     threadCount.wait();
                 }
                 tasks.put(closure);
