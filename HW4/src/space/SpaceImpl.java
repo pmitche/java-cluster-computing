@@ -43,12 +43,6 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         System.out.println("Space running...");
     }
 
-
-    @Override
-    public void putAll(List<Task> taskList) throws RemoteException {
-        taskQueue.addAll(taskList);
-    }
-
     /**
      * Takes one task and adds it to the task queue. This is used by the ComputerProxy if its corresponding Computer fails.
      * @param task
@@ -88,10 +82,6 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         System.out.println("SpaceImpl; Computer registered and working...");
     }
 
-    @Override
-    public Task takeTaskFromQueue() throws RemoteException, InterruptedException {
-        return taskQueue.take();
-    }
 
     @Override
     public void putResult(Result r) throws RemoteException {

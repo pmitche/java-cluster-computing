@@ -19,8 +19,6 @@ public interface Space extends Remote
     public static boolean MULTICORE = true;
     public static int PREFETCH_LIMIT = 5;
 
-    void putAll(List<Task> taskList) throws RemoteException;
-
     void put(Task task) throws RemoteException, InterruptedException;
 
     void put(Closure closure)throws RemoteException;
@@ -33,7 +31,6 @@ public interface Space extends Remote
 
     void register(Computer computer) throws RemoteException;
 
-    Task takeTaskFromQueue() throws RemoteException, InterruptedException;
 
     void putResult(Result r) throws RemoteException;
 

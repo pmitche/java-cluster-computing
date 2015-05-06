@@ -1,6 +1,7 @@
 package system;
 
 import api.Task;
+import computer.SpaceProxy;
 import space.SpaceImpl;
 
 import java.io.Serializable;
@@ -29,7 +30,7 @@ public class Closure implements Serializable {
         this.isAncestor = false;
         this.id =  UUID.randomUUID().toString();
         try {
-            SpaceImpl.getInstance().put(this);
+            SpaceProxy.getInstance().put(this);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -38,7 +39,7 @@ public class Closure implements Serializable {
     private synchronized void ready() {
         if (missingArgsCount == 0 && cilkThread != null){
             try {
-                SpaceImpl.getInstance().putClosureInReady(this);
+                SpaceProxy.getInstance().putClosureInReady(this);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
