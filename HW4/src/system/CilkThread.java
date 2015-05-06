@@ -1,5 +1,6 @@
 package system;
 
+import api.Space;
 import api.Task;
 import space.SpaceImpl;
 
@@ -73,4 +74,29 @@ public abstract class CilkThread implements Runnable, Task {
     public void setClosure(Closure closure) {
         this.closure = closure;
     }
+
+    /**
+     * Runs the CilkThread task instance and decides weather it should decompose or compose.
+     */
+    @Override
+    public void run() {
+        if(closure.isAncestor()) compose();
+        else decompose((Continuation)closure.getArgument(0));
+
+        try {
+            SpaceImpl.getInstance().closureDone(closure.getId());
+        } catch (RemoteException e) {e.printStackTrace();}
+    }
+
+    /**
+     * Starting the Thread
+     * @return nullsafe Optional object.
+     */
+    @Override
+    public Object call() {
+        Thread t = new Thread(this);
+        t.start();
+        return Optional.empty();
+    }
+
 }

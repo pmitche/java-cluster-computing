@@ -2,6 +2,7 @@ package task;
 
 import api.Job;
 import api.Space;
+import client.ClientTsp;
 import system.Closure;
 import system.Continuation;
 import system.ResultValueWrapper;
@@ -41,6 +42,7 @@ public class TspJob implements Job {
     @Override
     public void generateTasks(Space space) throws RemoteException {
 
+/*
         ArrayList<Integer> unusedCities = new ArrayList<>();
         for(int i=1; i<cities.length; i++)
             unusedCities.add(i);
@@ -48,8 +50,13 @@ public class TspJob implements Job {
         ArrayList<Integer> partialTrip = new ArrayList<>();
         partialTrip.add(0);
 
-        System.out.println((unusedCities==null)+" : "+(partialTrip==null));
         TaskTsp startTask = new TaskTsp(new Closure(0, new Continuation("-1",-1,new TaskTsp.Wrapper(unusedCities, partialTrip))));
+*/
+        Integer[] startPath = new Integer[cities.length];
+        for(int i=0; i<cities.length; i++)
+            startPath[i] = i;
+
+        TaskTspSa startTask = new TaskTspSa(new Closure(0, new Continuation("-1", -1, new AnnealingState(startPath, ClientTsp.START_TEMP, 0))));
 
         try {
             space.put(startTask);
@@ -70,9 +77,10 @@ public class TspJob implements Job {
         //Collect task results
 
         try {
-            return ((ResultValueWrapper)space.take().getTaskReturnValue()).getTaskReturnValue();
+            Object rs = ((ResultValueWrapper)space.take().getTaskReturnValue()).getTaskReturnValue();
+            System.out.println(rs.getClass());
+            return rs;
         } catch (InterruptedException e) {  e.printStackTrace();     }
         return Optional.empty();
     }
 }
-

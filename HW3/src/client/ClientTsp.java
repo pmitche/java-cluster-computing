@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,11 +38,6 @@ public class ClientTsp extends Client<List<Integer>> implements Serializable
                     { 3, 6 }
             };
 
-
-    public static final double ABS_TEMP = 0.01;
-    public static final double COOLING_RATE = 0.50;
-    public static final double START_TEMP = 1000;
-
     /**
      * Constructor
      * <p>Extends the Client super class</p>
@@ -53,7 +49,7 @@ public class ClientTsp extends Client<List<Integer>> implements Serializable
      */
     public ClientTsp(String ip, boolean singleJVM) throws RemoteException, NotBoundException, MalformedURLException
     {
-          super("Euclidean TSP", ip, new TspJob(CITIES), singleJVM);
+        super("Euclidean TSP", ip, new TspJob(CITIES), singleJVM); //TODO send job
     }
 
     public static void main( String[] args ) throws RemoteException, MalformedURLException, NotBoundException
@@ -68,27 +64,17 @@ public class ClientTsp extends Client<List<Integer>> implements Serializable
 
         client.begin();
         long elaps = System.nanoTime();
-        final List<Integer> value = client.runJob();
-        System.out.println((System.nanoTime()-elaps)/1000000);
-        client.add( client.getLabel(value.toArray(new Integer[0])) );
-        client.end();
+        final Object value = client.runJob();
 
-/*        final Object value = client.runJob();
-
-        System.out.println(value.getClass());
-
-        //Shouldn't be neccesary but it is...
+        //Shouldn't be neccesary but it is... //TODO
         ArrayList<Integer> res = null;
         if(value instanceof ArrayList) {
             res = (ArrayList<Integer>)value;
-            System.out.println("HEI");
         }
 
         System.out.println((System.nanoTime()-elaps)/1000000);
-        client.add( client.getLabel( value.toArray(new Integer[0])));//res.toArray( new Integer[0] ) ) );
+        client.add( client.getLabel( res.toArray(new Integer[0])));//res.toArray( new Integer[0] ) ) );
         client.end();
-
-  */
     }
 
     /**

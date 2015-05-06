@@ -21,17 +21,6 @@ public class TaskFibonacci extends CilkThread {
     }
 
     /**
-     * Starting the Thread
-     * @return nullsafe Optional object.
-     */
-    @Override
-    public Object call() {
-        Thread t = new Thread(this);
-        t.start();
-        return Optional.empty();
-    }
-
-    /**
      * Decomposes the problem to subtasks that are spawned in space
      * @param c The Continuation of this task
      */
@@ -52,11 +41,12 @@ public class TaskFibonacci extends CilkThread {
     }
 
     /**
-     * Replaced by sum in this case for ease.
-     * @deprecated
+     * Compose method.
      */
     @Override
-    public void compose(List list) {}
+    public void compose() {
+        sum((Continuation)closure.getArgument(0), (int)closure.getArgument(1), (int)closure.getArgument(2));
+    }
 
     /**
      * Problem specific implementation of the compose method.
@@ -69,22 +59,5 @@ public class TaskFibonacci extends CilkThread {
     private void sum(Continuation cont, int arg0, int arg1) {
         cont.setReturnVal(arg0 + arg1);
         sendArgument(cont);
-    }
-
-    /**
-     * Runs the CilkThread task instance and decides weather it should decompose or compose.
-     */
-    @Override
-    public void run() {
-        if (closure.isAncestor()){
-            sum((Continuation) closure.getArgument(0), (int) closure.getArgument(1),(int) closure.getArgument(2));
-        } else {
-            decompose((Continuation) closure.getArgument(0));
-        }
-        try {
-            SpaceImpl.getInstance().closureDone(closure.getId());
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
     }
 }
