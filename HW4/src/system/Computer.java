@@ -12,5 +12,5 @@ public interface Computer extends Remote{
 
     public <T> T execute(Task<T> task) throws RemoteException;
 
-    public <T> T execute(Closure closure) throws RemoteException;
+    public void execute(Closure closure) throws RemoteException;
 }

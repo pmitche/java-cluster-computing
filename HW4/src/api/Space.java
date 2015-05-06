@@ -38,6 +38,4 @@ public interface Space extends Remote
     Closure takeReadyClosure() throws  RemoteException;
 
     void receiveArgument(Continuation k) throws RemoteException;
-
-    void notifyDone(String closureId) throws RemoteException;
 }

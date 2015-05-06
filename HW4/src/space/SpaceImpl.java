@@ -171,11 +171,6 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     }
 
     @Override
-    public synchronized void notifyDone(String closureId) throws RemoteException {
-        readyClosureQueue.removeAll(Collections.singleton(closures.get(closureId)));
-    }
-
-    @Override
     public synchronized void putClosureInReady(Closure closure) throws RemoteException {
         try {
             readyClosureQueue.put(closure);

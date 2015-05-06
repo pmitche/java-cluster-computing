@@ -59,7 +59,7 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
     }
 
     @Override
-    public <T> T execute(Closure closure) throws RemoteException {
+    public void execute(Closure closure) throws RemoteException {
         synchronized (threadCount){
             try {
                 tasks.put(closure);
@@ -71,7 +71,6 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
                 e.printStackTrace();
             }
         }
-        return null;
     }
 
     /**
