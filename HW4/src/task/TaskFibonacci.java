@@ -1,9 +1,11 @@
 package task;
 
+import space.SpaceImpl;
 import system.CilkThread;
 import system.Closure;
 import system.Continuation;
 
+import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,13 +77,14 @@ public class TaskFibonacci extends CilkThread {
     @Override
     public void run() {
         if (closure.isAncestor()){
-            try {
-                sum((Continuation) closure.getArgument(0), (int) closure.getArgument(1),(int) closure.getArgument(2));
-            }catch (Exception e){
-                e.printStackTrace();
-            }
+            sum((Continuation) closure.getArgument(0), (int) closure.getArgument(1),(int) closure.getArgument(2));
         } else {
             decompose((Continuation) closure.getArgument(0));
+        }
+        try {
+            SpaceImpl.getInstance().closureDone(closure.getId());
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
     }
 }

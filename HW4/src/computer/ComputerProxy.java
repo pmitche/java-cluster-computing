@@ -6,6 +6,7 @@ import system.Closure;
 import system.Computer;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 /**
  * Created by Kyrre on 15.04.2015.
@@ -25,17 +26,20 @@ public class ComputerProxy implements Runnable {
      */
     @Override
     public void run() {
+        ArrayList<Closure> closures = new ArrayList<>();
         while (true) {
             Closure closure = null;
-            Result r = null;
             try {
                 closure = SpaceImpl.getInstance().takeReadyClosure();
+                closures.add(closure);
                 computer.execute(closure);
-            } catch (RemoteException e) {
-                //TODO: re-enter closure
-                // space.put(closure);
-                System.out.println("ComputerProxy; Computer failed, task re-entered in queue...");
-                e.printStackTrace();
+            } catch (Exception e) {
+                try {
+                    SpaceImpl.getInstance().putAll(closures);
+                } catch (RemoteException e1) {
+                    System.out.println("ComputerProxy; run(): Something really strange has failed...");
+                }
+                System.out.println("ComputerProxy; Computer failed, closures re-entered in queue...");
                 return;
             }
         }

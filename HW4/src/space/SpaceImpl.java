@@ -11,9 +11,7 @@ import system.Continuation;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -26,12 +24,14 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     private LinkedBlockingQueue<Result> resultQueue;
     private LinkedBlockingQueue<Closure> readyClosureQueue;
     private HashMap<String,Closure> closures;
+    private HashSet<String> closuresDone;
 
     private SpaceImpl() throws RemoteException {
         this.taskQueue = new LinkedBlockingQueue<Task>();
         this.resultQueue = new LinkedBlockingQueue<Result>();
         this.readyClosureQueue = new LinkedBlockingQueue<Closure>();
         this.closures = new HashMap<>();
+        this.closuresDone = new HashSet<>();
     }
 
     public static void main(String[] args) throws RemoteException {
@@ -167,8 +167,25 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
             putResult(new Result(k.getReturnVal(),-1));
         }else {
             Closure c = closures.get(k.closureId);
-                    c.setArgument(k);
+            c.setArgument(k);
+
         }
+    }
+
+    @Override
+    public synchronized void closureDone(String id) throws RemoteException {
+        closuresDone.add(id);
+    }
+
+    @Override
+    public void putAll(Collection<Closure> closures) throws RemoteException {
+        closures.forEach(closure -> {if(!closuresDone.contains(closure.getId())){
+            try {
+                readyClosureQueue.put(closure);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }});
     }
 
     @Override
