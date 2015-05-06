@@ -178,7 +178,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     }
 
     @Override
-    public void putAll(Collection<Closure> closures) throws RemoteException {
+    public synchronized void putAll(Collection<Closure> closures) throws RemoteException {
         closures.forEach(closure -> {if(!closuresDone.contains(closure.getId())){
             try {
                 readyClosureQueue.put(closure);
