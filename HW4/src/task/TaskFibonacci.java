@@ -81,5 +81,10 @@ public class TaskFibonacci extends CilkThread {
         } else {
             decompose((Continuation) closure.getArgument(0));
         }
+        try {
+            SpaceImpl.getInstance().closureDone(closure.getId());
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 }

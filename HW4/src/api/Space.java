@@ -2,6 +2,8 @@ package api;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import space.SpaceImpl;
@@ -38,4 +40,8 @@ public interface Space extends Remote
     Closure takeReadyClosure() throws  RemoteException;
 
     void receiveArgument(Continuation k) throws RemoteException;
+
+    void closureDone(String id) throws RemoteException;
+
+    void putAll(Collection<Closure> closures) throws RemoteException;
 }
