@@ -1,7 +1,5 @@
 package task;
 
-import api.Task;
-import client.ClientTsp;
 import system.CilkThread;
 import system.Closure;
 import system.Continuation;
@@ -30,7 +28,7 @@ public class TaskTsp extends CilkThread {
 
         Wrapper w = (Wrapper)c.argument;
         if(w.UNUSED.size()==0) {
-            c.setReturnVal(new ResultValueWrapper<>(w.PATH, TspDistance.totalDistance(w.PATH.toArray(new Integer[0]))));
+            c.setReturnVal(new ResultValueWrapper<>(w.PATH, TspUtils.totalDistance(w.PATH.toArray(new Integer[0]))));
             sendArgument(c);
             return;
         }
@@ -44,6 +42,8 @@ public class TaskTsp extends CilkThread {
             succVisited.add(next);
             succList.add(new Wrapper(succUnvisited, succVisited));
         }
+
+
 
         String id = "-1";
         //Spawn next to get ID
