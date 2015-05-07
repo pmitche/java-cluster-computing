@@ -11,11 +11,7 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -34,7 +30,7 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
         coreCount = SpaceImpl.MULTICORE ? Runtime.getRuntime().availableProcessors() : 1;
         threadCount = new AtomicInteger(coreCount);
         for (int i = 0; i < coreCount; i++) {
-            new Thread(new CoreProxy(threadCount, tasks, i)).start();
+            new Thread(new CoreHandler(threadCount, tasks, i)).start();
         }
     }
 

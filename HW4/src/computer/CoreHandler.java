@@ -9,13 +9,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Created by Kyrre on 04.05.2015.
  */
-public class CoreProxy implements Runnable {
+public class CoreHandler implements Runnable {
 
     private final AtomicInteger threadCount;
     private final LinkedBlockingQueue<Closure> tasks;
     private final int threadId;
 
-    public CoreProxy(AtomicInteger threadCount, LinkedBlockingQueue<Closure> tasks, int threadId) {
+    public CoreHandler(AtomicInteger threadCount, LinkedBlockingQueue<Closure> tasks, int threadId) {
         this.threadId = threadId;
         this.threadCount = threadCount;
         this.tasks = tasks;
