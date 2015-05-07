@@ -14,10 +14,12 @@ import system.Continuation;
 public interface Space extends Remote
 {
 
-    public static int PORT = 1099;
-    public static String SERVICE_NAME = "Space";
-    public static boolean MULTICORE = true;
-    public static int PREFETCH_LIMIT = 5;
+    public static final int PORT = 1099;
+    public static final String SERVICE_NAME = "Space";
+    public static final boolean MULTICORE = true;
+    public static final int PREFETCH_LIMIT = 5;
+    public static final boolean ASYNC = false;
+
 
     void put(Task task) throws RemoteException, InterruptedException;
 
