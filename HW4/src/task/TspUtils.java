@@ -2,6 +2,7 @@ package task;
 
 import client.ClientTsp;
 
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -31,28 +32,32 @@ public class TspUtils {
      * @return the euclidean distance between do and d1
      */
     private static double euclideanDistance(double[] d0, double[] d1){
-        double xDistance = Math.abs(d0[0]-d1[0]);
-        double yDistance = Math.abs(d0[1] - d1[1]);
-        return Math.sqrt( (xDistance*xDistance) + (yDistance*yDistance) );
+        final double deltaX = d0[ 0 ] - d1[ 0 ];
+        final double deltaY = d0[ 1 ] - d1[ 1 ];
+        return Math.sqrt( deltaX * deltaX + deltaY * deltaY );
     }
 
     /**
      * Calculates the total distance of a given permutation. If the distance is shorter than the current best solution, minDistance and minPath are updated.
      * @param a
      */
-    public static double totalDistance(Integer[] a) {
+    public static double totalDistance(List<Integer> a) {
         double distance = 0;
-        for (int i = 0; i < a.length; i++){
-            if (i < a.length-1){
-                distance += euclideanDistance(ClientTsp.CITIES[a[i]], ClientTsp.CITIES[a[i+1]]);
-            }
+        //Tour distance
+        for (int i = 0; i < a.size()-1; i++){
+            distance += euclideanDistance(ClientTsp.CITIES[a.get(i)], ClientTsp.CITIES[a.get(i+1)]);
         }
-        distance += euclideanDistance(ClientTsp.CITIES[a[0]], ClientTsp.CITIES[a[a.length-1]]);
+        //Distance back to start from end
+        distance += euclideanDistance(ClientTsp.CITIES[a.get(0)], ClientTsp.CITIES[a.get(a.size()-1)]);
         return distance;
     }
 
+
+
+
     /**
      * Fisher–Yates shuffle.
+     * @deprecated unused
      */
     public static void shuffle(Integer[] ar) {
         for (int i = ar.length - 1; i > 0; i--) {

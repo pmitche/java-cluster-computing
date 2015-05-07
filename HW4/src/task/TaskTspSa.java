@@ -25,13 +25,13 @@ class TaskTspSa extends CilkThread {
         double temp = state.TEMP;
         int iteration = state.ITERATION;
 
-        double thisDist = TspUtils.totalDistance(state.PATH);
+        double thisDist = TspUtils.totalDistance(Arrays.asList(state.PATH));
 
         List<Integer[]> nextOrders = getNextPermutation(state.PATH);
 
         List<AnnealingState> succList = new ArrayList<>();
         for(Integer[] nextOrder : nextOrders) {
-            double nextDist = TspUtils.totalDistance(nextOrder);
+            double nextDist = TspUtils.totalDistance(Arrays.asList(nextOrder));
             double deltaDist =  nextDist-thisDist;
 
             if((deltaDist < 0) || (thisDist > 0
@@ -95,18 +95,18 @@ class TaskTspSa extends CilkThread {
     private List<Integer[]> getNextPermutation(Integer[] current) {
         List<Integer[]> list = new ArrayList<>();
         Random random = new Random();
-        int bound = random.nextInt(current.length/3)+2;
+        int bound = random.nextInt(current.length/3)+1;
         for(int i=0; i<bound; i++) {
             Integer[] permutation = current.clone();
             TspUtils.swap(permutation, random.nextInt(permutation.length), random.nextInt(permutation.length));
             list.add(permutation);
         }
-/*
+
         //Adding random permutation using Fisher-Yates shuffle
         Integer[] randPath = current.clone();
         TspUtils.shuffle(randPath);
         list.add(randPath);
-*/
+
         return list;
     }
 

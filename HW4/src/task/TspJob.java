@@ -9,6 +9,7 @@ import system.ResultValueWrapper;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -42,22 +43,23 @@ public class TspJob implements Job {
     @Override
     public void generateTasks(Space space) throws RemoteException {
 
-/*
-        ArrayList<Integer> unusedCities = new ArrayList<>();
+
+        List<Integer> unusedCities = new ArrayList<>();
         for(int i=1; i<cities.length; i++)
             unusedCities.add(i);
 
-        ArrayList<Integer> partialTrip = new ArrayList<>();
+        List<Integer> partialTrip = new ArrayList<>();
         partialTrip.add(0);
 
         TaskTsp startTask = new TaskTsp(new Closure(0, new Continuation("-1",-1,new TaskTsp.Wrapper(unusedCities, partialTrip))));
-*/
+
+/*      //Used for Simmulated Annealing
         Integer[] startPath = new Integer[cities.length];
         for(int i=0; i<cities.length; i++)
             startPath[i] = i;
 
-        TaskTspSa startTask = new TaskTspSa(new Closure(0, new Continuation("-1", -1, new AnnealingState(startPath, ClientTsp.START_TEMP, 0))));
-
+        TaskTspSa startTask = new TaskTspSa(new Closure(0, new Continuation("-1", -1, new AnnealingState(startPath, ClientTsp.START_TEMP, -1))));
+*/
         try {
             space.put(startTask);
         } catch (InterruptedException e) {e.printStackTrace();}
