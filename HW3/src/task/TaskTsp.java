@@ -14,7 +14,7 @@ import java.util.*;
  */
 public class TaskTsp extends CilkThread {
 
-    private final long START_TIME = System.nanoTime(); //TODO
+    private final long START_TIME = System.nanoTime();
 
     public TaskTsp(Closure closure) {
         super(closure);

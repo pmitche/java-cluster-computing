@@ -105,7 +105,6 @@ public class TaskTsp extends CilkThread {
 
 
     /**
-     * TODO Ugliest code ever written...
      * @param size
      * @param c
      * @return

@@ -49,7 +49,7 @@ public class ClientTsp extends Client<List<Integer>> implements Serializable
      */
     public ClientTsp(String ip, boolean singleJVM) throws RemoteException, NotBoundException, MalformedURLException
     {
-        super("Euclidean TSP", ip, new TspJob(CITIES), singleJVM); //TODO send job
+        super("Euclidean TSP", ip, new TspJob(CITIES), singleJVM);
     }
 
     public static void main( String[] args ) throws RemoteException, MalformedURLException, NotBoundException
@@ -66,7 +66,6 @@ public class ClientTsp extends Client<List<Integer>> implements Serializable
         long elaps = System.nanoTime();
         final Object value = client.runJob();
 
-        //Shouldn't be neccesary but it is... //TODO
         ArrayList<Integer> res = null;
         if(value instanceof ArrayList) {
             res = (ArrayList<Integer>)value;

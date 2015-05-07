@@ -26,7 +26,6 @@ public class CoreHandler implements Runnable {
     public void run() {
         while (true){
             try {
-                //TODO: Handle exception
                 long waitTime = System.nanoTime();
                 Closure c = tasks.take();
                 waitTime = (System.nanoTime()-waitTime)/1000000;
