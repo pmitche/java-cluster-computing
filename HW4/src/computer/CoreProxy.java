@@ -29,14 +29,12 @@ public class CoreProxy implements Runnable {
                 long waitTime = System.nanoTime();
                 Closure c = tasks.take();
                 waitTime = (System.nanoTime()-waitTime)/1000000;
-                threadCount.decrementAndGet();
                 System.out.println("CoreProxy; run(); Thread: "+threadId);
                 c.call();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             synchronized (threadCount){
-                threadCount.incrementAndGet();
                 threadCount.notify();
             }
         }
