@@ -36,6 +36,9 @@ public class Closure implements Serializable {
         }
     }
 
+    /**
+     * Marks this closure as ready in space
+     */
     private synchronized void ready() {
         if (missingArgsCount == 0 && cilkThread != null){
             try {
@@ -46,38 +49,59 @@ public class Closure implements Serializable {
         }
     }
 
+    /**
+     * Returns the closure ID
+     * @return ID
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * Calls the Thread associated with the closure.
+     */
     public synchronized void call(){
         cilkThread.setClosure(this);
         cilkThread.call();
     }
 
+    /**
+     * Sets the thread
+     * @param cilkThread Thread to be set
+     */
     public synchronized void setCilkThread(CilkThread cilkThread) {
         this.cilkThread = cilkThread;
         ready();
     }
 
+    /**
+     * Sets an argument to the continuation
+     * @param k continuation
+     */
     public synchronized void setArgument(Continuation k) {
         arguments[k.offset] = k.getReturnVal();
         missingArgsCount--;
         ready();
     }
 
+    /**
+     * @param i index of the argumtent
+     * @return  The argument requested
+     */
     public Object getArgument(int i) {
         return arguments[i];
     }
 
-    public Object[] getArguments() {
-        return arguments.clone();
-    }
-
+    /**
+     * Tells you if the closure is an ancestor
+     */
     public boolean isAncestor() {
         return isAncestor;
     }
 
+    /**
+     * @param isAncestor    Boolean value marking the closure an ancestor or not.
+     */
     public void setIsAncestor(boolean isAncestor) {
         this.isAncestor = isAncestor;
     }

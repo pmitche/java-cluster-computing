@@ -114,6 +114,8 @@ public class TaskTsp extends CilkThread {
 
         String id = "-1";
         //Spawn next to get ID
+
+
         switch(size)
         {
             case 1: { id = spawnNext(new TaskTsp(null),c, null); break; }

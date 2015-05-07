@@ -22,6 +22,10 @@ class TaskTspSa extends CilkThread {
         super(closure);
     }
 
+    /**
+     * Deconstructs the SA task to smaller instances
+     * @param c Current continuation
+     */
     @Override
     public void decompose(Continuation c) {
 
@@ -62,6 +66,9 @@ class TaskTspSa extends CilkThread {
 //        System.out.println(state.TEMP);
     }
 
+    /**
+     *  Finds the SA instance with the best answer, and forwards it to parent thread.
+     */
     @Override
     public void compose() {
         Continuation currCon = (Continuation)closure.getArgument(0);
