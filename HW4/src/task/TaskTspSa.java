@@ -115,6 +115,16 @@ class TaskTspSa extends CilkThread {
         return list;
     }
 
+
+
+
+    /**
+     * Ugliest code ever written...
+     *
+     * @param size
+     * @param c
+     * @return
+     */
     private String getId(int size, Continuation c) {
 
         String id = "-1";

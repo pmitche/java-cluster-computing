@@ -28,17 +28,18 @@ public class TaskTsp extends CilkThread {
     public void decompose(Continuation c) {
 
         final Wrapper w = (Wrapper)c.argument;
-        if(w.UNUSED.size()<=0) {
+        if(w.UNUSED.size()<=1) {
+            w.PATH.addAll(w.UNUSED);
             c.setReturnVal(new ResultValueWrapper(w.PATH, TspUtils.totalDistance(w.PATH)));
             sendArgument(c);
             return;
         }
 
         //Return if the whole line has been explored
-        List<Wrapper> permutations = new ArrayList<>();
+        List<Wrapper> permutations = new ArrayList();
         for(Integer unvisited : w.UNUSED) {
-            List<Integer> succUnvisited = new ArrayList<>(w.UNUSED);
-            List<Integer> succVisited = new ArrayList<>(w.PATH);
+            List<Integer> succUnvisited = new ArrayList(w.UNUSED);
+            List<Integer> succVisited = new ArrayList(w.PATH);
             succUnvisited.remove(unvisited);
             succVisited.add(unvisited);
             if(succVisited.size() > 1)
@@ -61,18 +62,6 @@ public class TaskTsp extends CilkThread {
         for(Wrapper permutation : permutations) {
             spawn(new TaskTsp(null), new Continuation(id, index++, permutation));
         }
-
-        /*
-        int index = 1;
-        for(Integer unusedCity : w.UNUSED) {
-            List<Integer> succUnvisited = new ArrayList<>(w.UNUSED);
-            List<Integer> succVisited = new ArrayList<>(w.PATH);
-            succUnvisited.remove(unusedCity);
-            succVisited.add(unusedCity);
-            spawn(new TaskTsp(null), new Continuation(id, index++, new Wrapper(succUnvisited, succVisited)));
-        }
-        */
-
     }
 
     /**
