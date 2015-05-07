@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="index-styles.css">
+    <title>RESULTS - CS290D Java-Centric Cluster & Concurrent Computing</title>
+    <style>
+        table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        width: 100%;
+        }
+        th, td {
+        padding: 5px;
+        white-space: nowrap;
+        }
+        th {
+        text-align: left;
+        }
+        .container {
+        width: 760px;
+        }
+        div.wrapper {
+        width: 740px;
+        }
+        .task-times {
+        text-decoration: none;
+        float: right;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="wrapper">
+        <header>
+            <h1>CS290D Java-Centric Cluster & Concurrent Computing</h1>
+            <hr>
+        </header>
+        <h2 class="subheading">Homework 4 - RESULTS</h2>
+        <b class="subheading sub">&raquo; Kyrre Moe, Ingeborg Oftedal, Hallvard Christensen and Paul Mitchell</b>
+        <hr style="margin-top: 10px; margin-bottom: 10px;">
+
+        <section class="main">
+            <ul>
+                <li><a href="completion-time-plot.png">Completion time plot</a></li>
+                <li><a href="analysis.pdf">Result analysis</a></li><br><hr><br>
+            </ul>
+            <p style="color: red">Job completion times are shown in the cells below.</p>
+            <br>
+
+            <h3>Travelling Salesman</h3>
+            <table>
+                <tbody>
+                <th>Deployment scenario</th>
+                <th>One computer</th>
+                <th>Eight computers</th>
+                <tr>
+                    <td>Multicore + Async</td>
+                    <td>47469  <a href="tsp-sj-2c.html" class="task-times">&raquo;T</a></td>
+                    <td>  <a href="tsp-sj-4c.html" class="task-times">&raquo;T</a></td>
+                </tr>
+                <tr>
+                    <td>Single core + Not async </td>
+                    <td>50102  <a href="tsp-dj-2c.html" class="task-times">&raquo;T</a></td>
+                    <td>  <a href="tsp-dj-4c.html" class="task-times">&raquo;T</a></td>
+                </tr>
+                <tr>
+                    <td>Multicore + Not Async</td>
+                    <td>48021  <a href="tsp-dm-1c.html" class="task-times">&raquo;T</a></td>
+                    <td>  <a href="tsp-dm-2c.html" class="task-times">&raquo;T</a></td>
+                </tr>
+                <tr>
+                    <td>Single core + Async</td>
+                    <td>49302  <a href="tsp-dm-1c.html" class="task-times">&raquo;T</a></td>
+                    <td>  <a href="tsp-dm-2c.html" class="task-times">&raquo;T</a></td>
+                </tr>
+                </tbody>
+            </table>
+            <br><br>
+
+            <h3>Fibonacci Sequence</h3>
+            <table>
+                <tbody>
+                <th>Deployment scenario</th>
+                <th>One computer</th>
+                <th>Eight computers</th>
+                <tr>
+                    <td>Multicore + Async</td>
+                    <td>19262  <a href="tsp-sj-2c.html" class="task-times">&raquo;T</a></td>
+                    <td>  <a href="tsp-sj-4c.html" class="task-times">&raquo;T</a></td>
+                </tr>
+                <tr>
+                    <td>Single core + Not async </td>
+                    <td>22451  <a href="tsp-dj-2c.html" class="task-times">&raquo;T</a></td>
+                    <td>  <a href="tsp-dj-4c.html" class="task-times">&raquo;T</a></td>
+                </tr>
+                <tr>
+                    <td>Multicore + Not Async</td>
+                    <td>19787  <a href="tsp-dm-1c.html" class="task-times">&raquo;T</a></td>
+                    <td>  <a href="tsp-dm-2c.html" class="task-times">&raquo;T</a></td>
+                </tr>
+                <tr>
+                    <td>Single core + Async</td>
+                    <td>22032  <a href="tsp-dm-1c.html" class="task-times">&raquo;T</a></td>
+                    <td>  <a href="tsp-dm-2c.html" class="task-times">&raquo;T</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+        <nav class="vertical">
+            <ul>
+                <li><a href="./index.html" class="backbtn" style="text-align: center">Back</a></li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+</body>
+</html>
