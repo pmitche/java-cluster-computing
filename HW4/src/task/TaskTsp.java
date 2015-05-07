@@ -41,12 +41,12 @@ public class TaskTsp extends CilkThread {
             List<Integer> succVisited = new ArrayList<>(w.PATH);
             succUnvisited.remove(unvisited);
             succVisited.add(unvisited);
-            if(succUnvisited.size() > 1)
-                if(succVisited.indexOf(0) > succVisited.indexOf(1)) continue;
-                    permutations.add(new Wrapper(succUnvisited, succVisited));
+            if(succVisited.size() > 1)
+                if(succVisited.indexOf(0) > succVisited.indexOf(1)) continue; // Removes the reverse of another solution
+            permutations.add(new Wrapper(succUnvisited, succVisited));
         }
 
-        //Dead end...
+        //Check if this thread is a dead end.
         if(permutations.isEmpty()) {
             c.setReturnVal(new ResultValueWrapper(new ArrayList() {{
                 addAll(w.PATH);

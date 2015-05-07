@@ -7,9 +7,14 @@ import system.Continuation;
 import system.ResultValueWrapper;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by hallvard on 5/5/15.
+ *
+ * Uses Simmulated Annealing to solve the Traveling Salesman Problem through recursion deconstruction
+ *
+ * @deprecated  Not in use
  */
 class TaskTspSa extends CilkThread {
 

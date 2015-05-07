@@ -63,7 +63,6 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
         synchronized (threadCount){
             try {
                 tasks.put(closure);
-                System.out.println("ComputerImpl; execute(); tasks size: "+tasks.size());
                 if (threadCount.get() == 0 || tasks.size() > Space.PREFETCH_LIMIT){
                     threadCount.wait();
                 }
