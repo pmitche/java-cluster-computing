@@ -16,10 +16,16 @@ public class ResultValueWrapper<T,N> implements Serializable {
         this.n = n;
     }
 
+    /**
+     * @return  Returns the N value
+     */
     public N getN() {
         return n;
     }
 
+    /**
+     * @return Returns the task result value
+     */
     public T getTaskReturnValue() {
         return taskReturnValue;
     }

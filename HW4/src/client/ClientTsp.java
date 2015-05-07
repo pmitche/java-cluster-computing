@@ -76,22 +76,6 @@ public class ClientTsp extends Client<List<Integer>> implements Serializable
         client.add( client.getLabel(value.toArray(new Integer[0])) );
         client.end();
 
-/*        final Object value = client.runJob();
-
-        System.out.println(value.getClass());
-
-        //Shouldn't be neccesary but it is...
-        ArrayList<Integer> res = null;
-        if(value instanceof ArrayList) {
-            res = (ArrayList<Integer>)value;
-            System.out.println("HEI");
-        }
-
-        System.out.println((System.nanoTime()-elaps)/1000000);
-        client.add( client.getLabel( value.toArray(new Integer[0])));//res.toArray( new Integer[0] ) ) );
-        client.end();
-
-  */
     }
 
     /**
