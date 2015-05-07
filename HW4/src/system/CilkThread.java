@@ -2,6 +2,7 @@ package system;
 
 import api.Space;
 import api.Task;
+import computer.SpaceProxy;
 import space.SpaceImpl;
 
 import java.rmi.RemoteException;
@@ -34,7 +35,7 @@ public abstract class CilkThread implements Runnable, Task {
         c.setCilkThread(t);
         t.setClosure(c);
         try {
-            SpaceImpl.getInstance().put(c);
+            SpaceProxy.getInstance().put(c);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -52,7 +53,7 @@ public abstract class CilkThread implements Runnable, Task {
         t.setClosure(c);
         c.setCilkThread(t);
         try {
-            SpaceImpl.getInstance().put(c);
+            SpaceProxy.getInstance().put(c);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -65,7 +66,7 @@ public abstract class CilkThread implements Runnable, Task {
      */
     protected void sendArgument(Continuation k){
         try {
-            SpaceImpl.getInstance().receiveArgument(k);
+            SpaceProxy.getInstance().receiveArgument(k);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -84,7 +85,7 @@ public abstract class CilkThread implements Runnable, Task {
         else decompose((Continuation)closure.getArgument(0));
 
         try {
-            SpaceImpl.getInstance().closureDone(closure.getId());
+            SpaceProxy.getInstance().closureDone(closure.getId());
         } catch (RemoteException e) {e.printStackTrace();}
     }
 
