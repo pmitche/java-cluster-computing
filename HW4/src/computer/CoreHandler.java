@@ -1,13 +1,11 @@
 package computer;
 
 import system.Closure;
-
-import java.rmi.Remote;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Created by Kyrre on 04.05.2015.
+ * This class is responsible for actual execution of Cilk Threads, through closures.
  */
 public class CoreHandler implements Runnable {
 
@@ -21,6 +19,9 @@ public class CoreHandler implements Runnable {
         this.tasks = tasks;
     }
 
+    /**
+     * Retrives Closure's from a queue of waiting closures, and executes them.
+     */
     @Override
     public void run() {
         while (true){

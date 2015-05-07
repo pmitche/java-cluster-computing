@@ -13,7 +13,14 @@ public interface Task<V> extends Serializable, Callable<V>, Runnable
     @Override
     V call();
 
+    /**
+     * Decomposition happens in this method
+     * @param c
+     */
     public void decompose(Continuation c);
 
+    /**
+     * composition happens in this method
+     */
     public void compose();
 }

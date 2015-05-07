@@ -2,13 +2,10 @@ package api;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
-import space.SpaceImpl;
 import system.Closure;
-import system.Computer;
+import computer.Computer;
 import system.Continuation;
 
 public interface Space extends Remote

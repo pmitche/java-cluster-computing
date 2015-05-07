@@ -6,12 +6,10 @@ import api.Space;
 import api.Task;
 import space.SpaceImpl;
 import system.Closure;
-import system.Computer;
 import system.Continuation;
 
 import java.rmi.RemoteException;
 import java.util.Collection;
-import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**

@@ -3,7 +3,8 @@ package api;
 import java.rmi.RemoteException;
 
 /**
- * Created by Paul on 14.04.2015.
+ * All jobs should implement this interface
+ * Documenting usages falls to the implementation.
  */
 public interface Job<T>{
 

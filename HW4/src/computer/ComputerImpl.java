@@ -1,10 +1,8 @@
 package computer;
 
 import api.Space;
-import api.Task;
 import space.SpaceImpl;
 import system.Closure;
-import system.Computer;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -24,6 +22,13 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
     protected final LinkedBlockingQueue<Closure> tasks;
     public final int coreCount;
 
+
+    /**
+     * Sets space to ensure the singleton points to the correct remote reference. Also checks if MULTICORE mode is enabled.
+     * If enabled one CoreHandler is initiated for each core. If not, only one CoreHandler is initiated.
+     * @param space
+     * @throws RemoteException
+     */
     public ComputerImpl(Space space) throws RemoteException {
         SpaceImpl.setInstance(space);
         tasks = new LinkedBlockingQueue<>();
@@ -34,6 +39,14 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
         }
     }
 
+    /**
+     * Preforms necessary initialization to start an instance of ComputerImpl
+     * @param args
+     * @throws RemoteException
+     * @throws NotBoundException
+     * @throws MalformedURLException
+     * @throws InterruptedException
+     */
     public static void main(String[] args) throws RemoteException, NotBoundException, MalformedURLException, InterruptedException {
         System.setSecurityManager(new SecurityManager());
         String ip;
@@ -45,15 +58,11 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
         System.out.println("Registered to Space, running...");
     }
 
-    @Override
-    public <T> T execute(Task<T> task) throws RemoteException {
-        System.out.println("ComputerImpl; execute("+task+")");
-        long elaps = System.nanoTime();
-        T t= task.call();
-        System.out.println((System.nanoTime()-elaps)/1000000);
-        return t;
-    }
-
+    /**
+     * Does not execute the Closure as the name implies. Rather it adds the closure to a queue. This is to allow for asynchronous communication.
+     * @param closure
+     * @throws RemoteException
+     */
     @Override
     public void execute(Closure closure) throws RemoteException {
         synchronized (threadCount){

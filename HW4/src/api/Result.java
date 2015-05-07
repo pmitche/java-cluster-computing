@@ -1,6 +1,10 @@
 package api;
 import java.io.Serializable;
 
+/**
+ * When Space is finished with computing the resulting computation is wrapped in an instance of this class.
+ * @param <T>
+ */
 public class Result<T> implements Serializable
 {
     private final T taskReturnValue;
@@ -19,10 +23,16 @@ public class Result<T> implements Serializable
         this.taskRunTime = taskRunTime;
     }
 
+    /**
+     *
+     * @return return value
+     */
     public T getTaskReturnValue() { return taskReturnValue; }
 
-    public long getTaskRunTime() { return taskRunTime; }
-
+    /**
+     * Self explanatory...
+     * @return
+     */
     @Override
     public String toString()
     {

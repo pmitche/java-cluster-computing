@@ -5,7 +5,7 @@ import api.Space;
 import api.Task;
 import computer.ComputerProxy;
 import system.Closure;
-import system.Computer;
+import computer.Computer;
 import system.Continuation;
 
 import java.rmi.RemoteException;

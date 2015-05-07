@@ -1,9 +1,7 @@
 package computer;
 
-import api.Result;
 import space.SpaceImpl;
 import system.Closure;
-import system.Computer;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -21,8 +19,8 @@ public class ComputerProxy implements Runnable {
     }
 
     /**
-     * Runs a loop that tries to execute tasks on the computer. If the computer succeeds the result is added to Space.
-     * If the computer fails, the RemoteException is caught, and the task is re-submitted to the Space task queue.
+     * Runs a loop that tries to execute tasks on the computer.
+     * If the computer fails, an Exception is caught, and the tasks are re-submitted to the Space's task queue.
      */
     @Override
     public void run() {
