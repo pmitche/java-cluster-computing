@@ -42,24 +42,42 @@ public class SpaceProxy implements Space {
 
     @Override
     public void put(Closure closure) throws RemoteException {
-        SpaceImpl.getInstance().put(closure);
+        if (!ASYNC){
+            SpaceImpl.getInstance().put(closure);
+            return;
+        }
     }
-
     @Override
     public void putClosureInReady(Closure closure) throws RemoteException {
-        SpaceImpl.getInstance().putClosureInReady(closure);
+        if (!ASYNC){
+            SpaceImpl.getInstance().putClosureInReady(closure);
+            return;
+        }
     }
 
     @Override
     public Result take() throws RemoteException, InterruptedException {
-        return SpaceImpl.getInstance().take();
+        if (!ASYNC){
+            return SpaceImpl.getInstance().take();
+        }
+        //TODO: fix this
+        return null;
     }
 
+    /**
+     * Does the same as SpaceImpl, meaning it is not available in ASYNC mode.
+     * @throws RemoteException
+     */
     @Override
     public void exit() throws RemoteException {
         SpaceImpl.getInstance().exit();
     }
 
+    /**
+     * Does the same as SpaceImpl, meaning it is not available in ASYNC mode.
+     * @param computer
+     * @throws RemoteException
+     */
     @Override
     public void register(Computer computer) throws RemoteException {
         SpaceImpl.getInstance().register(computer);
@@ -67,9 +85,16 @@ public class SpaceProxy implements Space {
 
     @Override
     public void putResult(Result r) throws RemoteException {
-        SpaceImpl.getInstance().putResult(r);
+        if (!ASYNC){
+            SpaceImpl.getInstance().putResult(r);
+        }
     }
 
+    /**
+     * Does the same as SpaceImpl, meaning it is not available in ASYNC mode.
+     * @return
+     * @throws RemoteException
+     */
     @Override
     public Closure takeReadyClosure() throws RemoteException {
         return SpaceImpl.getInstance().takeReadyClosure();
@@ -77,14 +102,25 @@ public class SpaceProxy implements Space {
 
     @Override
     public void receiveArgument(Continuation k) throws RemoteException {
-        SpaceImpl.getInstance().receiveArgument(k);
+        if (!ASYNC){
+            SpaceImpl.getInstance().receiveArgument(k);
+            return;
+        }
     }
 
     @Override
     public void closureDone(String id) throws RemoteException {
-        SpaceImpl.getInstance().closureDone(id);
+        if (!ASYNC){
+            SpaceImpl.getInstance().closureDone(id);
+            return;
+        }
     }
 
+    /**
+     * Does the same as SpaceImpl, meaning it is not available in ASYNC mode.
+     * @param closures
+     * @throws RemoteException
+     */
     @Override
     public void putAll(Collection<Closure> closures) throws RemoteException {
         SpaceImpl.getInstance().putAll(closures);
