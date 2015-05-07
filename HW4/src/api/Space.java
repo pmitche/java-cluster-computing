@@ -18,7 +18,7 @@ public interface Space extends Remote
     public static final String SERVICE_NAME = "Space";
     public static final boolean MULTICORE = true;
     public static final int PREFETCH_LIMIT = 5;
-    public static final boolean ASYNC = false;
+    public static final boolean ASYNC = true;
 
 
     void put(Task task) throws RemoteException, InterruptedException;

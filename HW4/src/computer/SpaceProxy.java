@@ -20,8 +20,14 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class SpaceProxy implements Space {
 
     public static SpaceProxy instance;
+    private LinkedBlockingQueue<QueueTicket> waitingQueue;
 
     private SpaceProxy(){
+        this.waitingQueue = new LinkedBlockingQueue<>();
+        if (ASYNC){
+            new Thread(new SpaceProxyAsyncHandler(waitingQueue) {
+            }).start();
+        }
     }
 
     public static SpaceProxy getInstance(){
@@ -36,32 +42,76 @@ public class SpaceProxy implements Space {
     }
 
     @Override
-    public void put(Task task) throws RemoteException, InterruptedException {
-        SpaceImpl.getInstance().put(task);
-    }
-
-    @Override
     public void put(Closure closure) throws RemoteException {
         if (!ASYNC){
             SpaceImpl.getInstance().put(closure);
             return;
         }
+        try {
+            waitingQueue.put(new QueueTicket(QueueTicket.Type.PUT_CLOSURE, closure));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
+
     @Override
     public void putClosureInReady(Closure closure) throws RemoteException {
         if (!ASYNC){
             SpaceImpl.getInstance().putClosureInReady(closure);
             return;
         }
+        try {
+            waitingQueue.put(new QueueTicket(QueueTicket.Type.PUT_CLOSURE_IN_READY, closure));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public Result take() throws RemoteException, InterruptedException {
+    public void receiveArgument(Continuation k) throws RemoteException {
         if (!ASYNC){
-            return SpaceImpl.getInstance().take();
+            SpaceImpl.getInstance().receiveArgument(k);
+            return;
         }
-        //TODO: fix this
-        return null;
+        try {
+            waitingQueue.put(new QueueTicket(QueueTicket.Type.RECEIVE_ARGUMENT, k));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void closureDone(String id) throws RemoteException {
+        if (!ASYNC){
+            SpaceImpl.getInstance().closureDone(id);
+            return;
+        }
+        try {
+            waitingQueue.put(new QueueTicket(QueueTicket.Type.CLOSURE_DONE, id));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Does the same as SpaceImpl, meaning it is not available in ASYNC mode.
+     * @param r
+     * @throws RemoteException
+     */
+    @Override
+    public void putResult(Result r) throws RemoteException {
+        SpaceImpl.getInstance().putResult(r);
+    }
+
+    /**
+     * Does the same as SpaceImpl, meaning it is not available in ASYNC mode.
+     * @return
+     * @throws RemoteException
+     * @throws InterruptedException
+     */
+    @Override
+    public Result take() throws RemoteException, InterruptedException {
+        return SpaceImpl.getInstance().take();
     }
 
     /**
@@ -83,13 +133,6 @@ public class SpaceProxy implements Space {
         SpaceImpl.getInstance().register(computer);
     }
 
-    @Override
-    public void putResult(Result r) throws RemoteException {
-        if (!ASYNC){
-            SpaceImpl.getInstance().putResult(r);
-        }
-    }
-
     /**
      * Does the same as SpaceImpl, meaning it is not available in ASYNC mode.
      * @return
@@ -100,22 +143,6 @@ public class SpaceProxy implements Space {
         return SpaceImpl.getInstance().takeReadyClosure();
     }
 
-    @Override
-    public void receiveArgument(Continuation k) throws RemoteException {
-        if (!ASYNC){
-            SpaceImpl.getInstance().receiveArgument(k);
-            return;
-        }
-    }
-
-    @Override
-    public void closureDone(String id) throws RemoteException {
-        if (!ASYNC){
-            SpaceImpl.getInstance().closureDone(id);
-            return;
-        }
-    }
-
     /**
      * Does the same as SpaceImpl, meaning it is not available in ASYNC mode.
      * @param closures
@@ -124,5 +151,16 @@ public class SpaceProxy implements Space {
     @Override
     public void putAll(Collection<Closure> closures) throws RemoteException {
         SpaceImpl.getInstance().putAll(closures);
+    }
+
+    /**
+     * Does the same as SpaceImpl, meaning it is not available in ASYNC mode.
+     * @param task
+     * @throws RemoteException
+     * @throws InterruptedException
+     */
+    @Override
+    public void put(Task task) throws RemoteException, InterruptedException {
+        SpaceImpl.getInstance().put(task);
     }
 }
