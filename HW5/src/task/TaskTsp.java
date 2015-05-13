@@ -43,7 +43,7 @@ public class TaskTsp extends CilkThread {
             succUnvisited.remove(unvisited);
             succVisited.add(unvisited);
             if(succVisited.size() > 1)
-                if(succVisited.indexOf(0) > succVisited.indexOf(1)) continue; // Removes the reverse of another solution
+                if(succVisited.indexOf(1) > succVisited.indexOf(2)) continue; // Removes the reverse of another solution
             permutations.add(new Wrapper(succUnvisited, succVisited));
         }
 
