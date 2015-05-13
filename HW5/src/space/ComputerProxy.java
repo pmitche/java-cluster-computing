@@ -1,5 +1,6 @@
-package computer;
+package space;
 
+import computer.Computer;
 import space.SpaceImpl;
 import system.Closure;
 

@@ -3,7 +3,6 @@ package space;
 import api.Result;
 import api.Space;
 import api.Task;
-import computer.ComputerProxy;
 import system.Closure;
 import computer.Computer;
 import system.Continuation;
