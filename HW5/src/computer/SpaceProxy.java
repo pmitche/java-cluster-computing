@@ -41,8 +41,8 @@ public class SpaceProxy implements Space {
 
     @Override
     public void put(Closure closure) throws RemoteException {
-        ComputerImpl.registerClosure(closure);
         if (closure.isLocal()){
+            ComputerImpl.registerClosure(closure);
             return;
         }
         if (!ASYNC){
