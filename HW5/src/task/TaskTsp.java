@@ -105,7 +105,8 @@ public class TaskTsp extends CilkThread {
             } catch (IndexOutOfBoundsException e) { break;}
         }
         currCon.setReturnVal(best);
-        sendArgument(currCon, DECOMPOSE_LIMIT != 0);
+        //sendArgument(currCon, DECOMPOSE_LIMIT != 0);
+        sendArgument(currCon, false);
     }
 
     /**
