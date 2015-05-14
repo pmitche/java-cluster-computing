@@ -137,10 +137,10 @@ public class TaskTsp extends CilkThread {
     //------------------------------
 
     private void bruteForce(List<Integer> a, int n) {
-        if (n > a.size()-1)
+        if (n == a.size()-1)
             register(a);
 
-        for (int i = a.size()-1; i >= n; i--) {
+        for (int i = a.size()-1; i > n; i--) {
             Collections.swap(a, i, n + 1);
             bruteForce(a, n + 1);
             Collections.swap(a, i, n + 1);
