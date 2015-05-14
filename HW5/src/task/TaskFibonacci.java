@@ -53,12 +53,12 @@ public class TaskFibonacci extends CilkThread {
      * Decides weather the task is atomic and cannot be devided anymore
      * @return weather or not to decompose or calculate.
      */
-    @Override
+//    @Override
     public boolean isAtomic() {
         return false;
     }
 
-    @Override
+//    @Override
     public void calculate() {
         //Not needed.
     }

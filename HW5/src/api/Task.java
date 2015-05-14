@@ -24,15 +24,4 @@ public interface Task<V> extends Serializable, Callable<V>, Runnable
      */
     void compose();
 
-    /**
-     * Should the thread decompose?
-     * @return  if the task is atomic
-     */
-    boolean isAtomic();
-
-    /**
-     * Do the calculations
-     * @param c current continuation
-     */
-    void calculate();
 }
