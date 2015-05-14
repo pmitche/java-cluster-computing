@@ -31,8 +31,8 @@ public abstract class CilkThread implements Runnable, Task {
      * @param arguments
      * @return
      */
-    protected String spawn(CilkThread t, boolean local, Object... arguments){
-        Closure c = new Closure((int) Arrays.stream(arguments).filter(e -> e == null).count(), local, arguments);
+    protected String spawn(CilkThread t, Object... arguments){
+        Closure c = new Closure((int) Arrays.stream(arguments).filter(e -> e == null).count(), arguments);
         c.setCilkThread(t);
         t.setClosure(c);
         try {
@@ -48,8 +48,8 @@ public abstract class CilkThread implements Runnable, Task {
      * @param arguments
      * @return
      */
-    protected String spawnNext(CilkThread t, boolean local, Object... arguments){
-        Closure c = new Closure((int) Arrays.stream(arguments).filter(e -> e == null).count(), local, arguments);
+    protected String spawnNext(CilkThread t, Object... arguments){
+        Closure c = new Closure((int) Arrays.stream(arguments).filter(e -> e == null).count(), arguments);
         c.setIsAncestor(true);
         t.setClosure(c);
         c.setCilkThread(t);
@@ -65,9 +65,9 @@ public abstract class CilkThread implements Runnable, Task {
      * method for sending continuation to Space
      * @param k
      */
-    protected void sendArgument(Continuation k, boolean local){
+    protected void sendArgument(Continuation k){
         try {
-            SpaceProxy.getInstance().receiveArgument(k, local);
+            SpaceProxy.getInstance().receiveArgument(k);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -85,8 +85,7 @@ public abstract class CilkThread implements Runnable, Task {
         //Decide what to do
         if(closure.isAncestor()) compose();
         else {
-            if (isAtomic()) calculate();
-            else decompose();
+            decompose();
         }
 
         //Register closure as done

@@ -27,15 +27,18 @@ public class TaskTsp extends CilkThread {
      */
     @Override
     public void decompose() {
+        if (isAtomic()){
+            calculate();
+            return;
+        }
         Continuation c =(Continuation)closure.getArgument(0);
-
         final Wrapper w = (Wrapper)c.argument;
-        boolean local = false;//w.UNUSED.size() <= DECOMPOSE_LIMIT;
-        //local = false;
+
+        //TODO: Can probably remove this now
         if(w.UNUSED.size()<=1) {
             w.PATH.addAll(w.UNUSED);
             c.setReturnVal(new ResultValueWrapper(w.PATH, TspUtils.totalDistance(w.PATH)));
-            sendArgument(c, local);
+            sendArgument(c);
             return;
         }
 
@@ -58,15 +61,15 @@ public class TaskTsp extends CilkThread {
                 addAll(w.PATH);
                 addAll(w.UNUSED);
             }}, new Double(Double.MAX_VALUE)));
-            sendArgument(c, local);
+            sendArgument(c);
             return;
         }
 
-        final String id = getId(permutations.size(), c, local);
+        final String id = getId(permutations.size(), c);
 
         int index = 1;
         for(Wrapper permutation : permutations) {
-            spawn(new TaskTsp(null), local, new Continuation(id, index++, permutation));
+            spawn(new TaskTsp(null), new Continuation(id, index++, permutation));
         }
     }
 
@@ -82,8 +85,7 @@ public class TaskTsp extends CilkThread {
         bruteForce(permutations, w.PATH.size());
 
         c.setReturnVal(new ResultValueWrapper(best, shortest));
-        sendArgument(c, false);
-
+        sendArgument(c);
     }
 
     /**
@@ -108,16 +110,14 @@ public class TaskTsp extends CilkThread {
         }
 
         currCon.setReturnVal(best);
-        //sendArgument(currCon, DECOMPOSE_LIMIT != 0);
-        sendArgument(currCon, false);
+        sendArgument(currCon);
     }
 
     /**
      * Decides weather the task is atomic and cannot be devided anymore
      * @return weather or not to decompose or calculate.
      */
-    @Override
-    public boolean isAtomic() {
+    private boolean isAtomic() {
         Continuation c = (Continuation)closure.getArgument(0);
         Wrapper w = (Wrapper)c.argument;
         return w.UNUSED.size() <= DECOMPOSE_LIMIT;
@@ -167,7 +167,7 @@ public class TaskTsp extends CilkThread {
      * @param c
      * @return
      */
-    private String getId(int size, Continuation c, boolean local) {
+    private String getId(int size, Continuation c) {
 
         String id = "-1";
         //Spawn next to get ID
@@ -175,23 +175,23 @@ public class TaskTsp extends CilkThread {
 
         switch(size)
         {
-            case 1: { id = spawnNext(new TaskTsp(null),local, c, null); break; }
-            case 2: { id = spawnNext(new TaskTsp(null),local, c, null, null); break; }
-            case 3: { id = spawnNext(new TaskTsp(null),local, c, null, null, null); break; }
-            case 4: { id = spawnNext(new TaskTsp(null),local, c, null, null, null, null); break; }
-            case 5: { id = spawnNext(new TaskTsp(null),local, c, null, null, null, null, null); break; }
-            case 6: { id = spawnNext(new TaskTsp(null),local, c, null, null, null, null, null, null); break; }
-            case 7: { id = spawnNext(new TaskTsp(null),local, c, null, null, null, null, null, null, null); break; }
-            case 8: { id = spawnNext(new TaskTsp(null),local, c, null, null, null, null, null, null, null, null); break; }
-            case 9: { id = spawnNext(new TaskTsp(null),local, c, null, null, null, null, null, null, null, null, null); break; }
-            case 10: { id = spawnNext(new TaskTsp(null),local, c, null, null, null, null, null, null, null, null, null, null); break; }
-            case 11: { id = spawnNext(new TaskTsp(null),local, c, null, null, null, null, null, null, null, null, null, null, null); break; }
-            case 12: { id = spawnNext(new TaskTsp(null),local, c, null, null, null, null, null, null, null, null, null, null, null, null); break; }
-            case 13: { id = spawnNext(new TaskTsp(null),local, c, null, null, null, null, null, null, null, null, null, null, null, null, null); break; }
-            case 14: { id = spawnNext(new TaskTsp(null),local, c, null, null, null, null, null, null, null, null, null, null, null, null, null, null); break; }
-            case 15: { id = spawnNext(new TaskTsp(null),local, c, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null); break; }
-            case 16: { id = spawnNext(new TaskTsp(null),local, c, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null); break; }
-            case 17: { id = spawnNext(new TaskTsp(null),local, c, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null); break; }
+            case 1: { id = spawnNext(new TaskTsp(null), c, null); break; }
+            case 2: { id = spawnNext(new TaskTsp(null), c, null, null); break; }
+            case 3: { id = spawnNext(new TaskTsp(null), c, null, null, null); break; }
+            case 4: { id = spawnNext(new TaskTsp(null), c, null, null, null, null); break; }
+            case 5: { id = spawnNext(new TaskTsp(null), c, null, null, null, null, null); break; }
+            case 6: { id = spawnNext(new TaskTsp(null), c, null, null, null, null, null, null); break; }
+            case 7: { id = spawnNext(new TaskTsp(null), c, null, null, null, null, null, null, null); break; }
+            case 8: { id = spawnNext(new TaskTsp(null), c, null, null, null, null, null, null, null, null); break; }
+            case 9: { id = spawnNext(new TaskTsp(null), c, null, null, null, null, null, null, null, null, null); break; }
+            case 10: { id = spawnNext(new TaskTsp(null), c, null, null, null, null, null, null, null, null, null, null); break; }
+            case 11: { id = spawnNext(new TaskTsp(null), c, null, null, null, null, null, null, null, null, null, null, null); break; }
+            case 12: { id = spawnNext(new TaskTsp(null), c, null, null, null, null, null, null, null, null, null, null, null, null); break; }
+            case 13: { id = spawnNext(new TaskTsp(null), c, null, null, null, null, null, null, null, null, null, null, null, null, null); break; }
+            case 14: { id = spawnNext(new TaskTsp(null), c, null, null, null, null, null, null, null, null, null, null, null, null, null, null); break; }
+            case 15: { id = spawnNext(new TaskTsp(null), c, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null); break; }
+            case 16: { id = spawnNext(new TaskTsp(null), c, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null); break; }
+            case 17: { id = spawnNext(new TaskTsp(null), c, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null); break; }
             default: {}
         }
         return id;

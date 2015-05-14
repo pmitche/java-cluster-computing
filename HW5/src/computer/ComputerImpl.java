@@ -20,8 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ComputerImpl extends UnicastRemoteObject implements Computer {
 
     protected final AtomicInteger threadCount;
-    public static final LinkedBlockingQueue<Closure> tasks = new LinkedBlockingQueue<>();
-    public static volatile HashMap<String, Closure> closures = new HashMap<>();
+    private final LinkedBlockingQueue<Closure> tasks = new LinkedBlockingQueue<>();
     public final int coreCount;
 
 
@@ -66,7 +65,6 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
      */
     @Override
     public void execute(Closure closure) throws RemoteException {
-        registerClosure(closure);
         synchronized (threadCount){
             try {
                 tasks.put(closure);
@@ -80,13 +78,6 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
         }
     }
 
-    public static synchronized void registerClosure(Closure closure){
-        closures.put(closure.getId(), closure);
-    }
-    public static synchronized Closure getClosureById(String id){
-        return closures.get(id);
-    }
-
     /**
      * Takes the ip of the Space that the Computer connects to.
      * @return
@@ -97,7 +88,4 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
         return sc.next();
     }
 
-    public static synchronized void unRegisterClosure(String id) {
-        closures.remove(id);
-    }
 }

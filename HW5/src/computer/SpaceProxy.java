@@ -41,10 +41,6 @@ public class SpaceProxy implements Space {
 
     @Override
     public void put(Closure closure) throws RemoteException {
-        if (closure.isLocal()){
-            ComputerImpl.registerClosure(closure);
-            return;
-        }
         if (!ASYNC){
             SpaceImpl.getInstance().put(closure);
             return;
@@ -58,14 +54,6 @@ public class SpaceProxy implements Space {
 
     @Override
     public void putClosureInReady(Closure closure) throws RemoteException {
-        if (closure.isLocal()){
-            try {
-                ComputerImpl.tasks.put(closure);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return;
-        }
         if (!ASYNC){
             SpaceImpl.getInstance().putClosureInReady(closure);
             return;
@@ -92,7 +80,6 @@ public class SpaceProxy implements Space {
 
     @Override
     public void closureDone(String id) throws RemoteException {
-        ComputerImpl.unRegisterClosure(id);
         if (!ASYNC){
             SpaceImpl.getInstance().closureDone(id);
             return;
@@ -175,13 +162,4 @@ public class SpaceProxy implements Space {
         SpaceImpl.getInstance().put(task);
     }
 
-    public void receiveArgument(Continuation k, boolean local) throws RemoteException {
-        if (k.closureId.equals("-1") || !local){
-            receiveArgument(k);
-        }else {
-            Closure c = ComputerImpl.getClosureById(k.closureId);
-            c.setArgument(k);
-
-        }
-    }
 }
