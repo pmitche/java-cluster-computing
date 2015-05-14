@@ -96,4 +96,8 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
         Scanner sc = new Scanner(System.in);
         return sc.next();
     }
+
+    public static synchronized void unRegisterClosure(String id) {
+        closures.remove(id);
+    }
 }

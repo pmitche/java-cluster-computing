@@ -13,7 +13,7 @@ public interface Space extends Remote
 
     public static final int PORT = 1099;
     public static final String SERVICE_NAME = "Space";
-    public static final boolean MULTICORE = false;
+    public static final boolean MULTICORE = true;
     public static final int PREFETCH_LIMIT = 0;
     public static final boolean ASYNC = false;
 

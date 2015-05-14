@@ -92,6 +92,7 @@ public class SpaceProxy implements Space {
 
     @Override
     public void closureDone(String id) throws RemoteException {
+        ComputerImpl.unRegisterClosure(id);
         if (!ASYNC){
             SpaceImpl.getInstance().closureDone(id);
             return;
