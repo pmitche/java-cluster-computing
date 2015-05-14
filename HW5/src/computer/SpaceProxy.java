@@ -41,8 +41,8 @@ public class SpaceProxy implements Space {
 
     @Override
     public void put(Closure closure) throws RemoteException {
-        ComputerImpl.registerClosure(closure);
         if (closure.isLocal()){
+            ComputerImpl.registerClosure(closure);
             return;
         }
         if (!ASYNC){
@@ -92,6 +92,7 @@ public class SpaceProxy implements Space {
 
     @Override
     public void closureDone(String id) throws RemoteException {
+        ComputerImpl.unRegisterClosure(id);
         if (!ASYNC){
             SpaceImpl.getInstance().closureDone(id);
             return;
