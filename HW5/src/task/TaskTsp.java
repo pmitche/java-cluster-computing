@@ -27,11 +27,12 @@ public class TaskTsp extends CilkThread {
      */
     @Override
     public void decompose() {
-        Continuation c =(Continuation)closure.getArgument(0);
-
+        final Continuation c =(Continuation)closure.getArgument(0);
         final Wrapper w = (Wrapper)c.argument;
-        boolean local = false;//w.UNUSED.size() <= DECOMPOSE_LIMIT;
+
+        boolean local = false;//w.UNUSED.size() <= DECOMPOSE_LIMIT; //TODO
         //local = false;
+
         if(w.UNUSED.size()<=1) {
             w.PATH.addAll(w.UNUSED);
             c.setReturnVal(new ResultValueWrapper(w.PATH, TspUtils.totalDistance(w.PATH)));
@@ -63,7 +64,6 @@ public class TaskTsp extends CilkThread {
         }
 
         final String id = getId(permutations.size(), c, local);
-
         int index = 1;
         for(Wrapper permutation : permutations) {
             spawn(new TaskTsp(null), local, new Continuation(id, index++, permutation));
@@ -72,7 +72,6 @@ public class TaskTsp extends CilkThread {
 
     public void calculate()  {
         Continuation c = (Continuation)closure.getArgument(0);
-
         Wrapper w = (Wrapper)c.argument;
 
         List<Integer> permutations = new ArrayList() {{
@@ -83,7 +82,6 @@ public class TaskTsp extends CilkThread {
 
         c.setReturnVal(new ResultValueWrapper(best, shortest));
         sendArgument(c, false);
-
     }
 
     /**
@@ -106,7 +104,6 @@ public class TaskTsp extends CilkThread {
                 }
             } catch (IndexOutOfBoundsException e) { break;}
         }
-
         currCon.setReturnVal(best);
         sendArgument(currCon, DECOMPOSE_LIMIT != 0);
     }
@@ -137,11 +134,10 @@ public class TaskTsp extends CilkThread {
     //------------------------------
 
     private void bruteForce(List<Integer> a, int n) {
-        if (n == a.size()-1) {
+        if (n > a.size()-1)
             register(a);
-        }
 
-        for (int i = a.size()-1; i > n; i--) {
+        for (int i = a.size()-1; i >= n; i--) {
             Collections.swap(a, i, n + 1);
             bruteForce(a, n + 1);
             Collections.swap(a, i, n + 1);
@@ -170,7 +166,6 @@ public class TaskTsp extends CilkThread {
 
         String id = "-1";
         //Spawn next to get ID
-
 
         switch(size)
         {
