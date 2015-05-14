@@ -22,7 +22,7 @@ public class TaskFibonacci extends CilkThread {
 
     /**
      * Decomposes the problem to subtasks that are spawned in space
-     * @param c The Continuation of this task
+     * The Continuation of this task
      */
     @Override
     public void decompose(Continuation k) {
@@ -30,13 +30,13 @@ public class TaskFibonacci extends CilkThread {
         int n = (int) k.argument;
         if(n<2) {
             k.setReturnVal(n);
-            sendArgument(k);
+            sendArgument(k, false);
         } else {
-            String id = spawnNext(new TaskFibonacci(null), k, null, null);
+            String id = spawnNext(new TaskFibonacci(null), false, k, null, null);
             Continuation c1 = new Continuation(id, 1, n-1)
                         ,c2 = new Continuation(id, 2, n-2);
-            spawn(new TaskFibonacci(null), c1);
-            spawn(new TaskFibonacci(null), c2);
+            spawn(new TaskFibonacci(null), false, c1);
+            spawn(new TaskFibonacci(null), false, c2);
         }
     }
 
@@ -58,6 +58,6 @@ public class TaskFibonacci extends CilkThread {
      */
     private void sum(Continuation cont, int arg0, int arg1) {
         cont.setReturnVal(arg0 + arg1);
-        sendArgument(cont);
+        sendArgument(cont, false);
     }
 }

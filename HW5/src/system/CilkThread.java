@@ -2,6 +2,7 @@ package system;
 
 import api.Space;
 import api.Task;
+import computer.ComputerImpl;
 import computer.SpaceProxy;
 import space.SpaceImpl;
 
@@ -30,8 +31,8 @@ public abstract class CilkThread implements Runnable, Task {
      * @param arguments
      * @return
      */
-    protected String spawn(CilkThread t, Object... arguments){
-        Closure c = new Closure((int) Arrays.stream(arguments).filter(e -> e == null).count(),arguments);
+    protected String spawn(CilkThread t, boolean local, Object... arguments){
+        Closure c = new Closure((int) Arrays.stream(arguments).filter(e -> e == null).count(), local, arguments);
         c.setCilkThread(t);
         t.setClosure(c);
         try {
@@ -47,8 +48,8 @@ public abstract class CilkThread implements Runnable, Task {
      * @param arguments
      * @return
      */
-    protected String spawnNext(CilkThread t, Object... arguments){
-        Closure c = new Closure((int) Arrays.stream(arguments).filter(e -> e == null).count(),arguments);
+    protected String spawnNext(CilkThread t, boolean local, Object... arguments){
+        Closure c = new Closure((int) Arrays.stream(arguments).filter(e -> e == null).count(), local, arguments);
         c.setIsAncestor(true);
         t.setClosure(c);
         c.setCilkThread(t);
@@ -64,9 +65,9 @@ public abstract class CilkThread implements Runnable, Task {
      * method for sending continuation to Space
      * @param k
      */
-    protected void sendArgument(Continuation k){
+    protected void sendArgument(Continuation k, boolean local){
         try {
-            SpaceProxy.getInstance().receiveArgument(k);
+            SpaceProxy.getInstance().receiveArgument(k, local);
         } catch (RemoteException e) {
             e.printStackTrace();
         }

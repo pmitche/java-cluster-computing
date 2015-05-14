@@ -17,18 +17,20 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Closure implements Serializable {
 
+    private final boolean local;
     private String id;
     private CilkThread cilkThread;
     private int missingArgsCount;
     private Object[] arguments;
     private boolean isAncestor;
 
-    public Closure(int missingArgsCount, Object... arguments) {
+    public Closure(int missingArgsCount, boolean local, Object... arguments) {
         this.arguments = arguments;
         this.missingArgsCount = missingArgsCount;
         this.cilkThread = null;
         this.isAncestor = false;
         this.id =  UUID.randomUUID().toString();
+        this.local = local;
         try {
             SpaceProxy.getInstance().put(this);
         } catch (RemoteException e) {
@@ -104,5 +106,9 @@ public class Closure implements Serializable {
      */
     public void setIsAncestor(boolean isAncestor) {
         this.isAncestor = isAncestor;
+    }
+
+    public boolean isLocal() {
+        return local;
     }
 }

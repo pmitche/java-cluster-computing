@@ -9,6 +9,7 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -19,7 +20,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ComputerImpl extends UnicastRemoteObject implements Computer {
 
     protected final AtomicInteger threadCount;
-    protected final LinkedBlockingQueue<Closure> tasks;
+    public static final LinkedBlockingQueue<Closure> tasks = new LinkedBlockingQueue<>();
+    public static volatile HashMap<String, Closure> closures = new HashMap<>();
     public final int coreCount;
 
 
@@ -31,7 +33,6 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
      */
     public ComputerImpl(Space space) throws RemoteException {
         SpaceImpl.setInstance(space);
-        tasks = new LinkedBlockingQueue<>();
         coreCount = SpaceImpl.MULTICORE ? Runtime.getRuntime().availableProcessors() : 1;
         threadCount = new AtomicInteger(coreCount);
         for (int i = 0; i < coreCount; i++) {
@@ -65,6 +66,7 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
      */
     @Override
     public void execute(Closure closure) throws RemoteException {
+        closures.put(closure.getId(), closure);
         synchronized (threadCount){
             try {
                 tasks.put(closure);
