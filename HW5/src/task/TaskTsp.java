@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class TaskTsp extends CilkThread {
 
-    private static final int DECOMPOSE_LIMIT = 5;
+    private static final int DECOMPOSE_LIMIT = 8;
     private final long START_TIME = System.nanoTime();
 
     public TaskTsp(Closure closure) {

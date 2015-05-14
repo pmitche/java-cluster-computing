@@ -179,10 +179,6 @@ public class SpaceProxy implements Space {
             receiveArgument(k);
         }else {
             Closure c = ComputerImpl.getClosureById(k.closureId);
-            if (c == null)
-                System.out.println("I fucking knew it!");
-            if (k == null)
-                System.out.println("I fucking knew it, kinda :P");
             c.setArgument(k);
 
         }
