@@ -82,9 +82,14 @@ public abstract class CilkThread implements Runnable, Task {
      */
     @Override
     public void run() {
+        //Decide what to do
         if(closure.isAncestor()) compose();
-        else decompose((Continuation)closure.getArgument(0));
+        else {
+            if (isAtomic()) calculate();
+            else decompose();
+        }
 
+        //Register closure as done
         try {
             SpaceProxy.getInstance().closureDone(closure.getId());
         } catch (RemoteException e) {e.printStackTrace();}

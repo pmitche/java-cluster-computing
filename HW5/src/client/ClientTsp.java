@@ -33,17 +33,14 @@ public class ClientTsp extends Client<List<Integer>> implements Serializable
                     { 7, 7 },
                     { 2, 7 },
                     { 3, 3 },
-                    { 6, 3 }
-//                    { 6, 6 }
-//                    { 3, 6 }
+                    { 6, 3 },
+                    { 6, 6 },
+                    { 3, 6 }
+//                    { 4, 4 },
+  //                  { 5, 4 },
+    //                { 5, 5 },
+      //              { 4, 5 }
             };
-
-
-
-    public static final double ABS_TEMP = 0.01;
-    public static final double COOLING_RATE = 0.55;
-    public static final double START_TEMP = 500;
-
 
     /**
      * Constructor

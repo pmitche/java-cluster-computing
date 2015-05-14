@@ -17,10 +17,22 @@ public interface Task<V> extends Serializable, Callable<V>, Runnable
      * Decomposition happens in this method
      * @param c
      */
-    public void decompose(Continuation c);
+    void decompose();
 
     /**
      * composition happens in this method
      */
-    public void compose();
+    void compose();
+
+    /**
+     * Should the thread decompose?
+     * @return  if the task is atomic
+     */
+    boolean isAtomic();
+
+    /**
+     * Do the calculations
+     * @param c current continuation
+     */
+    void calculate();
 }

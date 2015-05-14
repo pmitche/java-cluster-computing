@@ -1,6 +1,5 @@
 package task;
 
-import api.Space;
 import system.CilkThread;
 import system.Closure;
 import system.Continuation;
@@ -8,6 +7,7 @@ import system.ResultValueWrapper;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -24,14 +24,13 @@ public class TaskTsp extends CilkThread {
 
     /**
      * Decomposes the problem to subtasks that are spawned in space
-     * @param c The Continuation of this task
      */
     @Override
-    public void decompose(Continuation c) {
-
+    public void decompose() {
+        Continuation c =(Continuation)closure.getArgument(0);
 
         final Wrapper w = (Wrapper)c.argument;
-        boolean local = w.UNUSED.size() <= DECOMPOSE_LIMIT ? true : false;
+        boolean local = false;//w.UNUSED.size() <= DECOMPOSE_LIMIT;
         //local = false;
         if(w.UNUSED.size()<=1) {
             w.PATH.addAll(w.UNUSED);
@@ -53,7 +52,6 @@ public class TaskTsp extends CilkThread {
             permutations.add(new Wrapper(succUnvisited, succVisited));
         }
 
-
         //Check if this thread is a dead end.
         if(permutations.isEmpty()) {
             c.setReturnVal(new ResultValueWrapper(new ArrayList() {{
@@ -70,6 +68,22 @@ public class TaskTsp extends CilkThread {
         for(Wrapper permutation : permutations) {
             spawn(new TaskTsp(null), local, new Continuation(id, index++, permutation));
         }
+    }
+
+    public void calculate()  {
+        Continuation c = (Continuation)closure.getArgument(0);
+
+        Wrapper w = (Wrapper)c.argument;
+
+        List<Integer> permutations = new ArrayList() {{
+            addAll(w.PATH);
+            addAll(w.UNUSED);
+        }};
+        bruteForce(permutations, w.PATH.size());
+
+        c.setReturnVal(new ResultValueWrapper(best, shortest));
+        sendArgument(c, false);
+
     }
 
     /**
@@ -98,6 +112,17 @@ public class TaskTsp extends CilkThread {
     }
 
     /**
+     * Decides weather the task is atomic and cannot be devided anymore
+     * @return weather or not to decompose or calculate.
+     */
+    @Override
+    public boolean isAtomic() {
+        Continuation c = (Continuation)closure.getArgument(0);
+        Wrapper w = (Wrapper)c.argument;
+        return w.UNUSED.size() <= DECOMPOSE_LIMIT;
+    }
+
+    /**
      * Simple inner value-wrapper class
      */
     public static final class Wrapper implements Serializable {
@@ -109,7 +134,31 @@ public class TaskTsp extends CilkThread {
         }
     }
 
+    //------------------------------
 
+    private void bruteForce(List<Integer> a, int n) {
+        if (n == a.size()-1) {
+            register(a);
+        }
+
+        for (int i = a.size()-1; i > n; i--) {
+            Collections.swap(a, i, n + 1);
+            bruteForce(a, n + 1);
+            Collections.swap(a, i, n + 1);
+        }
+    }
+
+
+    private double shortest = Double.MAX_VALUE;
+    private List<Integer> best = null;
+
+    private void register(List<Integer> path) {
+        double dist = TspUtils.totalDistance(path);
+        if(dist < shortest){
+            shortest = dist;
+            best = new ArrayList<>(path);
+        }
+    }
 
 
     /**

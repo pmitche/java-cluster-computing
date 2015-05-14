@@ -25,7 +25,8 @@ public class TaskFibonacci extends CilkThread {
      * The Continuation of this task
      */
     @Override
-    public void decompose(Continuation k) {
+    public void decompose() {
+        Continuation k = (Continuation)closure.getArgument(0);
 
         int n = (int) k.argument;
         if(n<2) {
@@ -46,6 +47,20 @@ public class TaskFibonacci extends CilkThread {
     @Override
     public void compose() {
         sum((Continuation)closure.getArgument(0), (int)closure.getArgument(1), (int)closure.getArgument(2));
+    }
+
+    /**
+     * Decides weather the task is atomic and cannot be devided anymore
+     * @return weather or not to decompose or calculate.
+     */
+    @Override
+    public boolean isAtomic() {
+        return false;
+    }
+
+    @Override
+    public void calculate() {
+        //Not needed.
     }
 
     /**
