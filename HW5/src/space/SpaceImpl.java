@@ -21,6 +21,8 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class SpaceImpl extends UnicastRemoteObject implements Space {
 
+    public static final boolean LOCAL_COMPUTER = true;
+
     private static Space instance;
     private LinkedBlockingDeque<Task> taskQueue;
     private LinkedBlockingQueue<Result> resultQueue;
@@ -45,14 +47,19 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         System.setProperty("java.rmi.server.hostname", ip);
         System.out.println("Space running...");
 
-        Runnable r = () -> {
-            try { getInstance().register(new ComputerImpl(getInstance()));
-            } catch (RemoteException re) {}
-        };
+        //Start a thread with a local computer.
+        if(LOCAL_COMPUTER) {
+            Runnable r = () -> {
+                try {
+                    getInstance().register(new ComputerImpl(getInstance()));
+                } catch (RemoteException re) {
+                }
+            };
 
-        Thread localComputer = new Thread(r);
-        localComputer.setPriority(Thread.MIN_PRIORITY);
-        localComputer.start();
+            Thread localComputer = new Thread(r);
+            localComputer.setPriority(Thread.MIN_PRIORITY);
+            localComputer.start();
+        }
     }
 
     /**

@@ -23,7 +23,7 @@ public class TspJob implements Job {
     //problem
     private double[][] cities;
 
-    public static final boolean ZERO_LOWER_BOUND = false;
+    public static final boolean ZERO_LOWER_BOUND = true;
 
     /**
      * Constructor for the Traveling salesman job.
@@ -44,7 +44,6 @@ public class TspJob implements Job {
      */
     @Override
     public void generateTasks(Space space) throws RemoteException {
-
 
         List<Integer> unusedCities = new ArrayList<>();
         for(int i=1; i<cities.length; i++)
