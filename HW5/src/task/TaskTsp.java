@@ -130,14 +130,14 @@ public class TaskTsp extends CilkThread {
         Continuation c = getContinuation();
         Wrapper w = (Wrapper)c.argument;
 
-        Double currCost = TspUtils.totalDistance(w.PATH);
+        Double currCost = TspUtils.totalDistancePartialPath(w.PATH);
         Global g = closure.getGlobal();
 
         if((Double)g.getValue() <= currCost) return true;
 
-//        Double currCostHeur = heuristic(currCost, w.UNUSED);
+        Double currCostHeur = heuristic(currCost, w.UNUSED);
 
-//        if((Double)g.getValue() <= currCostHeur) return true;
+        if((Double)g.getValue() <= currCostHeur) return true;
 
         return false;
     }
