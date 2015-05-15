@@ -82,7 +82,7 @@ public class TaskTsp extends CilkThread {
         bruteForce(new ArrayList() {{
             addAll(w.PATH);
             addAll(w.UNUSED);
-        }}, w.PATH.size());
+        }}, w.PATH.size()-1);
 
         c.setReturnVal(new ResultValueWrapper(best, shortest));
         sendArgument(c);
@@ -146,7 +146,6 @@ public class TaskTsp extends CilkThread {
             Collections.swap(a, i, n + 1);
         }
     }
-
 
     private double shortest = Double.MAX_VALUE;
     private List<Integer> best = null;
