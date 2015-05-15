@@ -88,6 +88,7 @@ public class TaskTsp extends CilkThread {
                     shortest = (Double)rvw.getN();
                 }
             } catch (IndexOutOfBoundsException e) { break;}
+            catch (NullPointerException n) {break;}
         }
         currCon.setReturnVal(best);
         sendArgument(currCon);
@@ -129,14 +130,14 @@ public class TaskTsp extends CilkThread {
         Continuation c = getContinuation();
         Wrapper w = (Wrapper)c.argument;
 
-        Global currCost = new Global(TspUtils.totalDistance(w.PATH));
+        Double currCost = TspUtils.totalDistance(w.PATH);
         Global g = closure.getGlobal();
 
-        if(g == g.findBest(currCost)) return true;
+        if((Double)g.getValue() <= currCost) return true;
 
-        Global g2 = heuristic(w.PATH, w.UNUSED);
+//        Double currCostHeur = heuristic(currCost, w.UNUSED);
 
-        if(g2 == g2.findBest(currCost)) return true;
+//        if((Double)g.getValue() <= currCostHeur) return true;
 
         return false;
     }
@@ -144,15 +145,17 @@ public class TaskTsp extends CilkThread {
     /**
      * Local heuristic to approximate best values for the permutations
      *
-     * @param path current partial-path
+     * @param curr current partial-path length
      * @param unused unvisited cities in partial-path
      * @return Estimated value
      */
-    private Global heuristic(List<Integer> path, List<Integer> unused) {
-
-        return null;
+    private Double heuristic(double curr, List<Integer> unused) {
+        double minDistances = curr;
+        for(Integer unvisited : unused) {
+            minDistances += TspUtils.findShortestDist(unvisited);
+        }
+        return minDistances;
     }
-
 
     /**
      * @return Current continuation
@@ -167,6 +170,7 @@ public class TaskTsp extends CilkThread {
      * @param w Wrapper with the nodes state values
      */
     private void prune(Continuation c, Wrapper w) {
+        System.out.println("PRUNE");
         c.setReturnVal(new ResultValueWrapper(new ArrayList() {{
             addAll(w.PATH);
             addAll(w.UNUSED);
