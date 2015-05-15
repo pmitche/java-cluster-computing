@@ -1,5 +1,7 @@
 package api;
+import system.Closure;
 import system.Continuation;
+import system.Global;
 
 import java.io.Serializable;
 import java.util.List;
@@ -24,4 +26,5 @@ public interface Task<V> extends Serializable, Callable<V>, Runnable
      */
     void compose();
 
+    Closure getClosure();
 }

@@ -9,7 +9,8 @@ public class QueueTicket {
         PUT_CLOSURE,
         PUT_CLOSURE_IN_READY,
         RECEIVE_ARGUMENT,
-        CLOSURE_DONE;
+        CLOSURE_DONE,
+        UPDATE_GLOBAL;
     }
     private final Type type;
     private final Object arg;

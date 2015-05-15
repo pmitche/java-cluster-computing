@@ -5,6 +5,7 @@ import api.Space;
 import client.ClientTsp;
 import system.Closure;
 import system.Continuation;
+import system.Global;
 import system.ResultValueWrapper;
 
 import java.rmi.RemoteException;
@@ -51,7 +52,7 @@ public class TspJob implements Job {
         List<Integer> partialTrip = new ArrayList<>();
         partialTrip.add(0);
 
-        TaskTsp startTask = new TaskTsp(new Closure(0, new Continuation("-1",-1,new TaskTsp.Wrapper(unusedCities, partialTrip))));
+        TaskTsp startTask = new TaskTsp(new Closure(0, new Global(new Long(Long.MAX_VALUE)), new Continuation("-1",-1,new TaskTsp.Wrapper(unusedCities, partialTrip))));
 
 /*      //Used for Simmulated Annealing
         Integer[] startPath = new Integer[cities.length];
