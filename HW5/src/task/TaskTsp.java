@@ -25,14 +25,12 @@ public class TaskTsp extends CilkThread {
     @Override
     public void decompose() {
 
-        if (isAtomic()){
-            calculate();
-            return;
-        }
-
         Continuation c =(Continuation)closure.getArgument(0);
         final Wrapper w = (Wrapper)c.argument;
-        
+
+        if (isAtomic()){ calculate(); return; }
+        if(isRedundant()) { prune(c,w); return; }
+
         //Return if the whole line has been explored
         List<Wrapper> permutations = new ArrayList();
         for(Integer unvisited : w.UNUSED) {
@@ -47,15 +45,8 @@ public class TaskTsp extends CilkThread {
         }
 
         //Check if this thread is a dead end.
-        if(permutations.isEmpty() || isRedundant()) {
-            c.setReturnVal(new ResultValueWrapper(new ArrayList() {{
-                addAll(w.PATH);
-                addAll(w.UNUSED);
-            }}, new Double(Double.MAX_VALUE)));
-            sendArgument(c);
-            return;
-        }
-
+        if(permutations.isEmpty()) { prune(c,w); return; }
+        
         final String id = getId(permutations.size(), c);
 
         int index = 1;
@@ -125,6 +116,9 @@ public class TaskTsp extends CilkThread {
     }
 
     private boolean isRedundant() {
+        if (TspJob.ZERO_LOWER_BOUND){
+            return false;
+        }
         Continuation c = getContinuation();
         Wrapper w = (Wrapper)c.argument;
 
@@ -146,6 +140,14 @@ public class TaskTsp extends CilkThread {
 
     private Continuation getContinuation() {
         return (Continuation)closure.getArgument(0);
+    }
+
+    private void prune(Continuation c, Wrapper w) {
+        c.setReturnVal(new ResultValueWrapper(new ArrayList() {{
+            addAll(w.PATH);
+            addAll(w.UNUSED);
+        }}, new Double(Double.MAX_VALUE)));
+        sendArgument(c);
     }
 
 

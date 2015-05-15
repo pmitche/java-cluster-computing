@@ -24,7 +24,7 @@ public class TspJob implements Job {
     private double[][] cities;
     public List<Double> cost = new ArrayList<>();
 
-    public static final boolean ZERO_LOWER_BOUND = false;
+    public static final boolean ZERO_LOWER_BOUND = true;
 
     /**
      * Constructor for the Traveling salesman job.
@@ -65,7 +65,6 @@ public class TspJob implements Job {
     @Override
     public void generateTasks(Space space) throws RemoteException {
 
-
         List<Integer> unusedCities = new ArrayList<>();
         for(int i=1; i<cities.length; i++)
             unusedCities.add(i);
@@ -74,7 +73,7 @@ public class TspJob implements Job {
         partialTrip.add(0);
 
 
-        TaskTsp startTask = new TaskTsp(new Closure(0, new Global(new Double(ZERO_LOWER_BOUND ? 0 : Double.MAX_VALUE)), new Continuation("-1",-1,new TaskTsp.Wrapper(unusedCities, partialTrip))));
+        TaskTsp startTask = new TaskTsp(new Closure(0, new Global(new Double(Double.MAX_VALUE)), new Continuation("-1",-1,new TaskTsp.Wrapper(unusedCities, partialTrip))));
 
 /*      //Used for Simmulated Annealing
         Integer[] startPath = new Integer[cities.length];
