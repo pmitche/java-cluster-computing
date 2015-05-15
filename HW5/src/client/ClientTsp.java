@@ -34,8 +34,8 @@ public class ClientTsp extends Client<List<Integer>> implements Serializable
                     { 3, 3 },//8
                     { 6, 3 },//9
                     { 6, 6 },//10
-                    { 3, 6 } //11
-//                    { 4, 4 },
+                    { 3, 6 }, //11
+                    { 4, 4 }
   //                  { 5, 4 },
     //                { 5, 5 },
       //              { 4, 5 }

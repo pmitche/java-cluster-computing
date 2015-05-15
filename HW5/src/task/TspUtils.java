@@ -31,7 +31,7 @@ public class TspUtils {
      * @param d1 is an double[] of length 2, where d1[0] is the x coordinate, and d2[1] is the y coordinates.
      * @return the euclidean distance between do and d1
      */
-    private static double euclideanDistance(double[] d0, double[] d1){
+    public static double euclideanDistance(double[] d0, double[] d1){
         final double deltaX = d0[ 0 ] - d1[ 0 ];
         final double deltaY = d0[ 1 ] - d1[ 1 ];
         return Math.sqrt( deltaX * deltaX + deltaY * deltaY );

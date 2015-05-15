@@ -26,7 +26,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     private static Space instance;
     private LinkedBlockingDeque<Task> taskQueue;
     private LinkedBlockingQueue<Result> resultQueue;
-    private LinkedBlockingQueue<Closure> readyClosureQueue;
+    private LinkedBlockingDeque<Closure> readyClosureDeque;
     private HashMap<String,Closure> closures;
     private HashSet<String> closuresDone;
     private Global global;
@@ -34,7 +34,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     private SpaceImpl() throws RemoteException {
         this.taskQueue = new LinkedBlockingDeque<Task>();
         this.resultQueue = new LinkedBlockingQueue<Result>();
-        this.readyClosureQueue = new LinkedBlockingQueue<Closure>();
+        this.readyClosureDeque = new LinkedBlockingDeque<>();
         this.closures = new HashMap<>();
         this.closuresDone = new HashSet<>();
     }
@@ -60,6 +60,18 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
             localComputer.setPriority(Thread.MIN_PRIORITY);
             localComputer.start();
         }
+    }
+
+    @Override
+    public Closure takeReadyClosure() throws RemoteException {
+        Closure c = null;
+        try {
+            c = readyClosureDeque.takeLast();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        c.setGlobal(global);
+        return c;
     }
 
     /**
@@ -89,6 +101,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         System.exit(0);
     }
 
+
     /**
      * Creates a ComputerProxy for the computer, and runs the ComputerProxy in its own thread.
      * @param computer
@@ -101,7 +114,6 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         t.start();
         System.out.println("SpaceImpl; Computer registered and working...");
     }
-
 
     @Override
     public void putResult(Result r) throws RemoteException {
@@ -117,22 +129,6 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         System.out.println("SpaceImpl; input space ip:");
         Scanner sc = new Scanner(System.in);
         return sc.next();
-    }
-
-    /**
-     * Initializes the space locally
-     * @param localSpace    Space instance
-     */
-    public void initLocal(Space localSpace){
-        if(System.getSecurityManager()== null)
-            System.setSecurityManager(new SecurityManager());
-
-        try {
-            LocateRegistry.createRegistry(Space.PORT).rebind(Space.SERVICE_NAME, localSpace);
-            System.out.println("SpaceImpl; Local Space up and running...");
-        } catch (RemoteException re) {
-            re.printStackTrace();
-        }
     }
 
     public static Space getInstance(){
@@ -191,7 +187,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         closures.forEach(closure -> {
             if (!closuresDone.contains(closure.getId())) {
                 try {
-                    readyClosureQueue.put(closure);
+                    readyClosureDeque.put(closure);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -203,24 +199,12 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     public synchronized void updateGlobal(Global global) throws RemoteException {
        this.global = global.findBest(this.global);
     }
-
     @Override
     public synchronized void putClosureInReady(Closure closure) throws RemoteException {
         try {
-            readyClosureQueue.put(closure);
+            readyClosureDeque.put(closure);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
-    @Override
-    public Closure takeReadyClosure() throws RemoteException {
-        Closure c = null;
-        try {
-            c = readyClosureQueue.take();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        c.setGlobal(global);
-        return c;
     }
 }

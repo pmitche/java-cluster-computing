@@ -31,7 +31,6 @@ public class TaskTsp extends CilkThread {
         if (isAtomic()){ calculate(); return; }
         if(isRedundant()) { prune(c,w); return; }
 
-
         //Return if the whole line has been explored
         List<Wrapper> permutations = new ArrayList();
         for(Integer unvisited : w.UNUSED) {
@@ -117,6 +116,9 @@ public class TaskTsp extends CilkThread {
     }
 
     private boolean isRedundant() {
+        if (TspJob.ZERO_LOWER_BOUND){
+            return false;
+        }
         Continuation c = getContinuation();
         Wrapper w = (Wrapper)c.argument;
 
