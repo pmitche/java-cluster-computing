@@ -1,9 +1,11 @@
 package system;
 
+import java.io.Serializable;
+
 /**
  * Created by Kyrre on 14.05.2015.
  */
-public class Global {
+public class Global implements Serializable{
 
     private final Comparable value;
 

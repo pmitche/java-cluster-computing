@@ -25,11 +25,6 @@ public class TaskTsp extends CilkThread {
     @Override
     public void decompose() {
 
-        if(isRedundant()) {
-            //TODO PRUNE as bad path
-            return;
-        }
-
         if (isAtomic()){
             calculate();
             return;
@@ -60,7 +55,7 @@ public class TaskTsp extends CilkThread {
         }
 
         //Check if this thread is a dead end.
-        if(permutations.isEmpty()) {
+        if(permutations.isEmpty() || isRedundant()) {
             c.setReturnVal(new ResultValueWrapper(new ArrayList() {{
                 addAll(w.PATH);
                 addAll(w.UNUSED);
@@ -144,11 +139,11 @@ public class TaskTsp extends CilkThread {
         Global currCost = new Global(TspUtils.totalDistance(w.PATH));
         Global g = closure.getGlobal();
 
-        if(g != g.findBest(currCost)) return true;
+        if(g == g.findBest(currCost)) return true;
 
         Global g2 = addTwoClosestCities(w.PATH, w.UNUSED);
 
-        if(g2 != g2.findBest(currCost)) return true;
+//        if(g2 != g2.findBest(currCost)) return true;
         return false;
     }
 
