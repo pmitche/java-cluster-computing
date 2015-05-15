@@ -149,6 +149,7 @@ public class TaskTsp extends CilkThread {
      * @return Estimated value
      */
     private Global heuristic(List<Integer> path, List<Integer> unused) {
+
         return null;
     }
 

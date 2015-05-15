@@ -42,17 +42,23 @@ public class TspUtils {
      * @param a
      */
     public static double totalDistance(List<Integer> a) {
-        double distance = 0;
-        //Tour distance
-        for (int i = 0; i < a.size()-1; i++){
-            distance += euclideanDistance(ClientTsp.CITIES[a.get(i)], ClientTsp.CITIES[a.get(i+1)]);
-        }
+        double distance = totalDistancePartialPath(a);
         //Distance back to start from end
         distance += euclideanDistance(ClientTsp.CITIES[a.get(0)], ClientTsp.CITIES[a.get(a.size()-1)]);
         return distance;
     }
 
-
+    /**
+     * Calculates the eucledian distance of a partial path
+     */
+    public static double totalDistancePartialPath(List<Integer> a) {
+        double distance = 0;
+        //Tour distance
+        for (int i = 0; i < a.size()-1; i++){
+            distance += euclideanDistance(ClientTsp.CITIES[a.get(i)], ClientTsp.CITIES[a.get(i+1)]);
+        }
+        return distance;
+    }
 
 
     /**
