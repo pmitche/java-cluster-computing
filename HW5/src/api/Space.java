@@ -7,15 +7,16 @@ import java.util.Collection;
 import system.Closure;
 import computer.Computer;
 import system.Continuation;
+import system.Global;
 
 public interface Space extends Remote
 {
 
     public static final int PORT = 1099;
     public static final String SERVICE_NAME = "Space";
-    public static final boolean MULTICORE = false;
-    public static final int PREFETCH_LIMIT = 0;
-    public static final boolean ASYNC = false;
+    public static final boolean MULTICORE = true;
+    public static final int PREFETCH_LIMIT = 5;
+    public static final boolean ASYNC = true;
 
 
     void put(Task task) throws RemoteException, InterruptedException;
@@ -30,7 +31,6 @@ public interface Space extends Remote
 
     void register(Computer computer) throws RemoteException;
 
-
     void putResult(Result r) throws RemoteException;
 
     Closure takeReadyClosure() throws  RemoteException;
@@ -40,4 +40,6 @@ public interface Space extends Remote
     void closureDone(String id) throws RemoteException;
 
     void putAll(Collection<Closure> closures) throws RemoteException;
+
+    void updateGlobal(Global global) throws RemoteException;
 }

@@ -22,10 +22,12 @@ public class Closure implements Serializable {
     private int missingArgsCount;
     private Object[] arguments;
     private boolean isAncestor;
+    private Global global;
 
-    public Closure(int missingArgsCount, Object... arguments) {
+    public Closure(int missingArgsCount, Global global, Object... arguments) {
         this.arguments = arguments;
         this.missingArgsCount = missingArgsCount;
+        this.global = global;
         this.cilkThread = null;
         this.isAncestor = false;
         this.id =  UUID.randomUUID().toString();
@@ -106,4 +108,25 @@ public class Closure implements Serializable {
         this.isAncestor = isAncestor;
     }
 
+    public Global getGlobal() {
+        return global;
+    }
+
+
+    public void updateGlobal(Global global) {
+        this.global = global.findBest(this.global);
+        try {
+            SpaceProxy.getInstance().updateGlobal(this.global);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Should only ever be used by Space. If the global variable should be updated, this should happen via updateGlobal().
+     * @param global
+     */
+    public void setGlobal(Global global) {
+        this.global = global.findBest(this.global);
+    }
 }

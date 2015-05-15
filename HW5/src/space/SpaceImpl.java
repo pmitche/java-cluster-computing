@@ -6,6 +6,7 @@ import api.Task;
 import system.Closure;
 import computer.Computer;
 import system.Continuation;
+import system.Global;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -24,6 +25,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     private LinkedBlockingQueue<Closure> readyClosureQueue;
     private HashMap<String,Closure> closures;
     private HashSet<String> closuresDone;
+    private Global global;
 
     private SpaceImpl() throws RemoteException {
         this.taskQueue = new LinkedBlockingQueue<Task>();
@@ -50,6 +52,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
      */
     @Override
     public void put(Task task) throws RemoteException, InterruptedException {
+        global = task.getClosure().getGlobal();
         taskQueue.put(task);
     }
 
@@ -177,6 +180,11 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     }
 
     @Override
+    public synchronized void updateGlobal(Global global) throws RemoteException {
+       this.global = global.findBest(this.global);
+    }
+
+    @Override
     public synchronized void putClosureInReady(Closure closure) throws RemoteException {
         try {
             readyClosureQueue.put(closure);
@@ -192,6 +200,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        c.setGlobal(global);
         return c;
     }
 }

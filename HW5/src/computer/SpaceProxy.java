@@ -7,6 +7,7 @@ import api.Task;
 import space.SpaceImpl;
 import system.Closure;
 import system.Continuation;
+import system.Global;
 
 import java.rmi.RemoteException;
 import java.util.Collection;
@@ -149,6 +150,19 @@ public class SpaceProxy implements Space {
     @Override
     public void putAll(Collection<Closure> closures) throws RemoteException {
         SpaceImpl.getInstance().putAll(closures);
+    }
+
+    @Override
+    public void updateGlobal(Global global) throws RemoteException {
+        if (!ASYNC){
+            SpaceImpl.getInstance().updateGlobal(global);
+        }else {
+            try {
+                waitingQueue.put(new QueueTicket(QueueTicket.Type.UPDATE_GLOBAL, global));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**

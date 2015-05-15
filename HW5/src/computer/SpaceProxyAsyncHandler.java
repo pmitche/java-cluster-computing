@@ -4,6 +4,7 @@ import computer.QueueTicket.Type;
 import space.SpaceImpl;
 import system.Closure;
 import system.Continuation;
+import system.Global;
 
 import java.rmi.RemoteException;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -56,6 +57,14 @@ public class SpaceProxyAsyncHandler implements Runnable {
                 case CLOSURE_DONE:{
                     try {
                         SpaceImpl.getInstance().closureDone((String) ticket.getArg());
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                }
+                case UPDATE_GLOBAL:{
+                    try {
+                        SpaceImpl.getInstance().updateGlobal((Global) ticket.getArg());
                     } catch (RemoteException e) {
                         e.printStackTrace();
                     }
