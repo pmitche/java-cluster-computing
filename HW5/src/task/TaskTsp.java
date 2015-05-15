@@ -127,14 +127,14 @@ public class TaskTsp extends CilkThread {
 
         if(g == g.findBest(currCost)) return true;
 
-        Global g2 = addTwoClosestCities(w.PATH, w.UNUSED);
+        Global g2 = heuristic(w.PATH, w.UNUSED);
 
         if(g2 == g2.findBest(currCost)) return true;
 
         return false;
     }
 
-    private Global addTwoClosestCities(List<Integer> path, List<Integer> unused) {
+    private Global heuristic(List<Integer> path, List<Integer> unused) {
         return null;
     }
 
