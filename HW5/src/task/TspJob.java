@@ -23,6 +23,7 @@ import java.util.Optional;
 public class TspJob implements Job {
     //problem
     private double[][] cities;
+    public List<Double> cost = new ArrayList<>();
 
     /**
      * Constructor for the Traveling salesman job.
@@ -32,6 +33,25 @@ public class TspJob implements Job {
      */
     public TspJob(double[][] cities) {
         this.cities = cities;
+        generateLowerBoundList();
+        System.out.println();
+    }
+
+    private void generateLowerBoundList() {
+        for (int i = 0; i < cities.length; i++){
+            double[] city = cities[i];
+            double min = Double.MAX_VALUE;
+            for (int j = 0; j < cities.length; j++) {
+                double[] otherCity = cities[j];
+                if (i != j){
+                    double tmp = TspUtils.euclideanDistance(city, otherCity);
+                    if (tmp < min){
+                        min = tmp;
+                    }
+                }
+            }
+            cost.add(min*2);
+        }
     }
 
     /**
@@ -52,7 +72,7 @@ public class TspJob implements Job {
         List<Integer> partialTrip = new ArrayList<>();
         partialTrip.add(0);
 
-        TaskTsp startTask = new TaskTsp(new Closure(0, new Global(new Long(Long.MAX_VALUE)), new Continuation("-1",-1,new TaskTsp.Wrapper(unusedCities, partialTrip))));
+        TaskTsp startTask = new TaskTsp(new Closure(0, new Global(new Double(Double.MAX_VALUE)), new Continuation("-1",-1,new TaskTsp.Wrapper(unusedCities, partialTrip))));
 
 /*      //Used for Simmulated Annealing
         Integer[] startPath = new Integer[cities.length];

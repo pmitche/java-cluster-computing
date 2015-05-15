@@ -134,8 +134,6 @@ public class TaskTsp extends CilkThread {
         }
     }
 
-    //------------------------------
-
     private void bruteForce(List<Integer> a, int n) {
         if (n == a.size()-1)
             register(a);
