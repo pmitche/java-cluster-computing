@@ -32,15 +32,7 @@ public class TaskTsp extends CilkThread {
 
         Continuation c =(Continuation)closure.getArgument(0);
         final Wrapper w = (Wrapper)c.argument;
-
-        //TODO: Can probably remove this now
-        if(w.UNUSED.size()<=1) {
-            w.PATH.addAll(w.UNUSED);
-            c.setReturnVal(new ResultValueWrapper(w.PATH, TspUtils.totalDistance(w.PATH)));
-            sendArgument(c);
-            return;
-        }
-
+        
         //Return if the whole line has been explored
         List<Wrapper> permutations = new ArrayList();
         for(Integer unvisited : w.UNUSED) {
