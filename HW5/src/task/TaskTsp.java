@@ -129,7 +129,8 @@ public class TaskTsp extends CilkThread {
 
         Global g2 = addTwoClosestCities(w.PATH, w.UNUSED);
 
-//        if(g2 != g2.findBest(currCost)) return true;
+        if(g2 == g2.findBest(currCost)) return true;
+
         return false;
     }
 
