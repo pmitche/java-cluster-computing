@@ -24,7 +24,7 @@ public class TspJob implements Job {
     private double[][] cities;
     public List<Double> cost = new ArrayList<>();
 
-    public static final boolean ZERO_LOWER_BOUND = true;
+    public static final boolean ZERO_LOWER_BOUND = false;
 
     /**
      * Constructor for the Traveling salesman job.

@@ -60,6 +60,17 @@ public class TspUtils {
         return distance;
     }
 
+    public static double findShortestDist(Integer i) {
+        double shortest = Double.MAX_VALUE;
+        for(double d : ClientTsp.DISTANCES[i]) {
+            if(d <= 0) continue;
+            if(d < shortest) {
+                shortest = d;
+            }
+        }
+        return shortest;
+    }
+
 
     /**
      * Fisher–Yates shuffle.
