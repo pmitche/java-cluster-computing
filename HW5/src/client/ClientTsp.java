@@ -24,18 +24,18 @@ public class ClientTsp extends Client<List<Integer>> implements Serializable
     private static final int NUM_PIXALS = 600;
     public static final double[][] CITIES =
             {
-                    { 1, 1 },
-                    { 8, 1 },
-                    { 8, 8 },
-                    { 1, 8 },
-                    { 2, 2 },
-                    { 7, 2 },
-                    { 7, 7 },
-                    { 2, 7 },
-                    { 3, 3 },
-                    { 6, 3 },
-                    { 6, 6 },
-                    { 3, 6 }
+                    { 1, 1 }, //0
+                    { 8, 1 },//1
+                    { 8, 8 },//2
+                    { 1, 8 },//3
+                    { 2, 2 },//4
+                    { 7, 2 },//5
+                    { 7, 7 },//6
+                    { 2, 7 },//7
+                    { 3, 3 },//8
+                    { 6, 3 },//9
+                    { 6, 6 },//10
+                    { 3, 6 } //11
 //                    { 4, 4 },
   //                  { 5, 4 },
     //                { 5, 5 },

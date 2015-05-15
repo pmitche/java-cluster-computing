@@ -27,10 +27,12 @@ public class TaskTsp extends CilkThread {
      */
     @Override
     public void decompose() {
+
         if (isAtomic()){
             calculate();
             return;
         }
+
         Continuation c =(Continuation)closure.getArgument(0);
         final Wrapper w = (Wrapper)c.argument;
 
@@ -75,14 +77,12 @@ public class TaskTsp extends CilkThread {
 
     public void calculate()  {
         Continuation c = (Continuation)closure.getArgument(0);
-
         Wrapper w = (Wrapper)c.argument;
 
-        List<Integer> permutations = new ArrayList() {{
+        bruteForce(new ArrayList() {{
             addAll(w.PATH);
             addAll(w.UNUSED);
-        }};
-        bruteForce(permutations, w.PATH.size());
+        }}, w.PATH.size()-1);
 
         c.setReturnVal(new ResultValueWrapper(best, shortest));
         sendArgument(c);
@@ -108,7 +108,6 @@ public class TaskTsp extends CilkThread {
                 }
             } catch (IndexOutOfBoundsException e) { break;}
         }
-
         currCon.setReturnVal(best);
         sendArgument(currCon);
     }
@@ -138,9 +137,8 @@ public class TaskTsp extends CilkThread {
     //------------------------------
 
     private void bruteForce(List<Integer> a, int n) {
-        if (n == a.size()-1) {
+        if (n == a.size()-1)
             register(a);
-        }
 
         for (int i = a.size()-1; i > n; i--) {
             Collections.swap(a, i, n + 1);
@@ -148,7 +146,6 @@ public class TaskTsp extends CilkThread {
             Collections.swap(a, i, n + 1);
         }
     }
-
 
     private double shortest = Double.MAX_VALUE;
     private List<Integer> best = null;
@@ -171,7 +168,6 @@ public class TaskTsp extends CilkThread {
 
         String id = "-1";
         //Spawn next to get ID
-
 
         switch(size)
         {
