@@ -15,7 +15,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
  * @author Peter Cappello
  * @author hallvard
  */
@@ -24,7 +23,7 @@ public class ClientTsp extends Client<List<Integer>> implements Serializable
     private static final int NUM_PIXALS = 600;
     public static final double[][] CITIES =
             {
-                    { 1, 1 }, //0
+                    { 1, 1 },//0
                     { 8, 1 },//1
                     { 8, 8 },//2
                     { 1, 8 },//3

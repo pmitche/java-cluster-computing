@@ -3,6 +3,7 @@ package space;
 import api.Result;
 import api.Space;
 import api.Task;
+import computer.ComputerImpl;
 import system.Closure;
 import computer.Computer;
 import system.Continuation;
@@ -12,6 +13,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
+import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -20,7 +22,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class SpaceImpl extends UnicastRemoteObject implements Space {
 
     private static Space instance;
-    private LinkedBlockingQueue<Task> taskQueue;
+    private LinkedBlockingDeque<Task> taskQueue;
     private LinkedBlockingQueue<Result> resultQueue;
     private LinkedBlockingQueue<Closure> readyClosureQueue;
     private HashMap<String,Closure> closures;
@@ -28,7 +30,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     private Global global;
 
     private SpaceImpl() throws RemoteException {
-        this.taskQueue = new LinkedBlockingQueue<Task>();
+        this.taskQueue = new LinkedBlockingDeque<Task>();
         this.resultQueue = new LinkedBlockingQueue<Result>();
         this.readyClosureQueue = new LinkedBlockingQueue<Closure>();
         this.closures = new HashMap<>();
@@ -42,6 +44,15 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         ip = args.length > 0 ? args[0] : inputIp();
         System.setProperty("java.rmi.server.hostname", ip);
         System.out.println("Space running...");
+
+        Runnable r = () -> {
+            try { getInstance().register(new ComputerImpl(getInstance()));
+            } catch (RemoteException re) {}
+        };
+
+        Thread localComputer = new Thread(r);
+        localComputer.setPriority(Thread.MIN_PRIORITY);
+        localComputer.start();
     }
 
     /**
@@ -170,13 +181,15 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
 
     @Override
     public synchronized void putAll(Collection<Closure> closures) throws RemoteException {
-        closures.forEach(closure -> {if(!closuresDone.contains(closure.getId())){
-            try {
-                readyClosureQueue.put(closure);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        closures.forEach(closure -> {
+            if (!closuresDone.contains(closure.getId())) {
+                try {
+                    readyClosureQueue.put(closure);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
-        }});
+        });
     }
 
     @Override

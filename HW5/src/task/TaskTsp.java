@@ -1,9 +1,6 @@
 package task;
 
-import system.CilkThread;
-import system.Closure;
-import system.Continuation;
-import system.ResultValueWrapper;
+import system.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -58,7 +55,7 @@ public class TaskTsp extends CilkThread {
         }
 
         //Check if this thread is a dead end.
-        if(permutations.isEmpty()) {
+        if(permutations.isEmpty() || isRedundant()) {
             c.setReturnVal(new ResultValueWrapper(new ArrayList() {{
                 addAll(w.PATH);
                 addAll(w.UNUSED);
@@ -83,6 +80,7 @@ public class TaskTsp extends CilkThread {
             addAll(w.PATH);
             addAll(w.UNUSED);
         }}, w.PATH.size()-1);
+        closure.updateGlobal(new Global(shortest));
 
         c.setReturnVal(new ResultValueWrapper(best, shortest));
         sendArgument(c);
@@ -117,7 +115,7 @@ public class TaskTsp extends CilkThread {
      * @return weather or not to decompose or calculate.
      */
     private boolean isAtomic() {
-        Continuation c = (Continuation)closure.getArgument(0);
+        Continuation c = getContinuation();
         Wrapper w = (Wrapper)c.argument;
         return w.UNUSED.size() <= DECOMPOSE_LIMIT;
     }
@@ -133,6 +131,33 @@ public class TaskTsp extends CilkThread {
             this.PATH = path;
         }
     }
+
+    private boolean isRedundant() {
+        Continuation c = getContinuation();
+        Wrapper w = (Wrapper)c.argument;
+
+        Global currCost = new Global(TspUtils.totalDistance(w.PATH));
+        Global g = closure.getGlobal();
+
+        if(g == g.findBest(currCost)) return true;
+
+        Global g2 = addTwoClosestCities(w.PATH, w.UNUSED);
+
+//        if(g2 != g2.findBest(currCost)) return true;
+        return false;
+    }
+
+    private Global addTwoClosestCities(List<Integer> path, List<Integer> unused) {
+        return null;
+    }
+
+
+    private Continuation getContinuation() {
+        return (Continuation)closure.getArgument(0);
+    }
+
+
+    //------------------------------
 
     private void bruteForce(List<Integer> a, int n) {
         if (n == a.size()-1)

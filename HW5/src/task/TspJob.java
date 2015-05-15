@@ -2,7 +2,6 @@ package task;
 
 import api.Job;
 import api.Space;
-import client.ClientTsp;
 import system.Closure;
 import system.Continuation;
 import system.Global;
@@ -24,6 +23,8 @@ public class TspJob implements Job {
     //problem
     private double[][] cities;
     public List<Double> cost = new ArrayList<>();
+
+    public static final boolean ZERO_LOWER_BOUND = false;
 
     /**
      * Constructor for the Traveling salesman job.
@@ -72,7 +73,8 @@ public class TspJob implements Job {
         List<Integer> partialTrip = new ArrayList<>();
         partialTrip.add(0);
 
-        TaskTsp startTask = new TaskTsp(new Closure(0, new Global(new Double(Double.MAX_VALUE)), new Continuation("-1",-1,new TaskTsp.Wrapper(unusedCities, partialTrip))));
+
+        TaskTsp startTask = new TaskTsp(new Closure(0, new Global(new Double(ZERO_LOWER_BOUND ? 0 : Double.MAX_VALUE)), new Continuation("-1",-1,new TaskTsp.Wrapper(unusedCities, partialTrip))));
 
 /*      //Used for Simmulated Annealing
         Integer[] startPath = new Integer[cities.length];
