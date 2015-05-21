@@ -1,6 +1,7 @@
 package client;
 
 import task.TspJob;
+import task.TspUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,6 +42,7 @@ public class ClientTsp extends Client<List<Integer>> implements Serializable
       //              { 4, 5 }
 
             };
+    public static final double[][] DISTANCES = initializeDistances();
 
     /**
      * Constructor
@@ -62,6 +64,8 @@ public class ClientTsp extends Client<List<Integer>> implements Serializable
         if(args.length > 0)
             if(args[0].equals("singleJVM"))
                 singleJVM = true;
+
+        System.out.println(TspUtils.findShortestDist(0));
 
         System.setSecurityManager(new SecurityManager());
         final ClientTsp client = new ClientTsp("localhost", singleJVM);
@@ -163,5 +167,15 @@ public class ClientTsp extends Client<List<Integer>> implements Serializable
             stringBuilder.append( city ).append( ' ' );
         }
         return stringBuilder.toString();
+    }
+
+    static private double[][] initializeDistances()
+    {
+        double[][] distances = new double[ CITIES.length][ CITIES.length];
+        for ( int i = 0; i < CITIES.length; i++ )
+            for ( int j = 0; j < i; j++ ) {
+                distances[ i ][ j ] = distances[ j ][ i ] = TspUtils.euclideanDistance(CITIES[i], CITIES[j]);
+            }
+        return distances;
     }
 }

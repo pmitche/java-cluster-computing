@@ -88,6 +88,7 @@ public class TaskTsp extends CilkThread {
                     shortest = (Double)rvw.getN();
                 }
             } catch (IndexOutOfBoundsException e) { break;}
+            catch (NullPointerException n) {break;}
         }
         currCon.setReturnVal(best);
         sendArgument(currCon);
@@ -115,6 +116,13 @@ public class TaskTsp extends CilkThread {
         }
     }
 
+    /**
+     * Is the thread redundant?
+     * <p>Checks result against heuristics of the current path to check if there
+     * can exist any permutations that is lower than the lower vound
+     * if not, the thread is a dead end and can be pruned with MAX_VALUE</p>
+     * @return
+     */
     private boolean isRedundant() {
         if (TspJob.ZERO_LOWER_BOUND){
             return false;
@@ -122,28 +130,47 @@ public class TaskTsp extends CilkThread {
         Continuation c = getContinuation();
         Wrapper w = (Wrapper)c.argument;
 
-        Global currCost = new Global(TspUtils.totalDistance(w.PATH));
+        Double currCost = TspUtils.totalDistancePartialPath(w.PATH);
         Global g = closure.getGlobal();
 
-        if(g == g.findBest(currCost)) return true;
+        if((Double)g.getValue() <= currCost) return true;
 
-        Global g2 = heuristic(w.PATH, w.UNUSED);
+        Double currCostHeur = heuristic(currCost, w.UNUSED);
 
-        if(g2 == g2.findBest(currCost)) return true;
+        if((Double)g.getValue() <= currCostHeur) return true;
 
         return false;
     }
 
-    private Global heuristic(List<Integer> path, List<Integer> unused) {
-        return null;
+    /**
+     * Local heuristic to approximate best values for the permutations
+     *
+     * @param curr current partial-path length
+     * @param unused unvisited cities in partial-path
+     * @return Estimated value
+     */
+    private Double heuristic(double curr, List<Integer> unused) {
+        double minDistances = curr;
+        for(Integer unvisited : unused) {
+            minDistances += TspUtils.findShortestDist(unvisited);
+        }
+        return minDistances;
     }
 
-
+    /**
+     * @return Current continuation
+     */
     private Continuation getContinuation() {
         return (Continuation)closure.getArgument(0);
     }
 
+    /**
+     * Prunes the result with Double.MAX_VALUE to make it the end of the current thread.
+     * @param c Current continuation
+     * @param w Wrapper with the nodes state values
+     */
     private void prune(Continuation c, Wrapper w) {
+        System.out.println("PRUNE");
         c.setReturnVal(new ResultValueWrapper(new ArrayList() {{
             addAll(w.PATH);
             addAll(w.UNUSED);
@@ -152,8 +179,15 @@ public class TaskTsp extends CilkThread {
     }
 
 
-    //------------------------------
+    //used to save the best solution to be taken by calculate()
+    private double shortest = Double.MAX_VALUE;
+    private List<Integer> best = null;
 
+    /**
+     * Explore all possible permutations from the given starting point
+     * @param a list of all cities
+     * @param n starting point
+     */
     private void bruteForce(List<Integer> a, int n) {
         if (n == a.size()-1)
             register(a);
@@ -165,9 +199,10 @@ public class TaskTsp extends CilkThread {
         }
     }
 
-    private double shortest = Double.MAX_VALUE;
-    private List<Integer> best = null;
-
+    /**
+     * Keeps track of the best solition
+     * @param path  solution to check
+     */
     private void register(List<Integer> path) {
         double dist = TspUtils.totalDistance(path);
         if(dist < shortest){
@@ -178,15 +213,10 @@ public class TaskTsp extends CilkThread {
 
 
     /**
-     * @param size
-     * @param c
-     * @return
+     * Ugly code
      */
     private String getId(int size, Continuation c) {
-
         String id = "-1";
-        //Spawn next to get ID
-
         switch(size)
         {
             case 1: { id = spawnNext(new TaskTsp(null), c, null); break; }
@@ -206,7 +236,6 @@ public class TaskTsp extends CilkThread {
             case 15: { id = spawnNext(new TaskTsp(null), c, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null); break; }
             case 16: { id = spawnNext(new TaskTsp(null), c, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null); break; }
             case 17: { id = spawnNext(new TaskTsp(null), c, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null); break; }
-            default: {}
         }
         return id;
     }
