@@ -13,12 +13,21 @@ import java.util.Optional;
 public abstract class CilkThread implements Runnable, Task {
 
     protected Closure closure;
+    /**
+     * Lower number is better
+     */
+    protected double heuristic;
 
     public CilkThread(Closure closure){
         this.closure = closure;
+        heuristic = Double.MAX_VALUE;
         if (this.closure != null){
             this.closure.setCilkThread(this);
         }
+    }
+
+    public double getHeuristic() {
+        return heuristic;
     }
 
     /**
