@@ -9,7 +9,7 @@ import java.util.UUID;
 /**
  * Created by Kyrre on 23.04.2015.
  */
-public class Closure implements Serializable {
+public class Closure implements Serializable, Comparable<Closure> {
 
     private String id;
     private CilkThread cilkThread;
@@ -122,5 +122,19 @@ public class Closure implements Serializable {
      */
     public void setGlobal(Global global) {
         this.global = global.findBest(this.global);
+    }
+
+    public double getHeuristic(){
+        return cilkThread.getHeuristic();
+    }
+
+    @Override
+    public int compareTo(Closure o) {
+        if (getHeuristic() - o.getHeuristic() < 0){
+            return -1;
+        }else if (getHeuristic() - o.getHeuristic() > 0){
+            return 1;
+        }
+        return 0;
     }
 }

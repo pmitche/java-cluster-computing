@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.Scanner;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.PriorityBlockingQueue;
 
 /**
  * Created by Kyrre on 13.04.2015.
@@ -29,7 +30,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     private static Space instance;
     private LinkedBlockingDeque<Task> taskQueue;
     private LinkedBlockingQueue<Result> resultQueue;
-    private LinkedBlockingDeque<Closure> readyClosureDeque;
+    private PriorityBlockingQueue<Closure> readyClosureQueue;
     private HashMap<String,Closure> closures;
     private HashSet<String> closuresDone;
     private Global global;
@@ -37,7 +38,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     private SpaceImpl() throws RemoteException {
         this.taskQueue = new LinkedBlockingDeque<Task>();
         this.resultQueue = new LinkedBlockingQueue<Result>();
-        this.readyClosureDeque = new LinkedBlockingDeque<>();
+        this.readyClosureQueue = new PriorityBlockingQueue<>();
         this.closures = new HashMap<>();
         this.closuresDone = new HashSet<>();
     }
@@ -69,7 +70,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     public Closure takeReadyClosure() throws RemoteException {
         Closure c = null;
         try {
-            c = readyClosureDeque.takeLast();
+            c = readyClosureQueue.take();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -189,11 +190,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     public synchronized void putAll(Collection<Closure> closures) throws RemoteException {
         closures.forEach(closure -> {
             if (!closuresDone.contains(closure.getId())) {
-                try {
-                    readyClosureDeque.put(closure);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                readyClosureQueue.put(closure);
             }
         });
     }
@@ -204,10 +201,6 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     }
     @Override
     public synchronized void putClosureInReady(Closure closure) throws RemoteException {
-        try {
-            readyClosureDeque.put(closure);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        readyClosureQueue.put(closure);
     }
 }

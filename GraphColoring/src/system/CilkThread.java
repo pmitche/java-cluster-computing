@@ -13,12 +13,21 @@ import java.util.Optional;
 public abstract class CilkThread implements Runnable, Task {
 
     protected Closure closure;
+    /**
+     * Lower number is better
+     */
+    protected double heuristic;
 
     public CilkThread(Closure closure){
         this.closure = closure;
+        heuristic = Double.MAX_VALUE;
         if (this.closure != null){
             this.closure.setCilkThread(this);
         }
+    }
+
+    public double getHeuristic() {
+        return heuristic;
     }
 
     /**
@@ -31,6 +40,7 @@ public abstract class CilkThread implements Runnable, Task {
         Closure c = new Closure((int) Arrays.stream(arguments).filter(e -> e == null).count(), closure.getGlobal(), arguments);
         c.setCilkThread(t);
         t.setClosure(c);
+        t.heuristic = heuristic;
         try {
             SpaceProxy.getInstance().put(c);
         } catch (RemoteException e) {
@@ -49,6 +59,8 @@ public abstract class CilkThread implements Runnable, Task {
         c.setIsAncestor(true);
         t.setClosure(c);
         c.setCilkThread(t);
+        //TODO: change to generate it's own heuristic
+        t.heuristic = heuristic;
         try {
             SpaceProxy.getInstance().put(c);
         } catch (RemoteException e) {
