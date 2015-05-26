@@ -18,8 +18,6 @@ import java.util.*;
  */
 public class ProblemGenerator {
 
-    public ProblemGenerator() {}
-
     public StateGraphColoring getProblem() {
 
         //Select File
@@ -97,21 +95,17 @@ public class ProblemGenerator {
         }
 
         //Vertices
-        HashSet<Vertex> vertices = new HashSet<Vertex>();
+        HashSet<Vertex> vertices = new HashSet();
         for(int i=1; i<nv+1; i++) {
             Object[] values = getValues(input.get(i), true);
-            vertices.add(new Vertex(i+"", (Double)values[1]+(negativeX*-1), (Double)values[2]+(negativeY*-1), getDomain(0), Color.GRAY));
+            vertices.add(new Vertex((Integer)values[0], (Double)values[1]+(negativeX*-1), (Double)values[2]+(negativeY*-1), getDomain(3), Color.GRAY));
         }
 
         //Edges
-        ArrayList<Edge> edges = new ArrayList<Edge>();
+        ArrayList<Edge> edges = new ArrayList();
         for(int j=nv+1; j<input.size(); j++) {
             Object[] values = getValues(input.get(j), false);
             edges.add(new Edge((Integer)values[0], (Integer)values[1]));
-            //Constraints
-            HashMap<String, Integer> containingVariablesId = new HashMap<String, Integer>();
-            containingVariablesId.put("x", (Integer) values[0]);
-            containingVariablesId.put("y", (Integer) values[1]);
         }
 
         System.out.println(vertices);
@@ -130,7 +124,7 @@ public class ProblemGenerator {
         return values;
     }
     public List<Color> getDomain(int domainSize) {
-        ArrayList<Color> domain = new ArrayList<Color>();
+        ArrayList<Color> domain = new ArrayList();
         domain.add(Color.RED);
         domain.add(Color.BLUE);
         domain.add(Color.GREEN);

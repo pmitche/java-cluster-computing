@@ -1,10 +1,10 @@
 package client;
 
-import sun.security.provider.certpath.Vertex;
 import task.Edge;
+import task.JobGraphColoring;
 import task.StateGraphColoring;
-import task.TspJob;
-import task.TspUtils;
+import task.Vertex;
+import util.ProblemGenerator;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,18 +15,14 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Created by hallvard on 5/26/15.
  */
 public class ClientGraphColoring extends Client<List<Integer>> implements Serializable {
 
-    private final int SIZE = 13;
-    private final double DIM = 0;
-
-    private HashMap<Integer, Vertex> lookup = new HashMap<>();
+    private final int SIZE = 13;    //Size of the vertecies
+    private final double DIM = 22;  //Dimension of the graph
 
     public ClientGraphColoring(String ip) throws RemoteException, NotBoundException,MalformedURLException {
         super("Graph Coloring", ip, null); //TODO - add Job
@@ -34,8 +30,9 @@ public class ClientGraphColoring extends Client<List<Integer>> implements Serial
 
     public static void main( String[] args ) throws RemoteException, MalformedURLException, NotBoundException {
         System.setSecurityManager(new SecurityManager());
-        final ClientGraphColoring client = new ClientGraphColoring("localhost"):
-        //TODO - Add label.
+        final ClientGraphColoring client = new ClientGraphColoring("localhost");
+
+        client.add(client.getLabel((StateGraphColoring)client.runJob()));
     }
 
     public JLabel getLabel( final StateGraphColoring state) {
@@ -44,20 +41,24 @@ public class ClientGraphColoring extends Client<List<Integer>> implements Serial
 
         graphics.setColor(Color.DARK_GRAY);
 
+        HashMap<Integer, Vertex> lookup = new HashMap();
+
         //Draw Vertecies
-        for( task.Vertex v : state.getVertices()) {
-            int x = (int)(v.X);
-            int y = (int)(v.Y);
+        for( Vertex v : state.getVertices()) {
+            lookup.put(v.ID, v);
+            int x = (int)(v.X*DIM);
+            int y = (int)(v.Y*DIM);
             graphics.drawOval(x,y, SIZE, SIZE);
             graphics.setColor(v.getColor());
             graphics.fillOval(x, y, SIZE, SIZE);
         }
         //Draw Edges
+
         for( Edge e : state.EDGES) {
-            int x1 = (int)(lookup.get(e.id1).x	*DIM)+SIZE/2;
-            int y1 = (int)(lookup.get(e.id1).y	*DIM)+SIZE/2;
-            int x2 = (int)(lookup.get(e.id2).x	*DIM)+SIZE/2;
-            int y2 = (int)(lookup.get(e.id2).y	*DIM)+SIZE/2;
+            int x1 = (int)(lookup.get(e.id1).X  *DIM)+SIZE/2;
+            int y1 = (int)(lookup.get(e.id1).Y	*DIM)+SIZE/2;
+            int x2 = (int)(lookup.get(e.id2).X	*DIM)+SIZE/2;
+            int y2 = (int)(lookup.get(e.id2).Y	*DIM)+SIZE/2;
             graphics.setColor(Color.BLACK);
             graphics.drawLine(x1,y1,x2,y2);
         }
