@@ -127,15 +127,16 @@ public class TaskTsp extends CilkThread {
         if (TspJob.ZERO_LOWER_BOUND){
             return false;
         }
+
         Continuation c = getContinuation();
         Wrapper w = (Wrapper)c.argument;
 
         Double currCost = TspUtils.totalDistancePartialPath(w.PATH);
         Global g = closure.getGlobal();
 
-        if((Double)g.getValue() <= currCost) return true;
-
         Double currCostHeur = heuristic(currCost, w.UNUSED);
+
+        if((Double)g.getValue() <= currCost) return true;
 
         if((Double)g.getValue() <= currCostHeur) return true;
 
@@ -154,6 +155,7 @@ public class TaskTsp extends CilkThread {
         for(Integer unvisited : unused) {
             minDistances += TspUtils.findShortestDist(unvisited);
         }
+        this.heuristic = minDistances;
         return minDistances;
     }
 
@@ -170,7 +172,7 @@ public class TaskTsp extends CilkThread {
      * @param w Wrapper with the nodes state values
      */
     private void prune(Continuation c, Wrapper w) {
-        System.out.println("PRUNE");
+        //System.out.println("TaskTsp, prune()");
         c.setReturnVal(new ResultValueWrapper(new ArrayList() {{
             addAll(w.PATH);
             addAll(w.UNUSED);

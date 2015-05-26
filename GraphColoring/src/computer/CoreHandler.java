@@ -27,10 +27,8 @@ public class CoreHandler implements Runnable {
     public void run() {
         while (true){
             try {
-                long waitTime = System.nanoTime();
                 Closure c = tasks.take();
-                waitTime = (System.nanoTime()-waitTime)/1000000;
-                System.out.println("CoreProxy; run(); Thread: "+threadId);
+                //System.out.println("CoreHandler; run(); Thread: "+threadId);
                 c.call();
             } catch (InterruptedException e) {
                 e.printStackTrace();
