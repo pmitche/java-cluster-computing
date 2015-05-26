@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class Vertex implements Serializable{
 
-    public final String ID;
+    public final int ID;
 
     public final double X;
     public final double Y;
@@ -20,7 +20,7 @@ public class Vertex implements Serializable{
     private List<Color> domain;
     private List<Vertex> neighbors = new ArrayList<>();
 
-    public Vertex(String id, double x, double y, List<Color> domain, Color c) {
+    public Vertex(int id, double x, double y, List<Color> domain, Color c) {
         this.ID = id;
         this.X = x;
         this.Y = y;

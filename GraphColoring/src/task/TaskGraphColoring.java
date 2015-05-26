@@ -1,7 +1,7 @@
 package task;
 
 import system.CilkThread;
-import system.Continuation;
+import system.Closure;
 
 /**
  * Created by hallvard on 5/26/15.
@@ -9,8 +9,8 @@ import system.Continuation;
 public class TaskGraphColoring extends CilkThread {
 
 
-    public TaskGraphColoring() {
-        super(null);
+    public TaskGraphColoring(Closure closure) {
+        super(closure);
 
     }
 

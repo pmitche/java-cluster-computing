@@ -73,7 +73,18 @@ public class TspJob implements Job {
         partialTrip.add(0);
 
 
+        TaskTsp startTask = new TaskTsp(new Closure(0, new Global(new Double(Double.MAX_VALUE)), new Continuation("-1",-1,new TaskTsp.Wrapper(unusedCities, partialTrip))));
 
+/*      //Used for Simmulated Annealing
+        Integer[] startPath = new Integer[cities.length];
+        for(int i=0; i<cities.length; i++)
+            startPath[i] = i;
+
+        TaskTspSa startTask = new TaskTspSa(new Closure(0, new Continuation("-1", -1, new AnnealingState(startPath, ClientTsp.START_TEMP, -1))));
+*/
+        try {
+            space.put(startTask);
+        } catch (InterruptedException e) {e.printStackTrace();}
     }
 
     /**
