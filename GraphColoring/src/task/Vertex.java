@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * Created by hallvard on 5/26/15.
@@ -43,10 +44,6 @@ public class Vertex implements Serializable{
         return neighbors;
     }
 
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
     public Color getColor() {
         return color;
     }
@@ -54,7 +51,7 @@ public class Vertex implements Serializable{
     /**
      *
      * @param color
-     * @return true, if domain was reduced to a singleton
+     * @return true, if domain was not a singleton, but was reduced to one.
      */
     public boolean reduceDomain(Color color) {
         if (isDomainSingleton()){
@@ -69,5 +66,15 @@ public class Vertex implements Serializable{
 
     public List<Color> getDomain() {
         return domain;
+    }
+
+    public void assumeColor(Color color) {
+        domain.removeIf(new Predicate<Color>() {
+            @Override
+            public boolean test(Color color2) {
+                return !color.equals(color2);
+            }
+        });
+        this.color = color;
     }
 }

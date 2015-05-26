@@ -105,7 +105,7 @@ public class ProblemGenerator {
         }
 
         System.out.println(vertices);
-        return new StateGraphColoring(vertices, edges);
+        return null;//new StateGraphColoring(vertices, edges);
     }
 
     protected Object[] getValues(String s, boolean vertex) {

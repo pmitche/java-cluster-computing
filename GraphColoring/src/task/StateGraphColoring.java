@@ -34,7 +34,7 @@ public class StateGraphColoring implements Serializable {
         return lastAssumed;
     }
 
-    public Collection<StateGraphColoring> deduce() {
+    public ArrayList<StateGraphColoring> deduce() {
         HashSet<Vertex> candidates = reduce(lastAssumed);
         int smallest = Integer.MAX_VALUE;
         Vertex current = null;
@@ -47,18 +47,19 @@ public class StateGraphColoring implements Serializable {
         return generateChildState(current);
     }
 
-    private Collection<StateGraphColoring> generateChildState(Vertex current) {
+    private ArrayList<StateGraphColoring> generateChildState(Vertex current) {
         ArrayList<StateGraphColoring> childStates = new ArrayList<>();
         for (Color color: current.getDomain()){
             StateGraphColoring child = deepCopy();
             child.makeAssumption(current.ID, color);
+            childStates.add(child);
         }
-        //TODO
-        return null;
+        return childStates;
     }
 
     private void makeAssumption(Integer id, Color color) {
-
+        vertices.get(id).assumeColor(color);
+        lastAssumed = vertices.get(id);
     }
 
     private HashSet<Vertex> reduce(Vertex focal){
