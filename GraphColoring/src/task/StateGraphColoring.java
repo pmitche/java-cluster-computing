@@ -24,9 +24,9 @@ public class StateGraphColoring implements Serializable {
     }
 
     public StateGraphColoring deepCopy() {
-        HashSet<Vertex> verteciesCopy = new HashSet();
+        HashMap<Integer, Vertex> verteciesCopy = new HashMap<>();
         for( Vertex v : vertices.values())
-            verteciesCopy.add(v.deepCopy());
+            verteciesCopy.put(v.ID, v.deepCopy());
         return new StateGraphColoring(verteciesCopy, EDGES);
     }
 
@@ -53,9 +53,11 @@ public class StateGraphColoring implements Serializable {
             StateGraphColoring child = deepCopy();
             child.makeAssumption(current.ID, color);
         }
+        //TODO
+        return null;
     }
 
-    private void makeAssumption(String id, Color color) {
+    private void makeAssumption(Integer id, Color color) {
 
     }
 
