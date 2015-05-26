@@ -36,12 +36,8 @@ public class Vertex implements Serializable{
     }
 
     public Vertex deepCopy() {
-        List<Color> copyColor = new ArrayList();
-        for(Color c : domain)
-            copyColor.add(c);
-        return new Vertex(ID, X, Y, copyColor, color);
+        return new Vertex(ID, X, Y, new ArrayList<>(domain), color);
     }
-
 
     public void setColor(Color color) {
         this.color = color;

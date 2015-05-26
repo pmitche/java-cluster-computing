@@ -18,7 +18,14 @@ import java.util.*;
  */
 public class ProblemGenerator {
 
+    private final int DOMAIN_SIZE;
+
+    public ProblemGenerator(int domainSize) {
+        this.DOMAIN_SIZE = domainSize;
+    }
+
     public StateGraphColoring getProblem() {
+
 
         //Select File
         File file = selectFile("");
@@ -29,19 +36,8 @@ public class ProblemGenerator {
             input = readFile(file);
         } catch ( Exception e ) { e.printStackTrace(); return null; }
 
-        int domainSize = getDomainSize();
-
         //Generate Problem
         return generateProblem(input);
-    }
-
-    private int getDomainSize() {
-        JOptionPane pane = new JOptionPane();
-        String d;
-        while(!isInteger(d = pane.showInputDialog("Input domain Size"))) {
-            JOptionPane.showMessageDialog(null, "Input not a number, try again");
-        }
-        return Integer.parseInt(d);
     }
 
     private boolean isInteger(String s) {
@@ -98,14 +94,14 @@ public class ProblemGenerator {
         HashSet<Vertex> vertices = new HashSet();
         for(int i=1; i<nv+1; i++) {
             Object[] values = getValues(input.get(i), true);
-            vertices.add(new Vertex((Integer)values[0], (Double)values[1]+(negativeX*-1), (Double)values[2]+(negativeY*-1), getDomain(3), Color.GRAY));
+            vertices.add(new Vertex((Integer)values[0], (Double)values[1]+(negativeX*-1), (Double)values[2]+(negativeY*-1), getDomain(DOMAIN_SIZE), Color.GRAY));
         }
 
         //Edges
         ArrayList<Edge> edges = new ArrayList();
         for(int j=nv+1; j<input.size(); j++) {
             Object[] values = getValues(input.get(j), false);
-            edges.add(new Edge((Integer)values[0], (Integer)values[1]));
+            edges.add(new Edge((Integer) values[0], (Integer) values[1]));
         }
 
         System.out.println(vertices);

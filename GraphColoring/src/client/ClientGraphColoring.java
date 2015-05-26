@@ -31,7 +31,6 @@ public class ClientGraphColoring extends Client<List<Integer>> implements Serial
     public static void main( String[] args ) throws RemoteException, MalformedURLException, NotBoundException {
         System.setSecurityManager(new SecurityManager());
         final ClientGraphColoring client = new ClientGraphColoring("localhost");
-
         client.add(client.getLabel((StateGraphColoring)client.runJob()));
     }
 
@@ -53,7 +52,6 @@ public class ClientGraphColoring extends Client<List<Integer>> implements Serial
             graphics.fillOval(x, y, SIZE, SIZE);
         }
         //Draw Edges
-
         for( Edge e : state.EDGES) {
             int x1 = (int)(lookup.get(e.id1).X  *DIM)+SIZE/2;
             int y1 = (int)(lookup.get(e.id1).Y	*DIM)+SIZE/2;
