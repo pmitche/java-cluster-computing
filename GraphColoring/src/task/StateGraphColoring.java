@@ -1,18 +1,20 @@
 package task;
 
-import java.util.HashSet;
+import java.awt.*;
+import java.io.Serializable;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by hallvard on 5/26/15.
  */
-public class StateGraphColoring {
+public class StateGraphColoring implements Serializable {
 
-    private HashSet<Vertex> vertices;
+    private HashMap<String, Vertex> vertices;
     public final List<Edge> EDGES;
+    public Vertex lastAssumed;
 
-    public StateGraphColoring(HashSet<Vertex> vertices, List<Edge> edges) {
+    public StateGraphColoring(HashMap<String, Vertex> vertices, List<Edge> edges) {
         this.vertices = vertices;
         this.EDGES = edges;
     }
@@ -23,9 +25,53 @@ public class StateGraphColoring {
 
     public StateGraphColoring deepCopy() {
         HashSet<Vertex> verteciesCopy = new HashSet();
-        for( Vertex v : vertices)
+        for( Vertex v : vertices.values())
             verteciesCopy.add(v.deepCopy());
         return new StateGraphColoring(verteciesCopy, EDGES);
     }
 
+    public Vertex getLastAssumed() {
+        return lastAssumed;
+    }
+
+    public Collection<StateGraphColoring> deduce() {
+        HashSet<Vertex> candidates = reduce(lastAssumed);
+        int smallest = Integer.MAX_VALUE;
+        Vertex current = null;
+        for (Vertex candidat: candidates){
+            if (candidat.getDomainSize() < smallest){
+                current = candidat;
+                smallest = candidat.getDomainSize();
+            }
+        }
+        return generateChildState(current);
+    }
+
+    private Collection<StateGraphColoring> generateChildState(Vertex current) {
+        ArrayList<StateGraphColoring> childStates = new ArrayList<>();
+        for (Color color: current.getDomain()){
+            StateGraphColoring child = deepCopy();
+            child.makeAssumption(current.ID, color);
+        }
+    }
+
+    private void makeAssumption(String id, Color color) {
+
+    }
+
+    private HashSet<Vertex> reduce(Vertex focal){
+        ArrayList<Vertex> singletons = new ArrayList<>();
+        HashSet<Vertex> notSingletons = new HashSet<>();
+        for (Vertex neighbour: focal.getNeighbors()){
+            if (neighbour.reduceDomain(focal.getColor())){
+                singletons.add(neighbour);
+            }else {
+                notSingletons.add(neighbour);
+            }
+        }
+        for (Vertex v: singletons){
+            notSingletons.addAll(reduce(v));
+        }
+        return notSingletons;
+    }
 }

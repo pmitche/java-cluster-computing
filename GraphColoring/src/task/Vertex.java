@@ -15,7 +15,7 @@ public class Vertex implements Serializable{
     public final double X;
     public final double Y;
 
-    private Color color;
+    private Color color = Color.GRAY;
 
     private List<Color> domain;
     private List<Vertex> neighbors = new ArrayList<>();
@@ -42,6 +42,9 @@ public class Vertex implements Serializable{
         return new Vertex(ID, X, Y, copyColor, color);
     }
 
+    public List<Vertex> getNeighbors() {
+        return neighbors;
+    }
 
     public void setColor(Color color) {
         this.color = color;
@@ -49,5 +52,25 @@ public class Vertex implements Serializable{
 
     public Color getColor() {
         return color;
+    }
+
+    /**
+     *
+     * @param color
+     * @return true, if domain was reduced to a singleton
+     */
+    public boolean reduceDomain(Color color) {
+        if (isDomainSingleton()){
+            return false;
+        }
+        domain.remove(color);
+        return isDomainSingleton();
+    }
+    public int getDomainSize(){
+        return domain.size();
+    }
+
+    public List<Color> getDomain() {
+        return domain;
     }
 }
