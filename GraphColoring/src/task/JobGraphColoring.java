@@ -16,11 +16,12 @@ import java.util.Optional;
  */
 public class JobGraphColoring implements Job {
 
+    private final int DOMAIN_SIZE = 3;
+
     @Override
     public void generateTasks(Space space) throws RemoteException {
 
-        StateGraphColoring state0 = new ProblemGenerator().getProblem();
-
+        StateGraphColoring state0 = new ProblemGenerator(DOMAIN_SIZE).getProblem();
 
         TaskGraphColoring startTask = new TaskGraphColoring(new Closure(0, new Global(new Double(Double.MAX_VALUE)), new Continuation("-1",-1,state0)));
 
