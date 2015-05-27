@@ -43,14 +43,14 @@ public class ClientGraphColoring extends Client<List<Integer>> implements Serial
         HashMap<Integer, Vertex> lookup = new HashMap();
 
         //Draw Vertecies
-//        for( Vertex v : state.getVertices()) {
-//            lookup.put(v.ID, v);
-//            int x = (int)(v.X*DIM);
-//            int y = (int)(v.Y*DIM);
-//            graphics.drawOval(x,y, SIZE, SIZE);
-//            graphics.setColor(v.getColor());
-//            graphics.fillOval(x, y, SIZE, SIZE);
-//        }
+        for( Vertex v : state.getVertices().values()) {
+            lookup.put(v.ID, v);
+            int x = (int)(v.X*DIM);
+            int y = (int)(v.Y*DIM);
+            graphics.drawOval(x,y, SIZE, SIZE);
+            graphics.setColor(v.getColor());
+            graphics.fillOval(x, y, SIZE, SIZE);
+        }
         //Draw Edges
         for( Edge e : state.EDGES) {
             int x1 = (int)(lookup.get(e.id1).X  *DIM)+SIZE/2;
