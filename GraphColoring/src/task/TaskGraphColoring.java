@@ -3,6 +3,8 @@ package task;
 import system.CilkThread;
 import system.Closure;
 
+import java.util.ArrayList;
+
 /**
  * Created by hallvard on 5/26/15.
  */
@@ -17,7 +19,14 @@ public class TaskGraphColoring extends CilkThread {
     @Override
     public void decompose() {
         StateGraphColoring c = (StateGraphColoring)closure.getArgument(0);
-        c.deduce();
+        ArrayList<StateGraphColoring> childStates = c.deduce();
+
+        //TODO: SpawnNext
+        //spawnNext(null,);
+
+        for (StateGraphColoring state : childStates){
+            spawn(new TaskGraphColoring(null), state);
+        }
     }
 
     @Override

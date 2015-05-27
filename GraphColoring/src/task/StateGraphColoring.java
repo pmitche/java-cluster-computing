@@ -34,6 +34,10 @@ public class StateGraphColoring implements Serializable {
         return lastAssumed;
     }
 
+    /**
+     * Deduces colors from the previous assumtion, and returns a list of new assumptions.
+     * @return
+     */
     public ArrayList<StateGraphColoring> deduce() {
         HashSet<Vertex> candidates = reduce(lastAssumed);
         int smallest = Integer.MAX_VALUE;
