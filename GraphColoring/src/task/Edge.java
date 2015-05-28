@@ -1,9 +1,11 @@
 package task;
 
+import java.io.Serializable;
+
 /**
  * Created by hallvard on 5/26/15.
  */
-public class Edge {
+public class Edge implements Serializable{
 
     public int id1;
     public int id2;

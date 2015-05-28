@@ -28,7 +28,7 @@ public class ProblemGenerator {
 
 
         //Select File
-        File file = selectFile("");
+        File file = selectFile("./GraphColoring/src/");
 
         //Read File
         ArrayList<String> input;
