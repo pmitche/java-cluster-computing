@@ -22,6 +22,7 @@ public class JobGraphColoring implements Job {
     public void generateTasks(Space space) throws RemoteException {
 
         StateGraphColoring state0 = new ProblemGenerator(DOMAIN_SIZE).getProblem();
+        assert state0!=null;
 
         TaskGraphColoring startTask = new TaskGraphColoring(new Closure(0, new Global(new Double(Double.MAX_VALUE)), new Continuation("-1",-1,state0)));
 

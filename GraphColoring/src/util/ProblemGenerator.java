@@ -91,10 +91,10 @@ public class ProblemGenerator {
         }
 
         //Vertices
-        HashSet<Vertex> vertices = new HashSet();
+        HashMap<Integer, Vertex> vertices = new HashMap<>();
         for(int i=1; i<nv+1; i++) {
             Object[] values = getValues(input.get(i), true);
-            vertices.add(new Vertex((Integer)values[0], (Double)values[1]+(negativeX*-1), (Double)values[2]+(negativeY*-1), getDomain(DOMAIN_SIZE), Color.GRAY));
+            vertices.put((Integer)values[0], new Vertex((Integer)values[0], (Double)values[1]+(negativeX*-1), (Double)values[2]+(negativeY*-1), getDomain(DOMAIN_SIZE), Color.GRAY));
         }
 
         //Edges
@@ -105,7 +105,7 @@ public class ProblemGenerator {
         }
 
         System.out.println(vertices);
-        return null;//new StateGraphColoring(vertices, edges);
+        return new StateGraphColoring(vertices, edges);
     }
 
     protected Object[] getValues(String s, boolean vertex) {
