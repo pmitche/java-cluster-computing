@@ -21,16 +21,16 @@ public class TaskGraphColoring extends CilkThread {
         StateGraphColoring c = (StateGraphColoring)closure.getArgument(0);
         ArrayList<StateGraphColoring> childStates = c.deduce();
 
-        //TODO: SpawnNext
-        //spawnNext(null,);
+        String parentId = spawnNext(new TaskTsp(null), null);
 
         for (StateGraphColoring state : childStates){
-            spawn(new TaskGraphColoring(null), state);
+            spawn(new TaskGraphColoring(null), state, parentId);
         }
     }
 
     @Override
     public void compose() {
+
 
     }
 

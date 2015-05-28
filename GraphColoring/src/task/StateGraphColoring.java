@@ -39,7 +39,12 @@ public class StateGraphColoring implements Serializable {
      * @return
      */
     public ArrayList<StateGraphColoring> deduce() {
+        if (lastAssumed == null){
+            Integer key = (Integer) vertices.keySet().toArray()[0];
+            makeAssumption(key, vertices.get(key).getDomain().get(0));
+        }
         HashSet<Vertex> candidates = reduce(lastAssumed);
+
         int smallest = Integer.MAX_VALUE;
         Vertex current = null;
         for (Vertex candidat: candidates){
