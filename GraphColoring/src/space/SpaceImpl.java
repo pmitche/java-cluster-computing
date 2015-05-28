@@ -92,7 +92,9 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
 
     @Override
     public synchronized void put(Closure closure) throws RemoteException{
-        closures.put(closure.getId(), closure);
+        if (!closures.containsKey(closure.getId())){
+            closures.put(closure.getId(), closure);
+        }
     }
 
     @Override
