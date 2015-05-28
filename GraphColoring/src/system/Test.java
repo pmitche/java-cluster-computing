@@ -18,7 +18,7 @@ public class Test {
     }
 }
 
-class Derp implements Comparable<Derp>{
+class Derp implements Comparable<Derp> {
 
     public int s;
 
