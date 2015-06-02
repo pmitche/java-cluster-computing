@@ -5,6 +5,7 @@ import computer.SpaceProxy;
 
 import java.rmi.RemoteException;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -55,6 +56,9 @@ public abstract class CilkThread implements Runnable, Task {
      * @return
      */
     protected String spawnNext(CilkThread t, Object... arguments){
+        if (arguments == null){
+            arguments = new Object[]{null};
+        }
         Closure c = new Closure((int) Arrays.stream(arguments).filter(e -> e == null).count(), closure.getGlobal(), arguments);
         c.setIsAncestor(true);
         t.setClosure(c);
