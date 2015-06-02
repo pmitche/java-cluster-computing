@@ -77,4 +77,8 @@ public class Vertex implements Serializable{
         });
         this.color = color;
     }
+
+    public void addNeighbor(Vertex vertex) {
+        neighbors.add(vertex);
+    }
 }
