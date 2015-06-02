@@ -8,6 +8,9 @@ import computer.ComputerImpl;
 import system.Closure;
 import system.Continuation;
 import system.Global;
+import task.StateGraphColoring;
+import task.TaskGraphColoring;
+import util.ProblemGenerator;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -63,6 +66,14 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
             Thread localComputer = new Thread(r);
             localComputer.setPriority(Thread.MIN_PRIORITY);
             localComputer.start();
+            StateGraphColoring state0 = new ProblemGenerator(3).getProblem();
+
+            TaskGraphColoring startTask = new TaskGraphColoring(new Closure(0, new Global(new Double(Double.MAX_VALUE)), new Continuation("-1",-1,state0)));
+            try {
+                SpaceImpl.getInstance().put(startTask);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
