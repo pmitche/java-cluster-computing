@@ -5,7 +5,6 @@ import api.Space;
 import system.Closure;
 import system.Continuation;
 import system.Global;
-import system.ResultValueWrapper;
 import util.ProblemGenerator;
 
 import java.rmi.RemoteException;
