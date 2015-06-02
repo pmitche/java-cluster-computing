@@ -99,8 +99,8 @@ public class ProblemGenerator implements Serializable {
         for(int j=nv+1; j<input.size(); j++) {
             Object[] values = getValues(input.get(j), false);
             edges.add(new Edge((Integer) values[0], (Integer) values[1]));
-            vertices.get((Integer) values[0]).addNeighbor(vertices.get((Integer) values[1]));
-            vertices.get((Integer) values[1]).addNeighbor(vertices.get((Integer) values[0]));
+            vertices.get((Integer) values[0]).addNeighbor((Integer) values[1]);
+            vertices.get((Integer) values[1]).addNeighbor((Integer) values[0]);
         }
 
         System.out.println(vertices);

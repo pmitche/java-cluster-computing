@@ -19,7 +19,7 @@ public class Vertex implements Serializable{
     private Color color = Color.GRAY;
 
     private List<Color> domain;
-    private List<Vertex> neighbors = new ArrayList<>();
+    private List<Integer> neighbors;
 
     public Vertex(int id, double x, double y, List<Color> domain, Color c) {
         this.ID = id;
@@ -27,20 +27,30 @@ public class Vertex implements Serializable{
         this.Y = y;
         this.color = (c != null) ? c : this.color;
         this.domain = domain;
+        this.neighbors = new ArrayList<>();
 
     }
 
+    public Vertex(int id, double x, double y, ArrayList<Color> domain, Color c, List<Integer> neighbors) {
+        this.ID = id;
+        this.X = x;
+        this.Y = y;
+        this.color = (c != null) ? c : this.color;
+        this.domain = domain;
+        this.neighbors = neighbors;
+    }
+
     public boolean isDomainSingleton() {
-        boolean singleton = domain.size()==1;
+        boolean singleton = domain.size() == 1;
         if(singleton) color = domain.get(0);
         return singleton;
     }
 
     public Vertex deepCopy() {
-        return new Vertex(ID, X, Y, new ArrayList<>(domain), color);
+        return new Vertex(ID, X, Y, new ArrayList<>(domain), color, neighbors);
     }
 
-    public List<Vertex> getNeighbors() {
+    public List<Integer> getNeighbors() {
         return neighbors;
     }
 
@@ -54,6 +64,7 @@ public class Vertex implements Serializable{
      * @return true, if domain was not a singleton, but was reduced to one.
      */
     public boolean reduceDomain(Color color) {
+        //TODO: might need to be removed
         if (isDomainSingleton()){
             return false;
         }
@@ -78,7 +89,7 @@ public class Vertex implements Serializable{
         this.color = color;
     }
 
-    public void addNeighbor(Vertex vertex) {
-        neighbors.add(vertex);
+    public void addNeighbor(Integer id) {
+        neighbors.add(id);
     }
 }
