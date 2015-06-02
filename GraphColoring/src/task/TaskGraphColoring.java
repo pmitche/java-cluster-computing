@@ -22,10 +22,11 @@ public class TaskGraphColoring extends CilkThread {
         StateGraphColoring c = (StateGraphColoring) ((Continuation)closure.getArgument(0)).argument;
         ArrayList<StateGraphColoring> childStates = c.deduce();
 
-        String parentId = spawnNext(new TaskTsp(null), null);
+        String parentId = getId(childStates.size(), (Continuation)getClosure().getArgument(0));
 
+        int i = 1;
         for (StateGraphColoring state : childStates){
-            spawn(new TaskGraphColoring(null), new Continuation(parentId, 0, state));
+            spawn(new TaskGraphColoring(null), new Continuation(parentId, i++, state));
         }
     }
 
@@ -37,5 +38,30 @@ public class TaskGraphColoring extends CilkThread {
 
     protected void generateHeuristic() {
 
+    }
+
+    private String getId(int size, Continuation c) {
+        String id = "-1";
+        switch(size)
+        {
+            case 1: { id = spawnNext(new TaskGraphColoring(null), c, null); break; }
+            case 2: { id = spawnNext(new TaskGraphColoring(null), c, null, null); break; }
+            case 3: { id = spawnNext(new TaskGraphColoring(null), c, null, null, null); break; }
+            case 4: { id = spawnNext(new TaskGraphColoring(null), c, null, null, null, null); break; }
+            case 5: { id = spawnNext(new TaskGraphColoring(null), c, null, null, null, null, null); break; }
+            case 6: { id = spawnNext(new TaskGraphColoring(null), c, null, null, null, null, null, null); break; }
+            case 7: { id = spawnNext(new TaskGraphColoring(null), c, null, null, null, null, null, null, null); break; }
+            case 8: { id = spawnNext(new TaskGraphColoring(null), c, null, null, null, null, null, null, null, null); break; }
+            case 9: { id = spawnNext(new TaskGraphColoring(null), c, null, null, null, null, null, null, null, null, null); break; }
+            case 10: { id = spawnNext(new TaskGraphColoring(null), c, null, null, null, null, null, null, null, null, null, null); break; }
+            case 11: { id = spawnNext(new TaskGraphColoring(null), c, null, null, null, null, null, null, null, null, null, null, null); break; }
+            case 12: { id = spawnNext(new TaskGraphColoring(null), c, null, null, null, null, null, null, null, null, null, null, null, null); break; }
+            case 13: { id = spawnNext(new TaskGraphColoring(null), c, null, null, null, null, null, null, null, null, null, null, null, null, null); break; }
+            case 14: { id = spawnNext(new TaskGraphColoring(null), c, null, null, null, null, null, null, null, null, null, null, null, null, null, null); break; }
+            case 15: { id = spawnNext(new TaskGraphColoring(null), c, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null); break; }
+            case 16: { id = spawnNext(new TaskGraphColoring(null), c, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null); break; }
+            case 17: { id = spawnNext(new TaskGraphColoring(null), c, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null); break; }
+        }
+        return id;
     }
 }
