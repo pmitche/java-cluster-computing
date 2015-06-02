@@ -7,16 +7,13 @@ import task.Vertex;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.Color;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.Reader;
+import java.io.*;
 import java.util.*;
 
 /**
  * Created by hallvard on 5/26/15.
  */
-public class ProblemGenerator {
+public class ProblemGenerator implements Serializable {
 
     private final int DOMAIN_SIZE;
 
@@ -132,6 +129,6 @@ public class ProblemGenerator {
         domain.add(Color.CYAN);
         domain.add(Color.WHITE);
         domain.add(Color.BLACK);
-        return domain.subList(0, domainSize);
+        return new ArrayList<>(domain.subList(0, domainSize));
     }
 }
