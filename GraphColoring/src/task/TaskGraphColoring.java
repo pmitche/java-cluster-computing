@@ -20,10 +20,18 @@ public class TaskGraphColoring extends CilkThread {
     @Override
     public void decompose() {
         System.out.println("decompose()");
-        StateGraphColoring c = (StateGraphColoring) ((Continuation)closure.getArgument(0)).argument;
+        Continuation cont = ((Continuation) closure.getArgument(0));
+        StateGraphColoring c = (StateGraphColoring)cont.argument;
         ArrayList<StateGraphColoring> childStates = c.deduce();
-        
-        String parentId = getId(childStates.size(), (Continuation)getClosure().getArgument(0));
+        for (StateGraphColoring childState: childStates){
+            if (childState.isSolution()){
+                cont.setReturnVal(childState);
+                return;
+            }
+        }
+        //TODO: må brukes når vi bruker capello sin greie.
+        //String parentId = getId(childStates.size(), (Continuation)getClosure().getArgument(0));
+        String parentId = getId(1, (Continuation)getClosure().getArgument(0));
 
         int i = 1;
         for (StateGraphColoring state : childStates){
@@ -33,8 +41,7 @@ public class TaskGraphColoring extends CilkThread {
 
     @Override
     public void compose() {
-
-
+        System.out.println("here here");
     }
 
     protected void generateHeuristic() {

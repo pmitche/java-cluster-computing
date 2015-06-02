@@ -88,4 +88,13 @@ public class StateGraphColoring implements Serializable {
         }
         return notSingletons;
     }
+
+    public boolean isSolution() {
+        for (Vertex v : vertices.values()){
+            if (!v.isDomainSingleton()){
+                return false;
+            }
+        }
+        return true;
+    }
 }
