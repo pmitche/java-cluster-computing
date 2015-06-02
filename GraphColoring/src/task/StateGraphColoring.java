@@ -57,6 +57,7 @@ public class StateGraphColoring implements Serializable {
     }
 
     private ArrayList<StateGraphColoring> generateChildState(Vertex current) {
+        System.out.println("generating child states");
         ArrayList<StateGraphColoring> childStates = new ArrayList<>();
         for (Color color: current.getDomain()){
             StateGraphColoring child = deepCopy();
@@ -74,7 +75,8 @@ public class StateGraphColoring implements Serializable {
     private HashSet<Vertex> reduce(Vertex focal){
         ArrayList<Vertex> singletons = new ArrayList<>();
         HashSet<Vertex> notSingletons = new HashSet<>();
-        for (Vertex neighbour: focal.getNeighbors()){
+        for (Integer neighbourID: focal.getNeighbors()){
+            Vertex neighbour = vertices.get(neighbourID);
             if (neighbour.reduceDomain(focal.getColor())){
                 singletons.add(neighbour);
             }else {
