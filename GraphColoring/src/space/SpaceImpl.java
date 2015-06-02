@@ -66,7 +66,6 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
             Thread localComputer = new Thread(r);
             localComputer.setPriority(Thread.MIN_PRIORITY);
             localComputer.start();
-/*
             StateGraphColoring state0 = new ProblemGenerator(3).getProblem();
 
             TaskGraphColoring startTask = new TaskGraphColoring(new Closure(0, new Global(new Double(Double.MAX_VALUE)), new Continuation("-1",-1,state0)));
@@ -75,7 +74,6 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            */
         }
     }
 

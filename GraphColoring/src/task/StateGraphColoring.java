@@ -44,7 +44,7 @@ public class StateGraphColoring implements Serializable {
             makeAssumption(key, vertices.get(key).getDomain().get(0));
         }
         HashSet<Vertex> candidates = reduce(lastAssumed);
-
+//---------------------------------------------
         int smallest = Integer.MAX_VALUE;
         Vertex current = null;
         for (Vertex candidat: candidates){

@@ -22,7 +22,7 @@ public class TaskGraphColoring extends CilkThread {
         System.out.println("decompose()");
         StateGraphColoring c = (StateGraphColoring) ((Continuation)closure.getArgument(0)).argument;
         ArrayList<StateGraphColoring> childStates = c.deduce();
-
+        
         String parentId = getId(childStates.size(), (Continuation)getClosure().getArgument(0));
 
         int i = 1;
