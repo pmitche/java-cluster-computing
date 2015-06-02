@@ -129,6 +129,6 @@ public class ProblemGenerator implements Serializable {
         domain.add(Color.CYAN);
         domain.add(Color.WHITE);
         domain.add(Color.BLACK);
-        return domain.subList(0, domainSize);
+        return new ArrayList<>(domain.subList(0, domainSize));
     }
 }
