@@ -1,9 +1,12 @@
 package task;
 
+import api.Space;
+import computer.SpaceProxy;
 import system.CilkThread;
 import system.Closure;
 import system.Continuation;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 /**
@@ -26,6 +29,11 @@ public class TaskGraphColoring extends CilkThread {
         for (StateGraphColoring childState: childStates){
             if (childState.isSolution()){
                 cont.setReturnVal(childState);
+                try {
+                    SpaceProxy.getInstance().receiveArgument(cont);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
                 return;
             }
         }
@@ -35,13 +43,19 @@ public class TaskGraphColoring extends CilkThread {
 
         int i = 1;
         for (StateGraphColoring state : childStates){
-            spawn(new TaskGraphColoring(null), new Continuation(parentId, i++, state));
+            spawn(new TaskGraphColoring(null), new Continuation(parentId, i, state));
         }
     }
 
     @Override
     public void compose() {
-        System.out.println("here here");
+        try {
+            Continuation cont = (Continuation) closure.getArgument(0);
+            cont.setReturnVal(closure.getArgument(1));
+            SpaceProxy.getInstance().receiveArgument(cont);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     protected void generateHeuristic() {
