@@ -64,11 +64,7 @@ public class Vertex implements Serializable{
      * @return true, if domain was not a singleton, but was reduced to one.
      */
     public boolean reduceDomain(Color color) {
-        if (isDomainSingleton()){
-            return false;
-        }
-        domain.remove(color);
-        return isDomainSingleton();
+        return (domain.remove(color) && isDomainSingleton());
     }
     public int getDomainSize(){
         return domain.size();
