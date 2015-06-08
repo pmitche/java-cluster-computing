@@ -43,7 +43,7 @@ public class StateGraphColoring implements Serializable {
             Integer key = (Integer) vertices.keySet().toArray()[0];
             makeAssumption(key, vertices.get(key).getDomain().get(0));
         }
-        HashSet<Vertex> candidates = reduce(lastAssumed);
+        reduce(vertices.values());
         //Contradictory
         for (Vertex v: vertices.values()){
             if (v.getDomainSize() == 0){
@@ -53,10 +53,10 @@ public class StateGraphColoring implements Serializable {
 
         int smallest = Integer.MAX_VALUE;
         Vertex current = null;
-        for (Vertex candidat: candidates){
-            if (candidat.getDomainSize() < smallest){
-                current = candidat;
-                smallest = candidat.getDomainSize();
+        for (Vertex candidate: vertices.values()){
+            if (candidate.getDomainSize() < smallest && !candidate.isDomainSingleton()){
+                current = candidate;
+                smallest = candidate.getDomainSize();
             }
         }
         if (current == null){
@@ -81,23 +81,19 @@ public class StateGraphColoring implements Serializable {
         lastAssumed = vertices.get(id);
     }
 
-    private HashSet<Vertex> reduce(Vertex focal){
-        ArrayList<Vertex> singletons = new ArrayList<>();
-        HashSet<Vertex> notSingletons = new HashSet<>();
-        for (Integer neighbourID: focal.getNeighbors()){
-            Vertex neighbour = vertices.get(neighbourID);
-            if (neighbour.reduceDomain(focal.getColor())){
-                singletons.add(neighbour);
-            }else {
-                if (neighbour.getDomainSize() > 1){
-                    notSingletons.add(neighbour);
+    private void reduce(Collection<Vertex> col){
+        ArrayList<Vertex> rev = new ArrayList<>();
+        for (Vertex v: col){
+            for (Integer id : v.getNeighbors()){
+                Vertex neighbor = vertices.get(id);
+                if (neighbor.isDomainSingleton()){
+                    if (v.reduceDomain(neighbor.getColor())){
+                        rev.add(v);
+                    }
                 }
             }
         }
-        for (Vertex v: singletons){
-            notSingletons.addAll(reduce(v));
-        }
-        return notSingletons;
+        //reduce(rev);
     }
 
     public boolean isSolution() {

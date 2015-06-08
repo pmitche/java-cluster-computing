@@ -5,6 +5,7 @@ import api.Space;
 import api.Task;
 import computer.Computer;
 import computer.ComputerImpl;
+import computer.SpaceProxy;
 import system.Closure;
 import system.Continuation;
 import system.Global;
