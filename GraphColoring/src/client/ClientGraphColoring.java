@@ -25,7 +25,7 @@ public class ClientGraphColoring extends Client<List<Integer>> implements Serial
     private final double DIM = 22;  //Dimension of the graph
 
     public ClientGraphColoring(String ip) throws RemoteException, NotBoundException,MalformedURLException {
-        super("Graph Coloring", ip, new JobGraphColoring()); //TODO - add Job
+        super("Graph Coloring", ip, new JobGraphColoring());
     }
 
     public static void main( String[] args ) throws RemoteException, MalformedURLException, NotBoundException {
