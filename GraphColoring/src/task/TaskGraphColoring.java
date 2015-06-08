@@ -33,7 +33,10 @@ public class TaskGraphColoring extends CilkThread {
         Continuation cont = ((Continuation) closure.getArgument(0));
         StateGraphColoring c = (StateGraphColoring)cont.argument;
         ArrayList<StateGraphColoring> childStates = c.deduce();
-
+        //Contradictory
+        if (childStates == null){
+            return;
+        }
         for (StateGraphColoring childState: childStates){
             if (childState.isSolution()){
                 cont.setReturnVal(childState);

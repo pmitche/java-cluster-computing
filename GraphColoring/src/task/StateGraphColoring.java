@@ -44,7 +44,7 @@ public class StateGraphColoring implements Serializable {
             makeAssumption(key, vertices.get(key).getDomain().get(0));
         }
         HashSet<Vertex> candidates = reduce(lastAssumed);
-
+        //Contradictory
         for (Vertex v: vertices.values()){
             if (v.getDomainSize() == 0){
                 return null;
