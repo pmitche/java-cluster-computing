@@ -41,7 +41,7 @@ public abstract class CilkThread implements Runnable, Task {
         Closure c = new Closure((int) Arrays.stream(arguments).filter(e -> e == null).count(), closure.getGlobal(), arguments);
         c.setCilkThread(t);
         t.setClosure(c);
-        t.heuristic = heuristic;
+        t.heuristic = t.genHeuristic();
         try {
             SpaceProxy.getInstance().put(c);
         } catch (RemoteException e) {
@@ -49,6 +49,9 @@ public abstract class CilkThread implements Runnable, Task {
         }
         return c.getId();
     }
+
+    protected abstract double genHeuristic();
+
     /**
      * sets the ancestor and putting the closure in map
      * @param t
@@ -64,7 +67,7 @@ public abstract class CilkThread implements Runnable, Task {
         t.setClosure(c);
         c.setCilkThread(t);
         //TODO: change to generate it's own heuristic
-        t.heuristic = heuristic;
+        t.heuristic = 0;
         try {
             SpaceProxy.getInstance().put(c);
         } catch (RemoteException e) {

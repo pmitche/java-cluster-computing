@@ -21,8 +21,15 @@ public class TaskGraphColoring extends CilkThread {
     }
 
     @Override
+    protected double genHeuristic() {
+        Continuation cont = ((Continuation) closure.getArgument(0));
+        StateGraphColoring c = (StateGraphColoring)cont.argument;
+        return c.getHeuristic();
+    }
+
+    @Override
     public void decompose() {
-        System.out.println("decompose()");
+        System.out.println("decompose(): id: " + closure.getId());
         Continuation cont = ((Continuation) closure.getArgument(0));
         StateGraphColoring c = (StateGraphColoring)cont.argument;
         ArrayList<StateGraphColoring> childStates = c.deduce();
@@ -58,9 +65,6 @@ public class TaskGraphColoring extends CilkThread {
         }
     }
 
-    protected void generateHeuristic() {
-
-    }
 
     private String getId(int size, Continuation c) {
         String id = "-1";

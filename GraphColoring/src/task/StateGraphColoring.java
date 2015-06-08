@@ -102,4 +102,12 @@ public class StateGraphColoring implements Serializable {
         }
         return true;
     }
+
+    public double getHeuristic() {
+        double score = 0;
+        for (Vertex v: vertices.values()){
+            score += v.getDomainSize()-1;
+        }
+        return score;
+    }
 }
