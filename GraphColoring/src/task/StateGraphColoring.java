@@ -93,7 +93,9 @@ public class StateGraphColoring implements Serializable {
                 }
             }
         }
-        //reduce(rev);
+        if (!rev.isEmpty()){
+            reduce(rev);
+        }
     }
 
     public boolean isSolution() {
