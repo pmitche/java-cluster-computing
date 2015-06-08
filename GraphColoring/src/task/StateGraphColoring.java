@@ -44,7 +44,7 @@ public class StateGraphColoring implements Serializable {
             makeAssumption(key, vertices.get(key).getDomain().get(0));
         }
         HashSet<Vertex> candidates = reduce(lastAssumed);
-//---------------------------------------------
+
         int smallest = Integer.MAX_VALUE;
         Vertex current = null;
         for (Vertex candidat: candidates){
@@ -52,6 +52,9 @@ public class StateGraphColoring implements Serializable {
                 current = candidat;
                 smallest = candidat.getDomainSize();
             }
+        }
+        if (current == null){
+            return new ArrayList<StateGraphColoring>(Collections.singletonList(this));
         }
         return generateChildState(current);
     }
@@ -80,7 +83,9 @@ public class StateGraphColoring implements Serializable {
             if (neighbour.reduceDomain(focal.getColor())){
                 singletons.add(neighbour);
             }else {
-                notSingletons.add(neighbour);
+                if (!neighbour.isDomainSingleton()){
+                    notSingletons.add(neighbour);
+                }
             }
         }
         for (Vertex v: singletons){

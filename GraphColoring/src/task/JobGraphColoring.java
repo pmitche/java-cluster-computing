@@ -15,7 +15,7 @@ import java.util.Optional;
  */
 public class JobGraphColoring implements Job {
 
-    private final int DOMAIN_SIZE = 3;
+    private final int DOMAIN_SIZE = 6;
 
     @Override
     public void generateTasks(Space space) throws RemoteException {
