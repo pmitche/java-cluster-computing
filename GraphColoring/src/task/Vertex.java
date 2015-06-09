@@ -40,12 +40,20 @@ public class Vertex implements Serializable{
         this.neighbors = neighbors;
     }
 
+    /**
+     *
+     * @return domain size equal to 1.
+     */
     public boolean isDomainSingleton() {
         boolean singleton = domain.size() == 1;
         if(singleton) color = domain.get(0);
         return singleton;
     }
 
+    /**
+     *
+     * @return pointer to an identical object
+     */
     public Vertex deepCopy() {
         return new Vertex(ID, X, Y, new ArrayList<>(domain), color, neighbors);
     }

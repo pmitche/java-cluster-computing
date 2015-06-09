@@ -15,6 +15,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Created by Kyrre on 06.05.2015.
+ * Simply a layer that abstracts async network calls.
+ * If the system is run without async. Call is done to SpaceImpl directly.
+ * If system is run in async mode, calls arr sent via SpaceProxyAsyncHandler.
  */
 public class SpaceProxy implements Space {
 

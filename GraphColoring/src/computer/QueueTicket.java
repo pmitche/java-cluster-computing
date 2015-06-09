@@ -2,6 +2,8 @@ package computer;
 
 /**
  * Created by Kyrre on 06.05.2015.
+ * Is used to order requests to Space in Async mode.
+ * Used by SpaceProxyAsyncHandler
  */
 public class QueueTicket {
 

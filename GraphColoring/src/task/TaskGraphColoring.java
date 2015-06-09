@@ -49,8 +49,6 @@ public class TaskGraphColoring extends CilkThread {
                 return;
             }
         }
-        //TODO: m� brukes n�r vi bruker capello sin greie.
-        //String parentId = getId(childStates.size(), (Continuation)getClosure().getArgument(0));
         String parentId = getId(1, (Continuation)getClosure().getArgument(0));
 
         int i = 1;
