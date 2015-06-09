@@ -197,7 +197,6 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     }
 
     private void clearSystem() {
-        //TODO: reset everything
     }
 
     @Override

@@ -22,7 +22,6 @@ import java.util.List;
 public class ClientGraphColoring extends Client<List<Integer>> implements Serializable {
 
     private final int SIZE = 13;    //Size of the vertecies
-    private final double DIM = 22;  //Dimension of the graph
 
     public ClientGraphColoring(String ip) throws RemoteException, NotBoundException,MalformedURLException {
         super("Graph Coloring", ip, new JobGraphColoring());
@@ -35,28 +34,40 @@ public class ClientGraphColoring extends Client<List<Integer>> implements Serial
     }
 
     public JLabel getLabel( final StateGraphColoring state) {
-        final Image image = new BufferedImage(800,800, BufferedImage.TYPE_INT_ARGB);
+        int WIDTH = 800;
+        int HEIGHT = 800;
+        final Image image = new BufferedImage(WIDTH,HEIGHT, BufferedImage.TYPE_INT_ARGB);
         final Graphics graphics = image.getGraphics();
 
         graphics.setColor(Color.DARK_GRAY);
 
         HashMap<Integer, Vertex> lookup = new HashMap();
+        double normalizeX = Integer.MIN_VALUE;
+        double normalizeY = Integer.MIN_VALUE;
+
+        for (Vertex v : state.getVertices().values()){
+            normalizeX = Double.max(normalizeX, v.X);
+            normalizeY = Double.max(normalizeY, v.Y);
+        }
+        normalizeX = (WIDTH/normalizeX)*0.9;
+        normalizeY = (HEIGHT/normalizeY)*0.9;
+
 
         //Draw Vertecies
         for( Vertex v : state.getVertices().values()) {
             lookup.put(v.ID, v);
-            int x = (int)(v.X*DIM);
-            int y = (int)(v.Y*DIM);
+            int x = (int)(v.X*normalizeX);
+            int y = (int)(v.Y*normalizeY);
             graphics.drawOval(x,y, SIZE, SIZE);
             graphics.setColor(v.getColor());
             graphics.fillOval(x, y, SIZE, SIZE);
         }
         //Draw Edges
         for( Edge e : state.EDGES) {
-            int x1 = (int)(lookup.get(e.id1).X  *DIM)+SIZE/2;
-            int y1 = (int)(lookup.get(e.id1).Y	*DIM)+SIZE/2;
-            int x2 = (int)(lookup.get(e.id2).X	*DIM)+SIZE/2;
-            int y2 = (int)(lookup.get(e.id2).Y	*DIM)+SIZE/2;
+            int x1 = (int)(lookup.get(e.id1).X  *normalizeX)+SIZE/2;
+            int y1 = (int)(lookup.get(e.id1).Y	*normalizeY)+SIZE/2;
+            int x2 = (int)(lookup.get(e.id2).X	*normalizeX)+SIZE/2;
+            int y2 = (int)(lookup.get(e.id2).Y	*normalizeY)+SIZE/2;
             graphics.setColor(Color.BLACK);
             graphics.drawLine(x1,y1,x2,y2);
         }
