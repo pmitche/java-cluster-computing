@@ -27,12 +27,24 @@ public class ClientGraphColoring extends Client<List<Integer>> implements Serial
         super("Graph Coloring", ip, new JobGraphColoring());
     }
 
+    /**
+     * Main method
+     * <p>instansiates its parent class and starts the job</p>
+     */
     public static void main( String[] args ) throws RemoteException, MalformedURLException, NotBoundException {
         System.setSecurityManager(new SecurityManager());
         final ClientGraphColoring client = new ClientGraphColoring("localhost");
+
+        //TODO continiouslt update the GUI
+
         client.add(client.getLabel((StateGraphColoring)client.runJob()));
     }
 
+    /**
+     * Creates the visual representation of the result as an ImageIcon that are theb added to the JLabel returned
+     * @param state Grap coloring state that is tp be displayed
+     * @return  JLabel containing the visualization of the problem.
+     */
     public JLabel getLabel( final StateGraphColoring state) {
         int WIDTH = 800;
         int HEIGHT = 800;
