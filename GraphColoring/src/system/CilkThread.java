@@ -66,7 +66,6 @@ public abstract class CilkThread implements Runnable, Task {
         c.setIsAncestor(true);
         t.setClosure(c);
         c.setCilkThread(t);
-        //TODO: change to generate it's own heuristic
         t.heuristic = 0;
         try {
             SpaceProxy.getInstance().put(c);
