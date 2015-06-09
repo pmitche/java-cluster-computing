@@ -7,15 +7,17 @@ import system.Continuation;
 import system.Global;
 import util.ProblemGenerator;
 
+import javax.swing.*;
 import java.rmi.RemoteException;
 import java.util.Optional;
+import java.util.Scanner;
 
 /**
  * Created by hallvard on 5/26/15.
  */
 public class JobGraphColoring implements Job {
 
-    private final int DOMAIN_SIZE = 4;
+    private final int DOMAIN_SIZE = promptDomainSize();
 
     @Override
     public void generateTasks(Space space) throws RemoteException {
@@ -38,5 +40,15 @@ public class JobGraphColoring implements Job {
             return rs;
         } catch (InterruptedException e) {  e.printStackTrace();     }
         return Optional.empty();
+    }
+
+    /**
+     * Prompt for domainSize for the problem.
+     * @return  DOMAIN_SIZE
+     */
+    private int promptDomainSize() {
+        System.out.println("Domain Size?");
+        int domainSize = new Scanner(System.in).nextInt();
+        return domainSize;
     }
 }
