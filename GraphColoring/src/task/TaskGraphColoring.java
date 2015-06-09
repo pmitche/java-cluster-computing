@@ -5,6 +5,7 @@ import computer.SpaceProxy;
 import system.CilkThread;
 import system.Closure;
 import system.Continuation;
+import system.Global;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class TaskGraphColoring extends CilkThread {
 
     @Override
     public void decompose() {
+        System.out.println("decompose()");
         Continuation cont = ((Continuation) closure.getArgument(0));
         StateGraphColoring c = (StateGraphColoring)cont.argument;
         ArrayList<StateGraphColoring> childStates = c.deduce();
@@ -47,12 +49,19 @@ public class TaskGraphColoring extends CilkThread {
                 return;
             }
         }
-        //TODO: må brukes når vi bruker capello sin greie.
+        //TODO: mï¿½ brukes nï¿½r vi bruker capello sin greie.
         //String parentId = getId(childStates.size(), (Continuation)getClosure().getArgument(0));
         String parentId = getId(1, (Continuation)getClosure().getArgument(0));
 
         int i = 1;
         for (StateGraphColoring state : childStates){
+            if (state.getHeuristic() < closure.getHeuristic()){
+                try {
+                    SpaceProxy.getInstance().updateGlobal(new Global(state.getHeuristic()));
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
             spawn(new TaskGraphColoring(null), new Continuation(parentId, i, state));
         }
     }

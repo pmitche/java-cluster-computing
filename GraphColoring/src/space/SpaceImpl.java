@@ -98,12 +98,15 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
      */
     @Override
     public void put(Task task) throws RemoteException, InterruptedException {
-        global = task.getClosure().getGlobal();
+        global = new Global(task.getClosure().getHeuristic());
         taskQueue.put(task);
     }
 
     @Override
     public synchronized void put(Closure closure) throws RemoteException{
+        if (global.isDone()){
+            return;
+        }
         if (!closures.containsKey(closure.getId())){
             closures.put(closure.getId(), closure);
         }
@@ -187,8 +190,14 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
      */
     @Override
     public synchronized void receiveArgument(Continuation k) throws RemoteException{
+        if (global.isDone()){
+            return;
+        }
         if (k.closureId.equals("-1")){
             putResult(new Result(k.getReturnVal(),-1));
+            Global g = new Global(((StateGraphColoring)k.getReturnVal()).getHeuristic());
+            g.setDone(true);
+            global = g;
             clearSystem();
         }else {
             Closure c = closures.get(k.closureId);
@@ -197,15 +206,26 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     }
 
     private void clearSystem() {
+        this.taskQueue = new LinkedBlockingDeque<Task>();
+        this.resultQueue = new LinkedBlockingQueue<Result>();
+        this.readyClosureQueue = new PriorityBlockingQueue<>();
+        this.closures = new HashMap<>();
+        this.closuresDone = new HashSet<>();
     }
 
     @Override
     public synchronized void closureDone(String id) throws RemoteException {
+        if (global.isDone()){
+            return;
+        }
         closuresDone.add(id);
     }
 
     @Override
     public synchronized void putAll(Collection<Closure> closures) throws RemoteException {
+        if (global.isDone()){
+            return;
+        }
         closures.forEach(closure -> {
             if (!closuresDone.contains(closure.getId())) {
                 readyClosureQueue.put(closure);
@@ -219,6 +239,9 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
     }
     @Override
     public synchronized void putClosureInReady(Closure closure) throws RemoteException {
+        if (global.isDone()){
+            return;
+        }
         readyClosureQueue.put(closure);
     }
 }

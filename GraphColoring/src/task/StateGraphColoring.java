@@ -66,7 +66,6 @@ public class StateGraphColoring implements Serializable {
     }
 
     private ArrayList<StateGraphColoring> generateChildState(Vertex current) {
-        System.out.println("generating child states");
         ArrayList<StateGraphColoring> childStates = new ArrayList<>();
         for (Color color: current.getDomain()){
             StateGraphColoring child = deepCopy();
