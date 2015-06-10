@@ -1,7 +1,9 @@
 package task;
 
 import api.Job;
+import api.Result;
 import api.Space;
+import client.ClientGraphColoring;
 import system.Closure;
 import system.Continuation;
 import system.Global;
@@ -33,11 +35,27 @@ public class JobGraphColoring implements Job {
 
     @Override
     public Object collectResults(Space space) throws RemoteException {
-        try {
-            StateGraphColoring rs = ((StateGraphColoring)space.take().getTaskReturnValue());
-            System.out.println(rs.getClass());
-            return rs;
-        } catch (InterruptedException e) {  e.printStackTrace();     }
+
+        Runnable r = () -> {
+            Result result;
+            StateGraphColoring rs = null;
+            do{
+                try {
+                    result = space.take();
+                    rs = (StateGraphColoring)result.getTaskReturnValue();
+                    System.out.println(rs.getClass());
+                    //todo return
+                    ClientGraphColoring.addLabel(rs);
+
+                } catch (InterruptedException e) {  e.printStackTrace(); continue;}
+                catch (RemoteException re) {}
+            } while (!rs.isSolution());
+            ClientGraphColoring.addLabel(rs);
+        };
+        r.run();
+
+        //TODO Hvis return value er -1 så vul det ho ikke vætr nor verdi å displaye...
+
         return Optional.empty();
     }
 

@@ -23,6 +23,8 @@ public class ClientGraphColoring extends Client<List<Integer>> implements Serial
 
     private final int SIZE = 13;    //Size of the vertecies
 
+    private static ClientGraphColoring client;
+
     public ClientGraphColoring(String ip) throws RemoteException, NotBoundException,MalformedURLException {
         super("Graph Coloring", ip, new JobGraphColoring());
     }
@@ -33,11 +35,14 @@ public class ClientGraphColoring extends Client<List<Integer>> implements Serial
      */
     public static void main( String[] args ) throws RemoteException, MalformedURLException, NotBoundException {
         System.setSecurityManager(new SecurityManager());
-        final ClientGraphColoring client = new ClientGraphColoring("localhost");
+        client = new ClientGraphColoring("localhost");
+//        StateGraphColoring state;
+        client.runJob();
+        //client.add(client.getLabel(state));
+    }
 
-        //TODO continiouslt update the GUI
-
-        client.add(client.getLabel((StateGraphColoring)client.runJob()));
+    public static void addLabel(StateGraphColoring state) {
+        client.add(client.getLabel(state));
     }
 
     /**
@@ -63,7 +68,6 @@ public class ClientGraphColoring extends Client<List<Integer>> implements Serial
         }
         normalizeX = (WIDTH/normalizeX)*0.9;
         normalizeY = (HEIGHT/normalizeY)*0.9;
-
 
         //Draw Vertecies
         for( Vertex v : state.getVertices().values()) {
