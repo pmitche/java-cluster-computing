@@ -108,8 +108,8 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
             return;
         }
         if (!closures.containsKey(closure.getId())){
-            if (!closure.isAncestor() && closure.getHeuristic() > (Integer)global.getValue()){
-                ((Continuation)closure.getArgument(0)).
+            if (!closure.isAncestor() && closure.getHeuristic() >= (Integer)global.getValue()){
+                putResult(new Result(((Continuation)closure.getArgument(0)).argument, 0));
             }
             closures.put(closure.getId(), closure);
         }
