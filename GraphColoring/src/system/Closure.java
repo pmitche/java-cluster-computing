@@ -125,6 +125,7 @@ public class Closure implements Serializable, Comparable<Closure> {
     }
 
     public double getHeuristic(){
+        if(cilkThread==null) return Double.MAX_VALUE; //TODO HAX
         return cilkThread.getHeuristic();
     }
 

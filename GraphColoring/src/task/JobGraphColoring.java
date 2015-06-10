@@ -46,10 +46,12 @@ public class JobGraphColoring implements Job {
                     System.out.println(rs.getClass());
                     //todo return
                     ClientGraphColoring.addLabel(rs);
+                    if (rs.isSolution()) break;
 
                 } catch (InterruptedException e) {  e.printStackTrace(); continue;}
                 catch (RemoteException re) {}
             } while (!rs.isSolution());
+            System.out.println("Solution found: "+rs.isSolution());
             ClientGraphColoring.addLabel(rs);
         };
         r.run();
