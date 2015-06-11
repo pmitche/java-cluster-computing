@@ -42,6 +42,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         this.readyClosureQueue = new PriorityBlockingQueue<>();
         this.closures = new HashMap<>();
         this.closuresDone = new HashSet<>();
+        global = new Global(Integer.MAX_VALUE);
     }
 
     public static void main(String[] args) throws RemoteException {
@@ -196,6 +197,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
             return;
         }
         if (k.closureId.equals("-1")){
+            System.out.println("DONE");
             putResult(new Result(k.getReturnVal(),-1));
             Global g = new Global(((StateGraphColoring)k.getReturnVal()).getHeuristic());
             g.setDone(true);
