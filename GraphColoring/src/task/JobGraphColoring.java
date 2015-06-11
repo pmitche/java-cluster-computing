@@ -47,7 +47,7 @@ public class JobGraphColoring implements Job {
                 return result;
             }
             else {
-                System.out.print("UPDATE");
+                System.out.println("UPDATE");
                 ClientGraphColoring.addLabel((StateGraphColoring)result.getTaskReturnValue());
             }
         }
