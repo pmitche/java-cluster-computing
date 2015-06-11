@@ -1,5 +1,6 @@
 package client;
 
+import api.Result;
 import task.Edge;
 import task.JobGraphColoring;
 import task.StateGraphColoring;
@@ -37,7 +38,8 @@ public class ClientGraphColoring extends Client<List<Integer>> implements Serial
         System.setSecurityManager(new SecurityManager());
         client = new ClientGraphColoring("localhost");
         StateGraphColoring state;
-        state = (StateGraphColoring)client.runJob();
+        Result result = (Result)client.runJob();
+        state = (StateGraphColoring)result.getTaskReturnValue();
         client.add(client.getLabel(state));
     }
 

@@ -9,9 +9,7 @@ import system.Continuation;
 import system.Global;
 import util.ProblemGenerator;
 
-import javax.swing.*;
 import java.rmi.RemoteException;
-import java.util.Optional;
 import java.util.Scanner;
 
 /**
@@ -52,7 +50,6 @@ public class JobGraphColoring implements Job {
             }
         }
         //TODO Hvis return value er -1 så vul det ho ikke vætr nor verdi å displaye...
-
     }
 
     /**
@@ -61,7 +58,9 @@ public class JobGraphColoring implements Job {
      */
     private int promptDomainSize() {
         System.out.println("Input domain size");
-        int domainSize = new Scanner(System.in).nextInt();
+        Scanner scanner = new Scanner(System.in);
+        int domainSize = scanner.nextInt();
+        scanner.close();
         return domainSize;
     }
 }
