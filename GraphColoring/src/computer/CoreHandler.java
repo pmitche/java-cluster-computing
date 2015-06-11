@@ -20,6 +20,7 @@ public class CoreHandler implements Runnable {
         this.tasks = tasks;
     }
 
+    long localTime = 0;
     /**
      * Retrives Closure's from a queue of waiting closures, and executes them.
      */
@@ -27,7 +28,11 @@ public class CoreHandler implements Runnable {
     public void run() {
         while (true){
             try {
+                long waitTime = System.currentTimeMillis();
                 Closure c = tasks.take();
+                localTime += System.currentTimeMillis() - waitTime;
+                double waitPercent = ((double)localTime)/((double)(ComputerImpl.computerStarTime - System.currentTimeMillis()));
+                System.out.println(waitPercent);
                 //System.out.println("CoreHandler; run(); Thread: "+threadId);
                 c.call();
             } catch (InterruptedException e) {

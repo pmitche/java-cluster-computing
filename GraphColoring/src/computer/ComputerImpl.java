@@ -56,6 +56,7 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
         SpaceImpl.getInstance().register(computer);
         System.out.println("Registered to Space, running...");
     }
+    static long computerStarTime = -1;
 
     /**
      * Does not execute the Closure as the name implies. Rather it adds the closure to a queue. This is to allow for asynchronous communication.
@@ -66,6 +67,9 @@ public class ComputerImpl extends UnicastRemoteObject implements Computer {
     public void execute(Closure closure) throws RemoteException {
         synchronized (threadCount){
             try {
+                if (computerStarTime == -1){
+                    computerStarTime = System.currentTimeMillis();
+                }
                 tasks.put(closure);
 
                 if (tasks.size() > Space.PREFETCH_LIMIT){
