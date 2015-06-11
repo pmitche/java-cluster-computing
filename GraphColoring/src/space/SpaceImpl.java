@@ -108,7 +108,7 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         if (!closures.containsKey(closure.getId())){
             try { //TODO
                 if (!closure.isAncestor() && closure.getHeuristic() >= (Double) global.getValue()) {
-//                    putResult(new Result(((Continuation) closure.getArgument(0)).argument, 0));
+                    putResult(new Result(((Continuation) closure.getArgument(0)).argument, 0));
                 }
             } catch (NullPointerException e){}
             closures.put(closure.getId(), closure);
@@ -198,7 +198,8 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
         }
         if (k.closureId.equals("-1")){
             System.out.println("DONE");
-            putResult(new Result(k.getReturnVal(),-1));
+            resultQueue = new LinkedBlockingQueue<Result>();
+            putResult(new Result(k.getReturnVal(), -1));
             Global g = new Global(((StateGraphColoring)k.getReturnVal()).getHeuristic());
             g.setDone(true);
             global = g;
@@ -211,7 +212,9 @@ public class SpaceImpl extends UnicastRemoteObject implements Space {
 
     private void clearSystem() {
         this.taskQueue = new LinkedBlockingDeque<Task>();
-        this.resultQueue = new LinkedBlockingQueue<Result>();
+        if(resultQueue.isEmpty()) {
+            this.resultQueue = new LinkedBlockingQueue<Result>();
+        }
         this.readyClosureQueue = new PriorityBlockingQueue<>();
         this.closures = new HashMap<>();
         this.closuresDone = new HashSet<>();
