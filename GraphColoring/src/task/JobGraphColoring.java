@@ -39,7 +39,7 @@ public class JobGraphColoring implements Job {
             try {
                 result = space.take();
                 System.out.println(((StateGraphColoring)result.getTaskReturnValue()).isSolution() ? "Is solution!" : "Is NOT solution!");
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException e) {e.printStackTrace(); continue;}
             if (result.getTaskRunTime()==Long.valueOf(-1)) {
                 System.out.println("FINISHED");
                 return result;

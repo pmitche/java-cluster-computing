@@ -40,10 +40,11 @@ public class ClientGraphColoring extends Client<List<Integer>> implements Serial
         StateGraphColoring state;
         Result result = (Result)client.runJob();
         state = (StateGraphColoring)result.getTaskReturnValue();
-        client.add(client.getLabel(state));
+        addLabel(state);
     }
 
     public static void addLabel(StateGraphColoring state) {
+        client.removeAll();
         client.add(client.getLabel(state));
     }
 
