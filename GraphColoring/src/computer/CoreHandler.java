@@ -19,7 +19,7 @@ public class CoreHandler implements Runnable {
         this.threadCount = threadCount;
         this.tasks = tasks;
     }
-
+    long starTime = -1;
     long localTime = 0;
     /**
      * Retrives Closure's from a queue of waiting closures, and executes them.
@@ -28,12 +28,22 @@ public class CoreHandler implements Runnable {
     public void run() {
         while (true){
             try {
+                //idle logging
+                if (starTime == -1){
+                    starTime = System.currentTimeMillis();
+                }
+                boolean waiting = false;
+                if (tasks.isEmpty()){
+                    waiting = true;
+                }
                 long waitTime = System.currentTimeMillis();
                 Closure c = tasks.take();
-                localTime += System.currentTimeMillis() - waitTime;
-                double waitPercent = ((double)localTime)/((double)(ComputerImpl.computerStarTime - System.currentTimeMillis()));
-                System.out.println(waitPercent);
-                //System.out.println("CoreHandler; run(); Thread: "+threadId);
+                if (waiting){
+                    localTime += System.currentTimeMillis() - waitTime;
+                }
+                double waitPercent = ((double)localTime)/((double)(System.currentTimeMillis() - starTime));
+                System.out.println("Idle time in percent: "+(100-(waitPercent*100)));
+                //------------------------------
                 c.call();
             } catch (InterruptedException e) {
                 e.printStackTrace();
