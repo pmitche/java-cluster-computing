@@ -10,6 +10,7 @@ public class Result<T> implements Serializable
     private final T taskReturnValue;
     private final long taskRunTime;
 
+
     /**
      * constructor for results of the returnvalue and run time for each task
      * @param taskReturnValue
@@ -23,12 +24,14 @@ public class Result<T> implements Serializable
         this.taskRunTime = taskRunTime;
     }
 
+
     /**
      *
      * @return return value
      */
     public T getTaskReturnValue() { return taskReturnValue; }
 
+    public long getTaskRunTime() { return taskRunTime; }
     /**
      * Self explanatory...
      * @return

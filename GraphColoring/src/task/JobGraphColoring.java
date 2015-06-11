@@ -36,29 +36,23 @@ public class JobGraphColoring implements Job {
     @Override
     public Object collectResults(Space space) throws RemoteException {
 
-        Runnable r = () -> {
-            Result result;
-            StateGraphColoring rs = null;
-            do{
-                try {
-                    result = space.take();
-                    rs = (StateGraphColoring)result.getTaskReturnValue();
-                    System.out.println(rs.getClass());
-                    //todo return
-                    ClientGraphColoring.addLabel(rs);
-                    if (rs.isSolution()) break;
-
-                } catch (InterruptedException e) {  e.printStackTrace(); continue;}
-                catch (RemoteException re) {}
-            } while (!rs.isSolution());
-            System.out.println("Solution found: "+rs.isSolution());
-            ClientGraphColoring.addLabel(rs);
-        };
-        r.run();
-
+        Result result = null;
+        while(true) {
+            try {
+                result = space.take();
+                System.out.println(((StateGraphColoring)result.getTaskReturnValue()).isSolution() ? "Is solution!" : "Is NOT solution!");
+            } catch (InterruptedException e) {}
+            if (result.getTaskRunTime()==Long.valueOf(-1)) {
+                System.out.println("FINISHED");
+                return result;
+            }
+            else {
+                System.out.print("UPDATE");
+                ClientGraphColoring.addLabel((StateGraphColoring)result.getTaskReturnValue());
+            }
+        }
         //TODO Hvis return value er -1 så vul det ho ikke vætr nor verdi å displaye...
 
-        return Optional.empty();
     }
 
     /**

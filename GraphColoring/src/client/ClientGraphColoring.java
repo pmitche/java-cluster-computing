@@ -36,9 +36,9 @@ public class ClientGraphColoring extends Client<List<Integer>> implements Serial
     public static void main( String[] args ) throws RemoteException, MalformedURLException, NotBoundException {
         System.setSecurityManager(new SecurityManager());
         client = new ClientGraphColoring("localhost");
-//        StateGraphColoring state;
-        client.runJob();
-        //client.add(client.getLabel(state));
+        StateGraphColoring state;
+        state = (StateGraphColoring)client.runJob();
+        client.add(client.getLabel(state));
     }
 
     public static void addLabel(StateGraphColoring state) {
