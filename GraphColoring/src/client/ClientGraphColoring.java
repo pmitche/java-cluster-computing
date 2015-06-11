@@ -25,6 +25,7 @@ public class ClientGraphColoring extends Client<List<Integer>> implements Serial
     private final int SIZE = 13;    //Size of the vertecies
 
     private static ClientGraphColoring client;
+    private static JLabel prev = null;
 
     public ClientGraphColoring(String ip) throws RemoteException, NotBoundException,MalformedURLException {
         super("Graph Coloring", ip, new JobGraphColoring());
@@ -44,8 +45,11 @@ public class ClientGraphColoring extends Client<List<Integer>> implements Serial
     }
 
     public static void addLabel(StateGraphColoring state) {
-        client.removeAll();
-        client.add(client.getLabel(state));
+        if(prev!=null) {
+            client.remove(prev);
+        }
+        prev = client.getLabel(state);
+        client.add(prev);
     }
 
     /**
